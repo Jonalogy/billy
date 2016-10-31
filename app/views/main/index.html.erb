@@ -1,0 +1,71 @@
+<h1>Billy</h1>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+  Login
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#login-tab" role="tab">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#signup-tab" role="tab">Signup</a>
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="modal-body">
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane fade in active" id="login-tab" role="tabpanel">
+            <%= form_for @user, url: login_path do |f| %>
+              <%= f.email_field :email, placeholder: "Enter your email" %>
+              <%= f.password_field :password, placeholder: "Enter your password" %>
+              <br> <br>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <%= f.submit "Login", class: 'btn btn-primary' %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="tab-pane fade" id="signup-tab" role="tabpanel">
+            <%= form_for @user, url: users_path do |f| %>
+              <%= f.label :name, placeholder: "Name :" %>
+              <%= f.text_field :name, placeholder: "John Doe" %> <br>
+              <%= f.label :email, placeholder: "Email :" %>
+              <%= f.email_field :email, placeholder: "example@email.com" %> <br>
+              <%= f.label :password, placeholder: "Password :" %>
+              <%= f.password_field :password, placeholder: "Min. 8 alphanumeric characters", size: "30" %> <br>
+              <%= f.label :password_confirmation, placeholder:"Password :" %>
+              <%= f.password_field :password_confirmation, placeholder: "Reconfirm password" %> <br>
+              <%= f.label :mobile_number, placeholder:"Mobile Number :"%>
+              <%= f.text_field :mobile_number, placeholder:"1234 5678"%>
+              <br>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <%= f.submit "Sign-up", class: 'btn btn-primary' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+
+      </div> <%# End of modal Body %>
+    </div> <%# End of modal Content %>
+  </div> <%# End of modal Dialog %>
+</div> <%# End of Modal %>

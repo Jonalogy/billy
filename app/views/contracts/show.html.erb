@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @contract.user_id %>
+</p>
+
+<p>
+  <strong>Payment type:</strong>
+  <%= @contract.payment_type_id %>
+</p>
+
+<p>
+  <strong>Favour:</strong>
+  <%= @contract.favour_id %>
+</p>
+
+<p>
+  <strong>Clear:</strong>
+  <%= @contract.clear %>
+</p>
+
+<%= link_to 'Edit', edit_contract_path(@contract) %> |
+<%= link_to 'Back', contracts_path %>

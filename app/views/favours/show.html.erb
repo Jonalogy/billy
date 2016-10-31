@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Contract:</strong>
+  <%= @favour.contract_id %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @favour.description %>
+</p>
+
+<p>
+  <strong>Owner agree:</strong>
+  <%= @favour.owner_agree %>
+</p>
+
+<p>
+  <strong>Payee-agree:</strong>
+  <%= @favour.payee-agree %>
+</p>
+
+<%= link_to 'Edit', edit_favour_path(@favour) %> |
+<%= link_to 'Back', favours_path %>

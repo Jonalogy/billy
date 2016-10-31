@@ -1,0 +1,1 @@
+json.array! @favours, partial: 'favours/favour', as: :favour

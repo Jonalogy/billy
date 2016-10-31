@@ -1,0 +1,37 @@
+<%= form_for(favour) do |f| %>
+  <% if favour.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(favour.errors.count, "error") %> prohibited this favour from being saved:</h2>
+
+      <ul>
+      <% favour.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :contract_id %>
+    <%= f.number_field :contract_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :owner_agree %>
+    <%= f.check_box :owner_agree %>
+  </div>
+
+  <div class="field">
+    <%= f.label :payee-agree %>
+    <%= f.check_box :payee-agree %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

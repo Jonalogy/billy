@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Favours</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Contract</th>
+      <th>Description</th>
+      <th>Owner agree</th>
+      <th>Payee-agree</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @favours.each do |favour| %>
+      <tr>
+        <td><%= favour.contract_id %></td>
+        <td><%= favour.description %></td>
+        <td><%= favour.owner_agree %></td>
+        <td><%= favour.payee-agree %></td>
+        <td><%= link_to 'Show', favour %></td>
+        <td><%= link_to 'Edit', edit_favour_path(favour) %></td>
+        <td><%= link_to 'Destroy', favour, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Favour', new_favour_path %>

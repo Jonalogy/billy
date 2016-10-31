@@ -1,0 +1,1 @@
+json.partial! "favours/favour", favour: @favour
