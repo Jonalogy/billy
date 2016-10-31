@@ -1,9 +1,11 @@
 class DashboardsController < ApplicationController
 
   def index
-      @user =  session[:user_id]
+      @user_id =  session[:user_id]
       @newBill = Bill.new
-      @bills = Bill.all
+      @bills = User.find(@user_id).bills.all
+
+      puts "@bills >>> #{@bills}"
 
     respond_to do |format|
       format.html

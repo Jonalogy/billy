@@ -26,7 +26,7 @@ class BillsController < ApplicationController
   def create
 
     @bill = User.find(session[:user_id]).bills.new(bill_params)
-    # @bill.user_id = @user.id
+
     puts '>>>Logging<<<'
     puts @bill.inspect
     save_status = @bill.save!

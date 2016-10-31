@@ -47,45 +47,56 @@ User_id: <%= @user %>
 
 <div class="divider"></div>
 
-<div class="container-fluid">
-  <div class="row" id="billBook">
-    <% @bills.each do |bill| %>
-    <div class="col-md-4 card">
-        <div class="col-md-12 billTitle">
-          <%=bill.title%>
-        </div>
-        <div class="col-md-12 billPrice">
-          $<%=bill.total_price%>
-        </div>
-        <div class="col-md-12 dueDate">
-          Due on: <%=bill.due%>
-        </div>
-        <div class="col-md-12 status">
-          <% if bill.clear == false
-              status = ' On going'
-             else status = ' Cleared '
-             end %>
-          Status: <%=status%>
-        </div>
-    </div>
-  <%end%>
-</div>
+  <div class="container-fluid">
+    <div class="row" id="billBook">
+      <% @bills.each do |bill| %>
+        <div class="col-md-4">
+          <div class="col-xs-12 card">
+          <div class="imgHolder">
+            <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
+            <p class="card-title billTitle"> <%=bill.title%> </p>
+          </div>
 
+          <div class="card-block">
+            <div class="col-md-12">
+              <span>$0</span> / <span class="billTotal">$<%=bill.total_price%></span>
+            </div>
+            <div class="col-md-12 status">
+              <% if bill.clear == false
+                  status = ' On going'
+                 else
+                   status = ' Cleared '
+                 end %>
+              Status: <%=status%>
+            </div>
+            <div class="col-md-12 dueDate">
+              Due on: <%=bill.due%>
+            </div>
+          </div>
+          <a href="#" class="btn btn-primary active">Test</a>
+        </div>
+        </div>
+      <%end%>
+    </div>
+  </div>
 
 <template id="billTemplate">
-  <div class="col-md-4 card">
-      <div class="col-md-12 billTitle"></div>
-      <div class="col-md-12 billTotal"></div>
+  <div class="col-md-4">
+    <div class="col-xs-12 card">
+      <div class="imgHolder">
+        <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
+        <p class="card-title billTitle"></p>
+      </div>
+    </div>
+    <div class="card-block">
+      <button type="button" class="btn btn-default active" aria-label="Left Align">
+      <div class="col-md-12 billTotal">$</div>
       <div class="col-md-12 billDueDate"></div>
       <div class="col-md-12 billStatus"></div>
+    </div>
+    <a href="#" class="btn btn-primary">Test</a>
   </div>
 </template>
 
-
-<%#<template id="_stuff">
-  <tr class="a-stuff">
-    <td class="stuff-name"></td>
-    <td class="stuff-description"></td>
-    <td><%= link_to 'Delete', "#", remote: true, class: "link delete-stuff", method: :delete %> <%# </td>
-  </tr>
-</template> %>
+<template id="">
+</template>

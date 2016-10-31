@@ -5,3 +5,20 @@
 .billTitle{
   font-weight: bold;
 }
+
+.cardImg{
+  width: 100%;
+  height: auto;
+}
+.imgHolder{
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.card-title{
+  display: block;
+  position: absolute;
+  left: 0em;
+  bottom: 0em;
+}
