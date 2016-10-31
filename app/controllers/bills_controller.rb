@@ -24,7 +24,9 @@ class BillsController < ApplicationController
   # POST /bills
   # POST /bills.json
   def create
-    @bill = Bill.new(bill_params)
+
+    @bill = User.find(session[:user_id]).bills.new(bill_params)
+    # @bill.user_id = @user.id
     puts '>>>Logging<<<'
     puts @bill.inspect
     save_status = @bill.save!

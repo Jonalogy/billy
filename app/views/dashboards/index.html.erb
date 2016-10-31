@@ -8,26 +8,42 @@ User_id: <%= @user %>
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12">
-          <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
-          <%= f.label :title, 'Bill Title :' %> <br>
-          <%= f.text_field :title, placeholder: "Drinks at Tony's" %><br>
-          <%= f.label :total_price, "Total Amount ($):" %> <br>
-          <%= f.text_field :total_price, placeholder: "543.21" %>
+          <div class="col-sm-6">
+            <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+            <div class="col-sm-6">
+              <%= f.label :title, 'Bill Title :' %> <br>
+              <%= f.text_field :title, placeholder: "Drinks at Tony's" %><br>
+            </div>
+            <div class="col-sm-6">
+              <%= f.label :total_price, "Total Amount ($):" %> <br>
+              <%= f.text_field :total_price, placeholder: "543.21" %> <br>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="col-sm-12"> <br>
+            <div class="col-md-6 col-sm-12 ">
+              <%= f.text_area :description, placeholder: "Describe the occasion!", id:"newBillDesc" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="col-sm-12">
+            <div class="col-sm-10">
+            <%= f.label :due, 'Due on:' %>
+            <%= f.date_select(:due, use_short_month: true, order:[:day, :month, :year]) %>
+            </div>
+            <div class="col-sm-2">
+              <%= f.submit "Save Bill", class: 'btn btn-success', id: "saveBill-btn"%>
+              <%end%>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 col-sm-12 ">
-          <%= f.label :description, "Description :" %> <br>
-          <%= f.text_area :description, placeholder: "What's the occasion?", id:"newBillDesc" %><br>
-          <%= f.submit "Save Bill", class: 'btn btn-success', id: "saveBill-btn"%>
-          <%end%>
-        </div>
       </div>
     </div>
-  </div> <%# END of collapsable content %>
-
-</div> <br>
-
+  </div><br> <%# END of collapsable content %>
 
 <div class="divider"></div>
 

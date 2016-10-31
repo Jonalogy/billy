@@ -1,7 +1,8 @@
 class User < ApplicationRecord
   validates :email, presence: true, uniqueness: {case_sensitive: false}
-
   validates :password, length: { in: 3..72 }, on: :create
+
+  has_many :bills, dependent: :destroy
 
   has_secure_password
 
