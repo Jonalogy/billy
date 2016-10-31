@@ -1,1 +1,75 @@
 <h1>Dashboard</h1>
+User_id: <%= @user %>
+<br>
+<%= link_to 'Add Bill', new_bill_path, remote: true, class: "btn btn-primary active", 'data-toggle':"collapse", 'href': "#newBillWindow",  'aria-expanded': "false", 'aria-controls'=>"newBillWindow" %>
+<%= link_to 'Logout', logout_path, method: :delete, class: "btn btn-warning active" %><br>
+<%# Collapsable Content%>
+  <div class="collapse" id="newBillWindow">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+          <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+          <%= f.label :title, 'Bill Title :' %> <br>
+          <%= f.text_field :title, placeholder: "Drinks at Tony's" %><br>
+          <%= f.label :total_price, "Total Amount ($):" %> <br>
+          <%= f.text_field :total_price, placeholder: "543.21" %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-12 ">
+          <%= f.label :description, "Description :" %> <br>
+          <%= f.text_area :description, placeholder: "What's the occasion?", id:"newBillDesc" %><br>
+          <%= f.submit "Save Bill", class: 'btn btn-success', id: "saveBill-btn"%>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </div> <%# END of collapsable content %>
+
+</div> <br>
+
+
+<div class="divider"></div>
+
+<div class="container-fluid">
+  <div class="row" id="billBook">
+    <% @bills.each do |bill| %>
+    <div class="col-md-4 card">
+        <div class="col-md-12 billTitle">
+          <%=bill.title%>
+        </div>
+        <div class="col-md-12 billPrice">
+          $<%=bill.total_price%>
+        </div>
+        <div class="col-md-12 dueDate">
+          Due on: <%=bill.due%>
+        </div>
+        <div class="col-md-12 status">
+          <% if bill.clear == false
+              status = ' On going'
+             else status = ' Cleared '
+             end %>
+          Status: <%=status%>
+        </div>
+    </div>
+  <%end%>
+</div>
+
+
+<template id="billTemplate">
+  <div class="col-md-4 card">
+      <div class="col-md-12 billTitle"></div>
+      <div class="col-md-12 billTotal"></div>
+      <div class="col-md-12 billDueDate"></div>
+      <div class="col-md-12 billStatus"></div>
+  </div>
+</template>
+
+
+<%#<template id="_stuff">
+  <tr class="a-stuff">
+    <td class="stuff-name"></td>
+    <td class="stuff-description"></td>
+    <td><%= link_to 'Delete', "#", remote: true, class: "link delete-stuff", method: :delete %> <%# </td>
+  </tr>
+</template> %>

@@ -14,7 +14,7 @@ class BillsController < ApplicationController
 
   # GET /bills/new
   def new
-    @bill = Bill.new
+    @newBill = Bill.new
   end
 
   # GET /bills/1/edit
@@ -25,11 +25,15 @@ class BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new(bill_params)
+    puts '>>>Logging<<<'
+    puts @bill.inspect
+    save_status = @bill.save!
 
     respond_to do |format|
-      if @bill.save
-        format.html { redirect_to @bill, notice: 'Bill was successfully created.' }
-        format.json { render :show, status: :created, location: @bill }
+      if save_status
+        @bills = Bill.all
+        format.html
+        format.json { render json:@bills, status: :created }
       else
         format.html { render :new }
         format.json { render json: @bill.errors, status: :unprocessable_entity }

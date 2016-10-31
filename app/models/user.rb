@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   validates :email, presence: true, uniqueness: {case_sensitive: false}
 
-  validates :password, length: { in: 8..72 }, on: :create
+  validates :password, length: { in: 3..72 }, on: :create
 
   has_secure_password
 
