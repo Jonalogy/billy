@@ -4,8 +4,11 @@ class DashboardsController < ApplicationController
       @user_id =  session[:user_id]
       @newBill = Bill.new
       @bills = User.find(@user_id).bills.all
-
-      puts "@bills >>> #{@bills}"
+      puts ">>> Start Logging <<<"
+      puts ""
+      puts "@bills >>> #{@bills.inspect}"
+      puts ""
+      puts ">>> End Logging <<<"
 
     respond_to do |format|
       format.html
