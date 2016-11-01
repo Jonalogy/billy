@@ -3,6 +3,7 @@ class DashboardsController < ApplicationController
   def index
       @user_id =  session[:user_id]
       @newBill = Bill.new
+      @newItem = Item.new
       @bills = User.find(@user_id).bills.all
 
       # Fetch bill_ids in array format

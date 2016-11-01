@@ -1,6 +1,7 @@
 
 $( document ).on('turbolinks:load', function() {
   console.log("Dashboard.js Loaded");
+
   //---Ajax Repo---
     $('#addBill').on('ajax:success', function () {
       loadAllBills()

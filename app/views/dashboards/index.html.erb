@@ -95,14 +95,24 @@ User_id: <%= @user_id %>
 
                       <div id="items_card_<%=bill.id%>" class="tab-pane" role="tabpanel">
                         <%# List bill items here %>
-                        <ol>
+                          <%count = 0%>
                           <% @all_bill_items[bill.id].each do |item| %>
-                            <li><%=item.item_name %></li>
+                            <% count += 1 %>
+                            <p><%=count%>. <%=item.item_name%> $<%=item.item_price%></p>
                           <% end %>
-                        </ol>
 
-                        <a href="#test" class="btn btn-primary active">Add Items Feature</a>
-
+                          <%# START Collapse new item form %>
+                            <div class="collapse" id="addItemCollapse">
+                              <%= form_for @newItem, remote:true, url: bills_path, :html => { id:"newItemForm"} do |f| %>
+                                <%= f.label :item_name, 'Item :' %>
+                                <%= f.text_field :item_name, placeholder: "Beer" %><br>
+                                <%= f.label :item_price, '$ :' %>
+                                <%= f.text_field :item_price, placeholder: "30.00" %><br>
+                                <%= f.submit "Save", class: 'btn btn-outline-primary btn-sm', id: "saveBill-btn"%>
+                                <% end %>
+                            </div>
+                            <a class="btn btn-outline-success btn-sm addItem" data-toggle="collapse" href="#addItemCollapse" aria-expanded="false" aria-controls="addItem"> Item <i id="test" class="fa fa-plus-circle" aria-hidden="true"></i> </a>
+                          <%# end Collapse new item form %>
                       </div>
 
                       <div id="details_card_<%=bill.id%>" class="tab-pane text-xs-left" role="tabpanel">
