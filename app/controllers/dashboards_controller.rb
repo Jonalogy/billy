@@ -6,14 +6,15 @@ class DashboardsController < ApplicationController
       @newItem = Item.new
       @bills = User.find(@user_id).bills.all
 
-      # Fetch bill_ids in array format
+      # Fetch bill_ids belonging to user in array format
       @bills_all_id = User.find(@user_id).bills.all.select(:id).to_a
 
       # Fetching each user bill's items
       @all_bill_items = {}
+
+      # Iterating through @bills_all_id
       @bills_all_id.each do |bill|
         @bill_items = User.find(@user_id).bills.find(bill.id).items.all() #Returns an array
-
         @all_bill_items[bill.id] = @bill_items
       end
 
@@ -24,13 +25,5 @@ class DashboardsController < ApplicationController
   end
 
   private
-
-    def bill_params
-      params.require(:bill).permit
-    end
-
-    # def person_params
-    #   params.require(:person).permit(:name, :age)
-    # end
 
 end

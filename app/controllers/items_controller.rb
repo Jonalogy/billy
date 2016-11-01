@@ -10,11 +10,8 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-  end
-
-  # GET /items/new
-  def new
-    @item = Item.new
+    user = session[:user_id]
+    @items = User.find(user).bills.find( id ).items.all
   end
 
   # GET /items/1/edit
@@ -24,17 +21,26 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(item_params)
+    user = session[:user_id]
+    @item = User.find(user).bills.find(params[:item][:bill_id]).items.new(item_params)
+    @bill_id = params[:item][:bill_id]
 
-    respond_to do |format|
+    # respond_to do |format|
       if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
+        # puts ">>>New Item Saved<<<"
+        # redirect_to item_path(:item => @item, :bill_id => @bill_id)
+        # format.html
+        # format.json {
+          render json: @item, status: :created
+        # }
       else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+          puts ">>>Error: New item was not saved!<<<"
+        # format.html { render :new }
+        # format.json {
+          render json: @item.errors, status: :unprocessable_entity
+        # }
       end
-    end
+    # end
   end
 
   # PATCH/PUT /items/1
@@ -69,6 +75,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:bill_id, :item_name, :item_price, :contract_id)
+      params.require(:item).permit(:bill_id, :item_name, :item_price)
     end
 end

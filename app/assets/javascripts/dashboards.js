@@ -1,6 +1,8 @@
 
+var event_target;
+
 $( document ).on('turbolinks:load', function() {
-  console.log("Dashboard.js Loaded");
+    console.log("Dashboard.js Loaded");
 
   //---Ajax Repo---
     $('#addBill').on('ajax:success', function () {
@@ -9,6 +11,13 @@ $( document ).on('turbolinks:load', function() {
     $('#addBill').on('ajax:beforeSend', function () {
       $('#newBillWindow').collapse('hide')
       $('#addBill')[0].reset();
+    })
+
+  //---Add Item Ajax
+    $('.newItemForm').on('ajax:success', function (event,data) {
+      var childCount = ($(`#items_card_list_${data.bill_id}`).children().length) + 1
+      $('<div>').text(`${childCount} ${data.item_name}  $${data.item_price}`).appendTo($(`#items_card_list_${data.bill_id}`))
+      // newItemAdded()
     })
 })
 
@@ -54,3 +63,12 @@ $( document ).on('turbolinks:load', function() {
       console.log('End of Ajax action')
     })//End of $.getJSON
   }//end of loadAllBills
+
+  // function newItemAdded() {
+  //
+  //
+  //   $.getJSON('/items/show', (newItem)=>{
+  //     console.log(' Checking newly added Item ')
+  //     console.log(' newItem ')
+  //   })
+  // }

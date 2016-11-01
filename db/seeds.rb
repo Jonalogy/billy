@@ -12,6 +12,12 @@ User.create!(name:"Admin", mobile_number:'987654321', email:'admin@email.com', p
 user = User.find(1)
 user.bills.create!(title:'Mom\'s birthday', description:'Dinner at Tung Lok and present', total_price: 320.70, due:'2016-12-12')
 
+user.bills.create!(title:'Beer night', description:'Drinks at Raffles Club', total_price: 220.00, due:'2016-12-12')
+
 bill = user.bills.find(1)
 bill.items.create!(item_name:'Total dinner bill', item_price: 220.70)
 bill.items.create!(item_name:'Present', item_price: 100.00)
+
+bill = user.bills.find(2)
+bill.items.create!(item_name:'Beer Towers', item_price: 160.00)
+bill.items.create!(item_name:'Finger Food', item_price: 60.00)
