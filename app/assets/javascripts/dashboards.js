@@ -44,6 +44,7 @@ $( document ).on('turbolinks:load', function() {
 
         //---Details Pane
         newBill.find('#template_detailsPane').removeAttr('id').attr('id',`details_card_${bill.id}`)
+        newBill.find('#template_due').removeAttr('id').attr('id',`due_${bill.id}`).text('Due on:' + bill.due)
         newBill.find('#template_details').removeAttr('id').attr('id',`details_${bill.id}`).text(bill.description)
 
         //---Append

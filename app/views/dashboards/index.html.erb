@@ -71,7 +71,7 @@ User_id: <%= @user_id %>
                   <%# END of Nav Tabs %>
                 <%# Start Tab panes %>
                   <div class="card-block tab-content">
-                      <div class="tab-pane active text-xs-left " id="view_card_<%=bill.id%>" role="tabpanel">
+                      <div id="view_card_<%=bill.id%>" class="tab-pane active text-xs-left " role="tabpanel">
                         <div class="imgHolder">
                           <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
                           <p class="card-title billTitle"> <%=bill.title%> </p>
@@ -88,16 +88,15 @@ User_id: <%= @user_id %>
                           Status: <%=status%>
                         </div>
                       </div>
-                      <div class="tab-pane" id="items_card_<%=bill.id%>" role="tabpanel">
-                        <div class="col-md-12 dueDate">
-                          Due on: <%=bill.due%>
-                        </div>
+
+                      <div id="items_card_<%=bill.id%>" class="tab-pane" role="tabpanel">
                         <a href="#test" class="btn btn-primary active">Add Items Feature</a>
 
                       </div>
-                      <div class="tab-pane" id="details_card_<%=bill.id%>" role="tabpanel">
-                        <%=bill.description%>
-                      </div>
+
+                      <div id="details_card_<%=bill.id%>" class="tab-pane text-xs-left" role="tabpanel">
+                        <p> Due on: <%=bill.due%> </p>
+                        <p> <%=bill.description%> </p> </div>
                   </div>
                   <%# END Tab panes %>
                 </div>
@@ -142,15 +141,14 @@ User_id: <%= @user_id %>
 
                     <div id="template_itemsPane" class="tab-pane" role="tabpanel">
                       items pane
-                      <div class="col-md-12 dueDate">
-                        Due on: **Under Construction**
-                      </div>
                       <a href="#test" class="btn btn-primary active">
                         Add Items Feature </a>
                     </div>
 
                     <div id="template_detailsPane"  class="tab-pane" role="tabpanel">
-                      <p id="template_details" > **Bill Description...** <p>
+                      <p id="template_due"> Due on: **Under Construction** </p>
+                      <p id="template_details" >
+                        **Bill Description...** </p>
                     </div>
                 </div>
               <%# END Tab panes %>
