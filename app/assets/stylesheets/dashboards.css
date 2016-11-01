@@ -22,3 +22,14 @@
   left: 0em;
   bottom: 0em;
 }
+
+/* Card>>Items */
+.tab-content{
+  height: 330px;
+  overflow: scroll;
+  padding-bottom: 20px;
+}
+.items_list{
+  overflow: scroll;
+  height: 270px;
+}

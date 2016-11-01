@@ -94,28 +94,35 @@ User_id: <%= @user_id %>
                       </div>
 
                       <div id="items_card_<%=bill.id%>" class="tab-pane" role="tabpanel">
+                        <a class="btn btn-outline-success btn-sm addItem" data-toggle="collapse" href="#addItemCollapse_<%=bill.id%>" aria-expanded="false" aria-controls="addItem">
+                          <i id="test" class="fa fa-plus-circle" aria-hidden="true"></i> Item </a>
+
+                          <%# START Collapse new item form %>
+                          <div class="collapse" id="addItemCollapse_<%=bill.id%>">
+                            <%= form_for @newItem, remote: true, url: items_path, :html => { class:"newItemForm", id:"newItemForm_#{bill.id}"} do |f| %>
+                            <%= hidden_field(:item, :bill_id, options={ :value => bill.id } ) %>
+                            <%= f.text_field :item_name, placeholder: "New Item" %><br>
+                            <%= f.text_field :item_price, placeholder: "($)"%><br>
+                            <%= f.submit "Save", class: 'btn btn-outline-primary btn-sm submit_item', id: "saveItem-btn-"+bill.id.to_s%>
+                            <% end %>
+                          </div>
+                          <%# end Collapse new item form %>
                         <%# List bill items here %>
-                        <div id="items_card_list_<%=bill.id%>">
-                          <%count = 0%>
+                        <div class="items_list" id="items_card_list_<%=bill.id%>">
                           <% @all_bill_items[bill.id].each do |item| %>
-                          <% count += 1 %>
-                          <div class='bill_item'><%=count%>. <%=item.item_name%> $<%=item.item_price%></div>
+                          <div class='bill_item'>
+                            <div class="col-sm-9">
+                              <div><%=item.item_name%></div>
+                              <div>$<%=item.item_price%></div>
+                            </div>
+                            <div class="col-sm-3">
+                              <a href="" class="btn btn-outline-info btn-sm" role="button">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
+                            </div>
+                          </div>
                           <% end %>
                         </div>
 
-                          <%# START Collapse new item form %>
-                            <div class="collapse" id="addItemCollapse_<%=bill.id%>">
-                              <%= form_for @newItem, remote: true, url: items_path, :html => { class:"newItemForm", id:"newItemForm_#{bill.id}"} do |f| %>
-                                <%= hidden_field(:item, :bill_id, options={ :value => bill.id } ) %>
-                                <%= f.text_field :item_name, placeholder: "New Item" %><br>
-                                <%= f.label :item_price, '$ :' %>
-                                <%= f.text_field :item_price, placeholder: "30.00" %><br>
-                                <%= f.submit "Save", class: 'btn btn-outline-primary btn-sm', id: "saveItem-btn"%>
-                                <% end %>
-                            </div>
-
-                            <a class="btn btn-outline-success btn-sm addItem" data-toggle="collapse" href="#addItemCollapse_<%=bill.id%>" aria-expanded="false" aria-controls="addItem"> Item <i id="test" class="fa fa-plus-circle" aria-hidden="true"></i> </a>
-                          <%# end Collapse new item form %>
                       </div>
 
                       <div id="details_card_<%=bill.id%>" class="tab-pane text-xs-left" role="tabpanel">

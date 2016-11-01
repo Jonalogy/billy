@@ -10,8 +10,6 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    user = session[:user_id]
-    @items = User.find(user).bills.find( id ).items.all
   end
 
   # GET /items/1/edit
@@ -25,22 +23,12 @@ class ItemsController < ApplicationController
     @item = User.find(user).bills.find(params[:item][:bill_id]).items.new(item_params)
     @bill_id = params[:item][:bill_id]
 
-    # respond_to do |format|
       if @item.save
-        # puts ">>>New Item Saved<<<"
-        # redirect_to item_path(:item => @item, :bill_id => @bill_id)
-        # format.html
-        # format.json {
           render json: @item, status: :created
-        # }
       else
           puts ">>>Error: New item was not saved!<<<"
-        # format.html { render :new }
-        # format.json {
           render json: @item.errors, status: :unprocessable_entity
-        # }
       end
-    # end
   end
 
   # PATCH/PUT /items/1

@@ -13,11 +13,30 @@ $( document ).on('turbolinks:load', function() {
       $('#addBill')[0].reset();
     })
 
-  //---Add Item Ajax
+  //---Add Item Ajax---
     $('.newItemForm').on('ajax:success', function (event,data) {
-      var childCount = ($(`#items_card_list_${data.bill_id}`).children().length) + 1
-      $('<div>').text(`${childCount} ${data.item_name}  $${data.item_price}`).appendTo($(`#items_card_list_${data.bill_id}`))
-      // newItemAdded()
+      var body = $('<div>', {class:'bill_item'})
+      //Item Info
+        var itemBlock = $('<div>', {class:'col-sm-9'})
+        $('<div>').text(data.item_name).appendTo(itemBlock)
+        $('<div>').text('$'+data.item_price).appendTo(itemBlock)
+        itemBlock.appendTo(body)
+      // //Payee Tags
+        var payeeBlock = $('<div>',{class:'col-sm-3'})
+        var tagLink = $('<a>' , {href:"#", class: "btn btn-outline-info btn-sm", role:"button" })
+        /*icon*/ $('<i>' , { class:"fa fa-user-plus" }).attr('aria-hidden','true').appendTo(tagLink)
+        tagLink.appendTo(payeeBlock)
+        payeeBlock.appendTo(body)
+
+        body.prependTo($(`#items_card_list_${data.bill_id}`))
+    })//END ajax:success
+
+    $('.submit_item').click((event)=>{
+      var event_id  = event.target.id;
+      var n = (event_id.length)-1;
+      var id = event_id.substr(n,n);
+      console.log('id>>>',id)
+      $(`#addItemCollapse_${id}`).collapse('hide')
     })
 })
 
@@ -63,12 +82,3 @@ $( document ).on('turbolinks:load', function() {
       console.log('End of Ajax action')
     })//End of $.getJSON
   }//end of loadAllBills
-
-  // function newItemAdded() {
-  //
-  //
-  //   $.getJSON('/items/show', (newItem)=>{
-  //     console.log(' Checking newly added Item ')
-  //     console.log(' newItem ')
-  //   })
-  // }
