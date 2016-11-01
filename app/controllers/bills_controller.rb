@@ -27,15 +27,14 @@ class BillsController < ApplicationController
 
     @bill = User.find(session[:user_id]).bills.new(bill_params)
 
-    puts '>>>Logging<<<'
-    puts @bill.inspect
+      puts '>>>Logging<<<'
+      puts @bill.inspect
     save_status = @bill.save!
 
     respond_to do |format|
       if save_status
-        @bills = Bill.all
         format.html
-        format.json { render json:@bills, status: :created }
+        format.json { render json: @bills, status: :created }
       else
         format.html { render :new }
         format.json { render json: @bill.errors, status: :unprocessable_entity }

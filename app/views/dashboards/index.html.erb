@@ -1,5 +1,5 @@
 <h1>Dashboard</h1>
-User_id: <%= @user %>
+User_id: <%= @user_id %>
 <br>
 <%= link_to 'Add Bill', new_bill_path, remote: true, class: "btn btn-primary active", 'data-toggle':"collapse", 'href': "#newBillWindow",  'aria-expanded': "false", 'aria-controls'=>"newBillWindow" %>
 <%= link_to 'Logout', logout_path, method: :delete, class: "btn btn-warning active" %><br>
@@ -49,82 +49,114 @@ User_id: <%= @user %>
 
   <div class="container-fluid">
     <div class="row" id="billBook">
-
-
-      <% @bills.each do |bill| %>
-        <div class="col-md-4">
-          <div class="col-xs-12 card" id="card_<%=bill.id%>">
-
-            <%# Nav Tabs Block %>
-              <div class="card text-xs-center">
-                <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#view_card_<%=bill.id%>" role="tab">View</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#items_card_<%=bill.id%>" role="tab">Items</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#details_card_<%=bill.id%>" role="tab">Details</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="card-block tab-content">
-                  <!-- Tab panes -->
-                    <div class="tab-pane active" id="view_card_<%=bill.id%>" role="tabpanel">
-                      <div class="imgHolder">
-                        <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
-                        <p class="card-title billTitle"> <%=bill.title%> </p>
-                      </div>
-                    </div>
-                    <div class="tab-pane" id="items_card_<%=bill.id%>" role="tabpanel">
-                      <div class="col-md-12">
-                        <span>$0</span> / <span class="billTotal">$<%=bill.total_price%></span>
-                      </div>
-                      <div class="col-md-12 status">
-                        <% if bill.clear == false
+      <%# START Bill Cards %>
+        <% @bills.each do |bill| %>
+          <div class="col-md-4">
+            <div class="col-xs-12">
+                <div class="card" id="card_<%=bill.id%>">
+                <%# Start Nav Tabs Block %>
+                  <div class="card-header text-xs-center">
+                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#view_card_<%=bill.id%>" role="tab">View</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#items_card_<%=bill.id%>" role="tab">Items</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#details_card_<%=bill.id%>" role="tab">Details</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <%# END of Nav Tabs %>
+                <%# Start Tab panes %>
+                  <div class="card-block tab-content">
+                      <div class="tab-pane active text-xs-left " id="view_card_<%=bill.id%>" role="tabpanel">
+                        <div class="imgHolder">
+                          <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
+                          <p class="card-title billTitle"> <%=bill.title%> </p>
+                        </div>
+                        <div class="col-md-12">
+                          <span>$0</span> / <span class="billTotal">$<%=bill.total_price%></span>
+                        </div>
+                        <div class="col-md-12">
+                          <% if bill.clear == false
                             status = ' On going'
-                           else
-                             status = ' Cleared '
-                           end %>
-                        Status: <%=status%>
+                          else
+                            status = ' Cleared '
+                          end %>
+                          Status: <%=status%>
+                        </div>
                       </div>
-                      <div class="col-md-12 dueDate">
-                        Due on: <%=bill.due%>
+                      <div class="tab-pane" id="items_card_<%=bill.id%>" role="tabpanel">
+                        <div class="col-md-12 dueDate">
+                          Due on: <%=bill.due%>
+                        </div>
+                        <a href="#test" class="btn btn-primary active">Add Items Feature</a>
+
                       </div>
-                    </div>
-                    <div class="tab-pane" id="details_card_<%=bill.id%>" role="tabpanel">Bill Description...</div>
+                      <div class="tab-pane" id="details_card_<%=bill.id%>" role="tabpanel">
+                        <%=bill.description%>
+                      </div>
+                  </div>
+                  <%# END Tab panes %>
                 </div>
               </div>
-            <%# END of Nav Tabs %>
-
-              <a href="#test" class="btn btn-primary active">Test</a>
             </div>
+        <%end%>
+      <%# END Bill Cards %>
+    </div>
+  </div>
+
+<%# Testing New Card Template %>
+    <template id="billTemplate">
+      <div class="col-md-4">
+        <div class="col-xs-12">
+            <div class="card" id="template_card">
+              <%# START Nav Tabs Block %>
+              <div class="card-header text-xs-center">
+                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a id="template_viewLink" class="nav-link active" data-toggle="tab" role="tab">View</a> </li>
+                  <li class="nav-item">
+                    <a id="template_itemsLink" class="nav-link" data-toggle="tab" role="tab">Items</a> </li>
+                  <li class="nav-item">
+                    <a id="template_detailsLink" class="nav-link" data-toggle="tab" role="tab">Details</a> </li>
+                </ul>
+              </div>
+              <%# END Nav Tabs Block %>
+              <%# Start Tab panes %>
+                <div class="card-block tab-content">
+                    <div id='template_viewPane' class="tab-pane active text-xs-left" role="tabpanel">
+                      <div class="imgHolder">
+                        <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
+                        <p class="card-title billTitle" id="template_billTitle"></p>
+                      </div>
+                      <div class="col-md-12">
+                        <span>$0</span> / <span id="template_billTotal" ></span>
+                      </div>
+                      <div class="col-md-12">
+                        Status: Under Construction
+                      </div>
+                    </div>
+
+                    <div id="template_itemsPane" class="tab-pane" role="tabpanel">
+                      items pane
+                      <div class="col-md-12 dueDate">
+                        Due on: **Under Construction**
+                      </div>
+                      <a href="#test" class="btn btn-primary active">
+                        Add Items Feature </a>
+                    </div>
+
+                    <div id="template_detailsPane"  class="tab-pane" role="tabpanel">
+                      <p id="template_details" > **Bill Description...** <p>
+                    </div>
+                </div>
+              <%# END Tab panes %>
+            </div>
+          <%# END of Nav Tabs %>
           </div>
-      <%end%>
-
-
-    </div>
-  </div>
-
-<template id="billTemplate">
-  <div class="col-md-4">
-    <div class="col-xs-12 card">
-      <div class="imgHolder">
-        <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
-        <p class="card-title billTitle"></p>
-      </div>
-    </div>
-    <div class="card-block">
-      <button type="button" class="btn btn-default active" aria-label="Left Align">
-      <div class="col-md-12 billTotal">$</div>
-      <div class="col-md-12 billDueDate"></div>
-      <div class="col-md-12 billStatus"></div>
-    </div>
-    <a href="#" class="btn btn-primary">Test</a>
-  </div>
-</template>
-
-<template id="">
-</template>
+        </div>
+    </template>
+<%# END Testing New Card Template %>

@@ -1,7 +1,6 @@
 
 $( document ).on('turbolinks:load', function() {
   console.log("Dashboard.js Loaded");
-
   //---Ajax Repo---
     $('#addBill').on('ajax:success', function () {
       loadAllBills()
@@ -10,27 +9,46 @@ $( document ).on('turbolinks:load', function() {
       $('#newBillWindow').collapse('hide')
       $('#addBill')[0].reset();
     })
-
 })
 
 //---Funtions Repo
   function loadAllBills(){
     var billTemplate = $("#billTemplate").html().trim()
-    $.getJSON('/dashboard', function(data){
-      console.log("loadAllBills(AJAX)>>> ",data)
-      console.log(`${data.length} objects detected`)
+    $.getJSON('/dashboard', function(bills_data){
+        /*test*/console.log("loadAllBills(AJAX)>>> ",bills_data)
+        /*test*/console.log(`${bills_data.length} objects detected`)
       $('#billBook').empty();
-      data.forEach(function(ele){
-        console.log(`Handling:`, ele)
+      bills_data.forEach(function(bill){
+        /*test*/console.log(`Handling:`, bill)
         var newBill = $(billTemplate)
-        newBill.find('.billTitle').text(ele.title)
-        newBill.find('.billTotal').text('$' + ele.total_price)
-        newBill.find('.billDueDate').text(ele.due_date)
-        if(ele.clear == false){ var status = 'On going' }
-        else { var status = 'Cleared' }
-        newBill.find('.billStatus').text('Status: ' + status)
+
+        //---Card
+        newBill.find('#template_card').attr('id',`card_${bill.id}`)
+
+        //---View Tab
+        newBill.find('#template_viewLink').removeAttr('id').attr('href',`#view_card_${bill.id}`)
+
+        //---View Pane
+        newBill.find('#template_viewPane').removeAttr('id').attr('id',`view_card_${bill.id}`)
+        newBill.find('#template_billTitle').removeAttr('id').text(bill.title)
+        newBill.find('#template_billTotal').removeAttr('id').text('$' + bill.total_price)
+
+        //---Items Tab
+        newBill.find('#template_itemsLink').removeAttr('id').attr('href',`#items_card_${bill.id}`)
+
+        //---Items Pane
+        newBill.find('#template_itemsPane').removeAttr('id').attr('id',`items_card_${bill.id}`)
+
+        //---Details Tab
+        newBill.find('#template_detailsLink').removeAttr('id').attr('href',`#details_card_${bill.id}`)
+
+        //---Details Pane
+        newBill.find('#template_detailsPane').removeAttr('id').attr('id',`details_card_${bill.id}`)
+        newBill.find('#template_details').removeAttr('id').attr('id',`details_${bill.id}`).text(bill.description)
+
+        //---Append
         $('#billBook').append(newBill)
-      })// END of data.forEach
+      })// END of bills_data.forEach
       console.log('End of Ajax action')
     })//End of $.getJSON
   }//end of loadAllBills
