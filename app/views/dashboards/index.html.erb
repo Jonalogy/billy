@@ -71,6 +71,7 @@ User_id: <%= @user_id %>
                   <%# END of Nav Tabs %>
                 <%# Start Tab panes %>
                   <div class="card-block tab-content">
+
                       <div id="view_card_<%=bill.id%>" class="tab-pane active text-xs-left " role="tabpanel">
                         <div class="imgHolder">
                           <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
@@ -78,6 +79,9 @@ User_id: <%= @user_id %>
                         </div>
                         <div class="col-md-12">
                           <span>$0</span> / <span class="billTotal">$<%=bill.total_price%></span>
+                        </div>
+                        <div class="col-md-12">
+                          <%=@all_bill_items[bill.id].length%> items
                         </div>
                         <div class="col-md-12">
                           <% if bill.clear == false
@@ -90,6 +94,13 @@ User_id: <%= @user_id %>
                       </div>
 
                       <div id="items_card_<%=bill.id%>" class="tab-pane" role="tabpanel">
+                        <%# List bill items here %>
+                        <ol>
+                          <% @all_bill_items[bill.id].each do |item| %>
+                            <li><%=item.item_name %></li>
+                          <% end %>
+                        </ol>
+
                         <a href="#test" class="btn btn-primary active">Add Items Feature</a>
 
                       </div>

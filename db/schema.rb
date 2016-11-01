@@ -49,10 +49,9 @@ ActiveRecord::Schema.define(version: 20161030144044) do
   create_table "items", force: :cascade do |t|
     t.integer  "bill_id"
     t.string   "item_name"
-    t.decimal  "item_price",  precision: 13, scale: 2
-    t.integer  "contract_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.decimal  "item_price", precision: 13, scale: 2
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "payment_types", force: :cascade do |t|

@@ -5,11 +5,16 @@ class DashboardsController < ApplicationController
       @newBill = Bill.new
       @bills = User.find(@user_id).bills.all
 
-        puts ">>> Start Logging <<<"
-        puts ""
-        puts "@bills >>> #{@bills.inspect}"
-        puts ""
-        puts ">>> End Logging <<<"
+      # Fetch bill_ids in array format
+      @bills_all_id = User.find(@user_id).bills.all.select(:id).to_a
+
+      # Fetching each user bill's items
+      @all_bill_items = {}
+      @bills_all_id.each do |bill|
+        @bill_items = User.find(@user_id).bills.find(bill.id).items.all() #Returns an array
+
+        @all_bill_items[bill.id] = @bill_items
+      end
 
     respond_to do |format|
       format.html
