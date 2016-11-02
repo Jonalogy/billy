@@ -12,8 +12,8 @@
 /*Tag Payee Frame*/
 
 .items_list { position: relative; overflow-y: hidden}
-.tagPayeeItemFrame { height: 100%; width: 100%; border: 1px red double; position: absolute; background-color: white; top:0 ;
-                 transition-duration: 1.3s;
+.tagPayeeItemFrame { height: 100%; width: 100%; position: absolute; background-color: white; top: 0; overflow: scroll; padding: 5px;
+                 transition-duration: 0.8s;
                  transition-timing-function: ease;
                  transform: translateX(100vh);
                   }
