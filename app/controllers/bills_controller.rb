@@ -28,12 +28,9 @@ class BillsController < ApplicationController
     @bill = User.find(session[:user_id]).bills.new(bill_params)
     save_status = @bill.save!
 
-    respond_to do |format|
       if save_status
-        format.html
         format.json { render json: @bills, status: :created }
       else
-        format.html { render :new }
         format.json { render json: @bill.errors, status: :unprocessable_entity }
       end
     end

@@ -206,10 +206,10 @@ User_id: <%= @user_id %>
 <%# Ajax Payee Input Template%>
   <template id="template_tagPayee_input">
     <div class='tagPayeeForm'>
-        <div class="form-group"> <input id="payee_name" class="form-control" type="text" name="payee_name" placeholder="Payee's Name " > </div>
-        <div class="form-group"> <input id="payee_number" class="form-control" type="text" name="payee_number" placeholder="Contact Number" > </div>
-        <div class="form-group"> <input id="payee_amount" class="form-control" type="text" name="payee_amount" placeholder="($)Amount"> </div>
-        <div class="form-group">
+        <div class="input-group"> <input id="payee_name" class="form-control" type="text" name="payee_name" placeholder="Payee's Name " > </div>
+        <div class="input-group"> <input id="payee_number" class="form-control" type="number" name="payee_number" placeholder="Contact Number" > </div>
+        <div class="input-group"> <span class="input-group-addon">$</span> <input id="payee_amount" class="form-control" type="text" name="payee_amount" placeholder="xxx.xx"> </div>
+        <div class="input-group">
           <select class="form-control" id="payment_type" >
             <option value='1'>Cash</option>
             <option value='2'>Favour</option>

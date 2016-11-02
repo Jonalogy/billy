@@ -24,17 +24,15 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.json
   def create
+    puts (params[:contract][:item_id])
+
     @contract = Contract.new(contract_params)
 
-    respond_to do |format|
       if @contract.save
-        format.html { redirect_to @contract, notice: 'Contract was successfully created.' }
         format.json { render :show, status: :created, location: @contract }
       else
-        format.html { render :new }
         format.json { render json: @contract.errors, status: :unprocessable_entity }
       end
-    end
   end
 
   # PATCH/PUT /contracts/1
@@ -69,6 +67,6 @@ class ContractsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contract_params
-      params.require(:contract).permit(:user_id, :payment_type_id, :favour_id, :clear)
+      params.require(:contract).permit(:user_id, :item_id, :payee_name, :payee_no, :contract_price, :payment_type_id, :favour_id, :clear)
     end
 end
