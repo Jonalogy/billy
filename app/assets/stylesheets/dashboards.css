@@ -1,35 +1,23 @@
 
-#newBillDesc{
-  width: 100%;
-}
-.billTitle{
-  font-weight: bold;
-}
+#newBillDesc {width: 100%;}
+.billTitle { font-weight: bold;}
+.cardImg { width: 100%; height: auto;}
+.imgHolder { padding: 0; margin: 0; position: relative; }
+.card-title { display: block; position: absolute; left: 0em; bottom: 0em; }
 
-.cardImg{
-  width: 100%;
-  height: auto;
-}
-.imgHolder{
-  padding: 0;
-  margin: 0;
-  position: relative;
-}
+/* Bill Card's Items Pane */
+.tab-content { height: 330px; overflow: scroll; padding-bottom: 20px; }
+.items_list { overflow: scroll; height: 270px; }
 
-.card-title{
-  display: block;
-  position: absolute;
-  left: 0em;
-  bottom: 0em;
-}
+/*Tag Payee Frame*/
 
-/* Card>>Items */
-.tab-content{
-  height: 330px;
-  overflow: scroll;
-  padding-bottom: 20px;
-}
-.items_list{
-  overflow: scroll;
-  height: 270px;
-}
+.items_list { position: relative; overflow-y: hidden}
+.tagPayeeItemFrame { height: 100%; width: 100%; border: 1px red double; position: absolute; background-color: white; top:0 ;
+                 transition-duration: 1.3s;
+                 transition-timing-function: ease;
+                 transform: translateX(100vh);
+                  }
+
+.tagPayeeItemFrame-show { transform: translateX(0);
+                      transition-duration: 1s;
+                      transition-timing-function: ease; }

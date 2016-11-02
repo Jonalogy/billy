@@ -111,16 +111,25 @@ User_id: <%= @user_id %>
                         <div class="items_list" id="items_card_list_<%=bill.id%>">
                           <% @all_bill_items[bill.id].each do |item| %>
                           <div class='bill_item'>
-                            <div class="col-sm-9">
-                              <div><%=item.item_name%></div>
-                              <div>$<%=item.item_price%></div>
-                            </div>
-                            <div id='tagPayee-input-holder-<%=bill.id%>'  class="col-sm-3">
-                              <a id="tagPayee-<%=bill.id%>"  href="" class="btn btn-outline-info btn-sm tagPayee" role="button">
-                                <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
-                            </div>
+                              <div class="col-sm-9">
+                                <div><%=item.item_name%></div>
+                                <div>$<%=item.item_price%></div>
+                              </div>
+
+                              <div class="tagPayee-input-holder col-sm-3" id='tagPayee-input-holder-<%=bill.id%>'>
+                                <a id="tagPayeeItem-<%=item.id%>" billID="<%=bill.id%>" itemID="<%=item.id%>" href="" class="btn btn-outline-info btn-sm tagPayee" role="button">
+                                  <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
+                              </div>
                           </div>
+
                           <% end %>
+                          <div id="tagPayeeItemFrame-<%=bill.id%>" class="tagPayeeItemFrame">
+                            <%# Button to close tagPayeeItemFrame %>
+                            <button class=" closeTagPayeeItemFrame btn btn-sm btn-outline-danger" billID="<%=bill.id%>"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+
+                              Tag User Here
+
+                          </div>
                         </div>
 
                       </div>
@@ -194,10 +203,10 @@ User_id: <%= @user_id %>
 <%# Ajax Payee Input Template%>
   <template id="template_tagPayee_input">
     <div class='input-payee-form'>
-        <%= form_for @contract, remote:true, url: contracts_path, :html => { id:"addContract"} do |f| %>
-
-        <%= f.text_field :, placeholder: "Drinks at Tony's" %><br>
-        <% end %>
+        <input id="payee_email" type="text" name="payee_email" placeholder="Payee's email" >
+        <input id="payee_amt" type="text" name="payee_amt" placeholder="($)Amount">
+        <button type="button" class="btn btn-sm btn-outline-success">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> </button>
     </div>
   </template>
 
