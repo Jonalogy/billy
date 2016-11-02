@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20161030144044) do
   end
 
   create_table "payment_types", force: :cascade do |t|
-    t.string   "type"
+    t.string   "pay_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

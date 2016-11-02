@@ -194,8 +194,9 @@ User_id: <%= @user_id %>
 <%# Ajax Payee Input Template%>
   <template id="template_tagPayee_input">
     <div class='input-payee-form'>
-        <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
-        <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+        <%= form_for @contract, remote:true, url: contracts_path, :html => { id:"addContract"} do |f| %>
+
+        <%= f.text_field :, placeholder: "Drinks at Tony's" %><br>
         <% end %>
     </div>
   </template>

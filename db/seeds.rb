@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+PaymentType.create!(pay_type:'Cash')
+PaymentType.create!(pay_type:'Internet Banking')
+PaymentType.create!(pay_type:'Favour')
 
 User.create!(name:"Admin", mobile_number:'987654321', email:'admin@email.com', password:'123', password_confirmation:'123')
 
@@ -27,3 +30,6 @@ bill.items.create!(item_name:'Mashmalow Puffies', item_price: 30.00)
 bill = user.bills.find(4)
 bill.items.create!(item_name:'Grill deposite', item_price: 26.10)
 bill.items.create!(item_name:'Food', item_price: 400)
+
+
+User.create!(name:"User", mobile_number:'987654321', email:'user@email.com', password:'123', password_confirmation:'123')
