@@ -18,6 +18,8 @@ class DashboardsController < ApplicationController
         @all_bill_items[bill.id] = @bill_items
       end
 
+      @contract = Contract.new
+
     respond_to do |format|
       format.html
       format.json { render json: @bills }

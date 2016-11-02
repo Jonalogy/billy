@@ -115,8 +115,8 @@ User_id: <%= @user_id %>
                               <div><%=item.item_name%></div>
                               <div>$<%=item.item_price%></div>
                             </div>
-                            <div class="col-sm-3">
-                              <a href="" class="btn btn-outline-info btn-sm" role="button">
+                            <div id='tagPayee-input-holder-<%=bill.id%>'  class="col-sm-3">
+                              <a id="tagPayee-<%=bill.id%>"  href="" class="btn btn-outline-info btn-sm tagPayee" role="button">
                                 <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
                             </div>
                           </div>
@@ -189,3 +189,15 @@ User_id: <%= @user_id %>
         </div>
     </template>
 <%# END Ajax Card Template %>
+
+
+<%# Ajax Payee Input Template%>
+  <template id="template_tagPayee_input">
+    <div class='input-payee-form'>
+        <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+        <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+        <% end %>
+    </div>
+  </template>
+
+<%# Ajax Payee Input Template%>

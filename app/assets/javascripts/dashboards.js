@@ -30,7 +30,6 @@ $( document ).on('turbolinks:load', function() {
 
         body.prependTo($(`#items_card_list_${data.bill_id}`))
     })//END ajax:success
-
     $('.submit_item').click((event)=>{
       var event_id  = event.target.id;
       var n = (event_id.length)-1;
@@ -38,6 +37,24 @@ $( document ).on('turbolinks:load', function() {
       console.log('id>>>',id)
       $(`#addItemCollapse_${id}`).collapse('hide')
     })
+
+  //---Tag Payee---
+    $('.tagPayee').click((event)=>{
+      event.preventDefault();
+      var n = (event.currentTarget.id).length - 1;
+      var bill_id_clicked = (event.currentTarget.id).substr(n,n)
+      console.log('bill_id_clicked >>>', (bill_id_clicked))
+
+      $(`#tagPayee-${bill_id_clicked}`).remove()
+
+      //---Starting Template #template_tagPayee_input Clone
+        var payeeInput = $('#template_tagPayee_input').html().trim()
+        var newPayeeInput = $(payeeInput)
+
+        newPayeeInput.appendTo($(`#tagPayee-input-holder-${bill_id_clicked}`))
+    });
+
+
 })
 
 //---Funtions Repo
