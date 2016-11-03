@@ -5,6 +5,13 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
+    @allUserNames = User.all.select("id, name")
+    puts ""
+    puts ">>>checking Name Params<<<"
+    puts params[:name].inspect
+    puts ">>>END<<<"
+    puts ""
+    render json: @allUserNames
   end
 
   # GET /users/1
@@ -70,5 +77,9 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :mobile_number, :email, :password, :admin)
+    end
+
+    def name_search_params
+      params.require(:user).permit(:name)
     end
 end

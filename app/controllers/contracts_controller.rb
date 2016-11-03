@@ -24,14 +24,19 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.json
   def create
-    puts (params[:contract][:item_id])
-
+    @payee_no = params[:contract][:payee_no]
+    @payee_amt = params[:contract][:contract_price]
     @contract = Contract.new(contract_params)
 
-      if @contract.save
-        format.json { render :show, status: :created, location: @contract }
+    recipient_no = ENV["twilio_recipient_no"]
+
+    puts "Mobile:  #{recipient_no}"
+
+      if @contract.save!
+        sms(recipient_no,'Someone has agreed to split the bill with you. You\'re to contribute: $' + @payee_amt )
+        render json: @contract
       else
-        format.json { render json: @contract.errors, status: :unprocessable_entity }
+        render json: @contract.errors
       end
   end
 
@@ -67,6 +72,11 @@ class ContractsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contract_params
-      params.require(:contract).permit(:user_id, :item_id, :payee_name, :payee_no, :contract_price, :payment_type_id, :favour_id, :clear)
+      params.require(:contract).permit(:user_id, :item_id, :contract_price, :payment_type_id, :favour_id, :clear)
     end
+    def payee_params
+      params.require(:contract).permit(:payee_name, :payee_no)
+    end
+
+
 end

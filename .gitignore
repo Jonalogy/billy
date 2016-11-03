@@ -195,3 +195,6 @@ build-iPhoneSimulator/
 # .ruby-gemset
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+
+# Ignore application configuration
+/config/application.yml

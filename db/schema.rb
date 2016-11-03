@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20161030144044) do
   create_table "contracts", force: :cascade do |t|
     t.integer  "item_id"
     t.integer  "user_id"
+    t.string   "payee_name"
+    t.string   "payee_contact"
     t.decimal  "contract_price",  precision: 13, scale: 2
     t.integer  "payment_type_id"
     t.integer  "favour_id"

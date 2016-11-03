@@ -151,7 +151,30 @@ User_id: <%= @user_id %>
     </div>
   </div>
 
-  <%# Ajax Card Template %>
+<%#-------------------------------TEMPLATES-----------------------------------%>
+  <%##### Ajax Payee Input Template######%>
+    <template id="template_tagPayee_input">
+      <div class='tagPayeeForm'>
+          <div class="input-group"> <input id="payee_name" class="form-control payee_name" type="text" name="payee_name" placeholder="Payee's Name " > </div>
+          <div class="input-group"> <span class="input-group-addon">+65</span> <input id="payee_number" class="form-control" type="text" name="payee_number" placeholder="Contact Number" value="98296883" > </div>
+          <div class="input-group"> <span class="input-group-addon">$</span> <input id="payee_amount" class="form-control" type="text" name="payee_amount" placeholder="xxx.xx"> </div>
+          <div class="input-group">
+            <select class="form-control" id="payment_type" >
+              <option value='1'>Cash</option>
+              <option value='2'>Favour</option>
+            </select>
+          </div>
+          <%# Button to add Payee%>
+          <button type="button" id="addPayeeBtn" class="addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-user-plus" aria-hidden="true"></i> Add </button>
+
+          <%# Button to close tagPayeeItemFrame %>
+          <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times-circle-o" aria-hidden="true"></i> Cancel</button>
+      </div>
+    </template>
+  <%# Ajax Payee Input Template%>
+
+
+  <%##### Ajax Card Template #####%>
       <template id="billTemplate">
         <div class="col-md-4">
           <div class="col-xs-12">
@@ -202,24 +225,3 @@ User_id: <%= @user_id %>
           </div>
       </template>
   <%# END Ajax Card Template %>
-
-<%# Ajax Payee Input Template%>
-  <template id="template_tagPayee_input">
-    <div class='tagPayeeForm'>
-        <div class="input-group"> <input id="payee_name" class="form-control" type="text" name="payee_name" placeholder="Payee's Name " > </div>
-        <div class="input-group"> <input id="payee_number" class="form-control" type="number" name="payee_number" placeholder="Contact Number" > </div>
-        <div class="input-group"> <span class="input-group-addon">$</span> <input id="payee_amount" class="form-control" type="text" name="payee_amount" placeholder="xxx.xx"> </div>
-        <div class="input-group">
-          <select class="form-control" id="payment_type" >
-            <option value='1'>Cash</option>
-            <option value='2'>Favour</option>
-          </select>
-        </div>
-        <%# Button to add Payee%>
-        <button type="button" id="addPayeeBtn" class="addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-user-plus" aria-hidden="true"></i> Add </button>
-
-        <%# Button to close tagPayeeItemFrame %>
-        <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times-circle-o" aria-hidden="true"></i> Cancel</button>
-    </div>
-  </template>
-<%# Ajax Payee Input Template%>
