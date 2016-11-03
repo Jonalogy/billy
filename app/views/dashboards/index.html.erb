@@ -166,6 +166,26 @@ User_id: <%= @user_id %>
     </template>
   <%# END Ajax Add Payee Template#%>
 
+  <%##### START MemberPayee-form Template######%>
+    <template id="template-MemberPayee">
+      <div class="template-MemberPayee-form">
+        <h5><span class="template-ownerName" >__</span>is on Billy :)</h5>
+        <input type="hidden" class="template-payee_id payee_id form-control" name="payee_id" >
+        <div class="input-group">
+          <select class="template-payType payType form-control" >
+            <option value='1'>Cash</option>
+            <option value='2'>Favour</option>
+          </select>
+        </div>
+        <div class="input-group"> <span class="input-group-addon">$</span> <input class="template-payee_amount payee_amount form-control" type="text" name="payee_amount" placeholder="xxx.xx"> </div>
+        <%# Button to add Payee%>
+        <button type="button" class="template-addPayeeBtn addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-check" aria-hidden="true"></i> Done </button>
+        <%# Button to close tagPayeeItemFrame %>
+        <button class="template-closeTagPayeeItemFrame closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times" aria-hidden="true"></i> Cancel</button>
+      </div>
+    </template>
+  <%##### END MemberPayee-form Template######%>
+
   <%##### START nonMemberPayee-form Template######%>
     <template id="template-nonMemberPayee">
       <div class="template-nonMemberPayee-form">
@@ -186,7 +206,6 @@ User_id: <%= @user_id %>
 
       </div>
     </template>
-
   <%##### END nonMemberPayee-form Template######%>
 
 

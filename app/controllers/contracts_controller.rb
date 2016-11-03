@@ -24,19 +24,20 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.json
   def create
-    # @payee_no = params[:contract][:payee_no]
-    # @payee_amt = params[:contract][:contract_price]
-    # @contract = Contract.new(contract_params)
+    if params[:contract_reg].present? && params[:contract_reg][:reg_user] == 'true'
 
-    # puts ">>>>>Console.log<<<<<"
-    # puts ""
-    # puts params[:contract_noreg][:reg_user].inspect
-    # puts non_reg_user_params.inspect
-    # puts non_reg_user_params[:payee_name].inspect
-    # puts ""
-    # puts ">>>>>END<<<<<"
+      @contract = Contract.new(reg_user_params)
+      puts @contract.inspect
+      save_status = @contract.save
 
-    if params[:contract_noreg][:reg_user] == 'false'
+      if save_status
+        render json: @contract
+      end
+
+
+    elsif noreg_user_verify_params[:reg_user] == 'false'
+      puts " "
+      puts ">>>>>>>>>>Console.log<<<<<<<<<<<"
         @contract = Contract.new(non_reg_user_params)
 
         payee_name = non_reg_user_params[:payee_name]
@@ -44,15 +45,8 @@ class ContractsController < ApplicationController
         contract_price = non_reg_user_params[:contract_price].to_s
         item = Item.where(id: non_reg_user_params[:item_id]).take.item_name
 
-        puts "********"
-        puts owner
-        puts payee_name
-        puts contract_price
-        puts item
-
         save_status = @contract.save
-        puts "save_status = #{save_status}"
-
+        puts save_status
         if save_status
           puts "Twilio: Attempting to send SMS"
           recipient_no = ENV["twilio_recipient_no"]
@@ -64,13 +58,6 @@ class ContractsController < ApplicationController
 
     end #if params[:contract_noreg][:reg_user]
 
-      #
-      # if @contract.save
-      #   sms(recipient_no,'Someone has agreed to split the bill with you. You\'re to contribute: $' + @payee_amt )
-      #   render json: @contract
-      # else
-      #   render json: @contract.errors
-      # end
   end
 
   # PATCH/PUT /contracts/1
@@ -108,12 +95,16 @@ class ContractsController < ApplicationController
       params.require(:contract).permit(:user_id, :item_id, :contract_price, :payment_type_id, :favour_id, :clear)
     end
 
-    def reg_user_verify_params
+    def noreg_user_verify_params
       params.require(:contract_noreg).permit(:reg_user)
     end
     def non_reg_user_params
       params.require(:contract_noreg).permit(:item_id,:payee_name, :payee_contact, :contract_price, :payment_type_id)
     end
-
-
+    def reg_user_verify_params
+      params.require(:contract_reg).permit(:reg_user)
+    end
+    def reg_user_params
+      params.require(:contract_reg).permit(:item_id, :user_id, :contract_price, :payment_type_id)
+    end
 end

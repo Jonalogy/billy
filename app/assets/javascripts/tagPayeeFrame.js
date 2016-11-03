@@ -36,8 +36,27 @@ $( document ).on('turbolinks:load', ()=>{
 
           $.get('/check', {number:number} ,(data)=>{
             console.log('Server Responded! ', data)
-            if (data === false) { /* Load manual entry */ nonMemberPayee(data,num) }
+            if (data['check'] === true) { memberPayee(data['check'], data['owner'], data['owner_id'] ,num) }
+            if (data['check'] === false) { /* Load manual entry */ nonMemberPayee(data['check'],num) }
           });
+
+          function memberPayee(reg_user, owner, id, recordedPayeeNum){
+            console.log("Templating template-MemberPayee")
+            $(`#tagPayeeItemContent-bill${bill_id}`).empty()
+
+            /* Append MemberPayee-form */
+            var memberPayeeInputTemplate = $('#template-MemberPayee').html().trim()
+            var memberPayee = $(memberPayeeInputTemplate)
+            memberPayee.find('.template-ownerName').attr('id',`ownerName-item${item_id}`).removeClass('template-ownerName').text(owner+' ')
+            memberPayee.find('.template-payee_id').attr('id',`payee_id-item${item_id}`).removeClass('template-payee_id').val(id)
+            memberPayee.find('.template-payType').attr('id',`payType-item${item_id}`).removeClass('template-payType')
+            memberPayee.find('.template-payee_amount').attr('id',`payee_amount-item${item_id}`).removeClass('template-payee_amount')
+            memberPayee.find('.template-addPayeeBtn').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).attr('reg_user',`${reg_user}`).removeClass('template-addPayeeBtn')
+            memberPayee.find('.template-closeTagPayeeItemFrame').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).removeClass('template-closeTagPayeeItemFrame')
+
+            memberPayee.appendTo(`#tagPayeeItemContent-bill${bill_id}`)
+
+          }
 
           function nonMemberPayee(reg_user, recordedPayeeNum){
             $(`#tagPayeeItemContent-bill${bill_id}`).empty()
@@ -76,34 +95,50 @@ $( document ).on('turbolinks:load', ()=>{
           // }
       });
 
-      //----Adds and appends new user---
-        //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
-      $(document).on('click','.addPayeeBtn',function(event){
-          event.preventDefault()
-          var point = event.currentTarget;   console.log(point)
-          var bill_id = (point).getAttribute('bill-id');
-          var item_id = (point).getAttribute('item-id');
-          var reg_user = (point).getAttribute('reg_user');
+  //----Adds and appends new user---
+    //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
+  $(document).on('click','.addPayeeBtn',function(event){
+      event.preventDefault()
+      var point = event.currentTarget;   console.log(point)
+      var bill_id = (point).getAttribute('bill-id');
+      var item_id = (point).getAttribute('item-id');
+      var reg_user = (point).getAttribute('reg_user');
 
-          var payee_name = $(`#payee-name-item${item_id}`).val();
+      if (reg_user === "true" ){
+        var contract = {}
+        contract['reg_user'] = reg_user
+        contract['user_id'] = $(`#payee_id-item${item_id}`).val()
+        contract['item_id'] = Number(item_id)
+        contract['payment_type_id'] = $(`#payType-item${item_id}`).val()
+        contract['contract_price'] = $(`#payee_amount-item${item_id}`).val();
+        console.log(contract)
 
-          var contract = {}
-          contract['item_id'] = Number(item_id)
-          contract['reg_user'] = reg_user
-          contract['payee_name'] = $(`#payee_name-item${item_id}`).val();
-          contract['payee_contact'] = $(`#payeeNumRecord-item${item_id}`).val();
-          contract['contract_price'] = $(`#payee_amount-item${item_id}`).val();
-          contract['payment_type_id'] = $(`#payType-item${item_id}`).val();
-          // contract = JSON.stringify(contract)
-          console.log(contract)
+        $.post("/contracts", {contract_reg: contract}, function(data){
+          console.log('Server Responded')
+        })//END $.post("/contracts", {contract_reg: contract}
+      }
 
-          $.post("/contracts", {contract_noreg: contract}, function(data){
-            console.log('Server Responded')
-            console.log($(`#tagPayee-input-holder-${bill_id}`));
-            $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
-          })
-          $(`#tagPayeeItemContent-bill${bill_id}`).empty()
-        });
+      if (reg_user === "false" ){
+        var payee_name = $(`#payee-name-item${item_id}`).val();
+        var contract = {}
+
+        contract['reg_user'] = reg_user
+        contract['item_id'] = Number(item_id)
+        contract['payee_name'] = $(`#payee_name-item${item_id}`).val();
+        contract['payee_contact'] = $(`#payeeNumRecord-item${item_id}`).val();
+        contract['contract_price'] = $(`#payee_amount-item${item_id}`).val();
+        contract['payment_type_id'] = $(`#payType-item${item_id}`).val();
+        // contract = JSON.stringify(contract)
+        console.log(contract)
+
+        $.post("/contracts", {contract_noreg: contract}, function(data){
+          console.log('Server Responded')
+          console.log($(`#tagPayee-input-holder-${bill_id}`));
+          $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
+        }) //END $.post("/contracts"
+      }
+      $(`#tagPayeeItemContent-bill${bill_id}`).empty()
+    });
 
 
   //---Cancel & Close the tag payee frame
