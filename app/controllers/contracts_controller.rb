@@ -24,18 +24,53 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.json
   def create
-    @payee_no = params[:contract][:payee_no]
-    @payee_amt = params[:contract][:contract_price]
-    @contract = Contract.new(contract_params)
+    # @payee_no = params[:contract][:payee_no]
+    # @payee_amt = params[:contract][:contract_price]
+    # @contract = Contract.new(contract_params)
 
-    recipient_no = ENV["twilio_recipient_no"]
+    # puts ">>>>>Console.log<<<<<"
+    # puts ""
+    # puts params[:contract_noreg][:reg_user].inspect
+    # puts non_reg_user_params.inspect
+    # puts non_reg_user_params[:payee_name].inspect
+    # puts ""
+    # puts ">>>>>END<<<<<"
 
-      if @contract.save!
-        sms(recipient_no,'Someone has agreed to split the bill with you. You\'re to contribute: $' + @payee_amt )
-        render json: @contract
-      else
-        render json: @contract.errors
-      end
+    if params[:contract_noreg][:reg_user] == 'false'
+        @contract = Contract.new(non_reg_user_params)
+
+        payee_name = non_reg_user_params[:payee_name]
+        owner = User.where(id: session[:user_id]).take.name
+        contract_price = non_reg_user_params[:contract_price].to_s
+        item = Item.where(id: non_reg_user_params[:item_id]).take.item_name
+
+        puts "********"
+        puts owner
+        puts payee_name
+        puts contract_price
+        puts item
+
+        save_status = @contract.save
+        puts "save_status = #{save_status}"
+
+        if save_status
+          puts "Twilio: Attempting to send SMS"
+          recipient_no = ENV["twilio_recipient_no"]
+          sms(recipient_no, "Hi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: $" + contract_price + ".\n~Sent from Billy App " )
+          render json: @contract
+        else
+          render json: @contract.errors
+        end
+
+    end #if params[:contract_noreg][:reg_user]
+
+      #
+      # if @contract.save
+      #   sms(recipient_no,'Someone has agreed to split the bill with you. You\'re to contribute: $' + @payee_amt )
+      #   render json: @contract
+      # else
+      #   render json: @contract.errors
+      # end
   end
 
   # PATCH/PUT /contracts/1
@@ -72,8 +107,12 @@ class ContractsController < ApplicationController
     def contract_params
       params.require(:contract).permit(:user_id, :item_id, :contract_price, :payment_type_id, :favour_id, :clear)
     end
-    def payee_params
-      params.require(:contract).permit(:payee_name, :payee_no)
+
+    def reg_user_verify_params
+      params.require(:contract_noreg).permit(:reg_user)
+    end
+    def non_reg_user_params
+      params.require(:contract_noreg).permit(:item_id,:payee_name, :payee_contact, :contract_price, :payment_type_id)
     end
 
 

@@ -11,7 +11,8 @@ $( document ).on('turbolinks:load', ()=>{
       $(`#tagPayeeItemFrame-bill${bill_id}`).addClass('tagPayeeItemFrame-show')
 
       appendCheckMobile()
-        /* Clone Mobile Payee Number Input*/
+
+        /* Clone Template: Mobile Payee Number Input*/
         function appendCheckMobile() {
           var mobileInputTemplate = $('#request_payee_number').html().trim()
           var mobileInput = $(mobileInputTemplate)
@@ -25,16 +26,20 @@ $( document ).on('turbolinks:load', ()=>{
         //---Event Listerner: Search Mobile Number
         $('.checkPayeeNoBtn').click((event)=>{
           var pointer = event.currentTarget
+          var bill_id = (event.currentTarget).getAttribute('bill-id')
+          var item_id = (event.currentTarget).getAttribute('item-id')
+          console.log(`bill_id = ${bill_id}`,`item_id = ${item_id}`)
           var num = $(`#inputPayeeNum-item${item_id}`).val()
-          console.log(num)
+          console.log(`Payee Number: ${num}`)
           var number = {payee_contact:num}
+          $(`#tagPayeeItemContent-bill${bill_id}`).empty()
 
           $.get('/check', {number:number} ,(data)=>{
             console.log('Server Responded! ', data)
-            if (data === false) { /* Load manual entry */ nonMemberPayee(num) }
+            if (data === false) { /* Load manual entry */ nonMemberPayee(data,num) }
           });
 
-          function nonMemberPayee(recordedPayeeNum){
+          function nonMemberPayee(reg_user, recordedPayeeNum){
             $(`#tagPayeeItemContent-bill${bill_id}`).empty()
 
             /* Append nonMemberPayee-form */
@@ -46,7 +51,7 @@ $( document ).on('turbolinks:load', ()=>{
             nonMemberPayee.find('.template-payee_name').attr('id',`payee_name-item${item_id}`).removeClass('template-payee_name')
             nonMemberPayee.find('.template-payType').attr('id',`payType-item${item_id}`).removeClass('template-payType')
             nonMemberPayee.find('.template-payee_amount').attr('id',`payee_amount-item${item_id}`).removeClass('template-payee_amount')
-            nonMemberPayee.find('.template-addPayeeBtn').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).removeClass('template-addPayeeBtn')
+            nonMemberPayee.find('.template-addPayeeBtn').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).attr('reg_user',`${reg_user}`).removeClass('template-addPayeeBtn')
             nonMemberPayee.find('.template-closeTagPayeeItemFrame').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).removeClass('template-closeTagPayeeItemFrame')
 
             nonMemberPayee.appendTo(`#tagPayeeItemContent-bill${bill_id}`)
@@ -70,33 +75,34 @@ $( document ).on('turbolinks:load', ()=>{
           //   newPayeeInput.appendTo(`.tagPayeeItemContent-${bill_id}`)
           // }
       });
+
       //----Adds and appends new user---
         //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
       $(document).on('click','.addPayeeBtn',function(event){
           event.preventDefault()
-          $(`#tagPayeeItemContent-bill${bill_id}`).empty()
-
           var point = event.currentTarget;   console.log(point)
           var bill_id = (point).getAttribute('bill-id');
-          var item_id = (point).getAttribute('item-id')
+          var item_id = (point).getAttribute('item-id');
+          var reg_user = (point).getAttribute('reg_user');
 
           var payee_name = $(`#payee-name-item${item_id}`).val();
 
           var contract = {}
           contract['item_id'] = Number(item_id)
+          contract['reg_user'] = reg_user
           contract['payee_name'] = $(`#payee_name-item${item_id}`).val();
-          contract['payee_no'] = $(`#payeeNumRecord-item${item_id}`).val();
+          contract['payee_contact'] = $(`#payeeNumRecord-item${item_id}`).val();
           contract['contract_price'] = $(`#payee_amount-item${item_id}`).val();
           contract['payment_type_id'] = $(`#payType-item${item_id}`).val();
           // contract = JSON.stringify(contract)
           console.log(contract)
 
-          // $.post("/contracts", {contract: contract}, function(data){
-          //   console.log('Server Responded')
-          //   console.log($(`#tagPayee-input-holder-${bill_id}`));
-          //   $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
-          // })
-
+          $.post("/contracts", {contract_noreg: contract}, function(data){
+            console.log('Server Responded')
+            console.log($(`#tagPayee-input-holder-${bill_id}`));
+            $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
+          })
+          $(`#tagPayeeItemContent-bill${bill_id}`).empty()
         });
 
 
