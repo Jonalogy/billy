@@ -22,7 +22,6 @@ $( document ).on('turbolinks:load', ()=>{
           mobileInput.appendTo(`#tagPayeeItemContent-bill${bill_id}`)
         } //END Function appendCheckMobile()
 
-
         //---Event Listerner: Search Mobile Number
         $('.checkPayeeNoBtn').click((event)=>{
           var pointer = event.currentTarget
@@ -32,73 +31,88 @@ $( document ).on('turbolinks:load', ()=>{
 
           $.get('/check', {number:number} ,(data)=>{
             console.log('Server Responded! ', data)
-            if (data === false) { /* Load manual entry */ nonMemberPayee() }
+            if (data === false) { /* Load manual entry */ nonMemberPayee(num) }
           });
 
+          function nonMemberPayee(recordedPayeeNum){
+            $(`#tagPayeeItemContent-bill${bill_id}`).empty()
+
+            /* Append nonMemberPayee-form */
+            var nonMemberPayeeInputTemplate = $('#template-nonMemberPayee').html().trim()
+            var nonMemberPayee = $(nonMemberPayeeInputTemplate)
+
+            nonMemberPayee.attr('id',`nonMemberPayee-form-item${item_id}`).removeClass('template-nonMemberPayee-form')
+            nonMemberPayee.find('.template-payeeNumRecord').attr('id',`payeeNumRecord-item${item_id}`).val(recordedPayeeNum).removeClass('template-payeeNumRecord')
+            nonMemberPayee.find('.template-payee_name').attr('id',`payee_name-item${item_id}`).removeClass('template-payee_name')
+            nonMemberPayee.find('.template-payType').attr('id',`payType-item${item_id}`).removeClass('template-payType')
+            nonMemberPayee.find('.template-payee_amount').attr('id',`payee_amount-item${item_id}`).removeClass('template-payee_amount')
+            nonMemberPayee.find('.template-addPayeeBtn').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).removeClass('template-addPayeeBtn')
+            nonMemberPayee.find('.template-closeTagPayeeItemFrame').attr('id',`addPayeeBtn-item${item_id}`).attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`).removeClass('template-closeTagPayeeItemFrame')
+
+            nonMemberPayee.appendTo(`#tagPayeeItemContent-bill${bill_id}`)
+          } //END function nonMemberPayee()
+
         })// END $('.checkPayeeNoBtn').click
-
-        function nonMemberPayee(){
-          $(`#tagPayeeItemContent-bill${bill_id}`).empty()
-          /* Append nonMemberPayee-form */
-        }
-
-        //---Cancel & Close the tag payee frame
-        $('.closeTagPayeeItemFrame').click((event)=>{
+        //clonePayeeForm(item_id);  //---Revamping Tag Payee User Flow
+        //---Starting Template #template_tagPayee_input Clone
+        //---function clonePayeeForm (item_id) {
+          //   var payeeInput = $('#template_tagPayee_input').html().trim()
+          //   var newPayeeInput = $(payeeInput)
+          //
+          //   // newPayeeInput.find('div .tagPayeeFrom').removeAttr('id').attr('id',`item-payee-form-${item_id}`)
+          //   newPayeeInput.attr('id',`tagPayeeFrom-${item_id}`)
+          //   newPayeeInput.find('#payee_name').removeAttr('id').attr('id',`payee-name-item${item_id}`).attr('item-id',`${item_id}`)
+          //   newPayeeInput.find('#payee_number').removeAttr('id').attr('id',`payee-number-item${item_id}`)
+          //   newPayeeInput.find('#payee_amount').removeAttr('id').attr('id',`payee-amount-item${item_id}`)
+          //   newPayeeInput.find('#payment_type').attr('id',`payee-payType-item${item_id}`)
+          //   newPayeeInput.find('#addPayeeBtn').removeAttr('id').attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`)
+          //   newPayeeInput.find('#closeTagPayeeItemFrame').removeAttr('id').attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`)
+          //   newPayeeInput.appendTo(`.tagPayeeItemContent-${bill_id}`)
+          // }
+      });
+      //----Adds and appends new user---
+        //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
+      $(document).on('click','.addPayeeBtn',function(event){
           event.preventDefault()
-          var bill_id = (event.currentTarget).getAttribute('bill-id')
-          var item_id = (event.currentTarget).getAttribute('item-id')
-          console.log("here>>", event.currentTarget)
-
           $(`#tagPayeeItemContent-bill${bill_id}`).empty()
-          $(`#tagPayeeItemFrame-bill${bill_id}`).removeClass('tagPayeeItemFrame-show')
-          // $(`#tagPayeeFrom-${item_id}`).remove()
+
+          var point = event.currentTarget;   console.log(point)
+          var bill_id = (point).getAttribute('bill-id');
+          var item_id = (point).getAttribute('item-id')
+
+          var payee_name = $(`#payee-name-item${item_id}`).val();
+
+          var contract = {}
+          contract['item_id'] = Number(item_id)
+          contract['payee_name'] = $(`#payee_name-item${item_id}`).val();
+          contract['payee_no'] = $(`#payeeNumRecord-item${item_id}`).val();
+          contract['contract_price'] = $(`#payee_amount-item${item_id}`).val();
+          contract['payment_type_id'] = $(`#payType-item${item_id}`).val();
+          // contract = JSON.stringify(contract)
+          console.log(contract)
+
+          // $.post("/contracts", {contract: contract}, function(data){
+          //   console.log('Server Responded')
+          //   console.log($(`#tagPayee-input-holder-${bill_id}`));
+          //   $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
+          // })
+
         });
 
 
-        //clonePayeeForm(item_id);  //---Revamping Tag Payee User Flow
-        //---Starting Template #template_tagPayee_input Clone
-          function clonePayeeForm (item_id) {
-            var payeeInput = $('#template_tagPayee_input').html().trim()
-            var newPayeeInput = $(payeeInput)
+  //---Cancel & Close the tag payee frame
+  $(document).on('click','.closeTagPayeeItemFrame',function(event){
+    event.preventDefault()
+    var bill_id = (event.currentTarget).getAttribute('bill-id')
+    var item_id = (event.currentTarget).getAttribute('item-id')
+    console.log("here>>", event.currentTarget)
 
-            // newPayeeInput.find('div .tagPayeeFrom').removeAttr('id').attr('id',`item-payee-form-${item_id}`)
-            newPayeeInput.attr('id',`tagPayeeFrom-${item_id}`)
-            newPayeeInput.find('#payee_name').removeAttr('id').attr('id',`payee-name-item${item_id}`).attr('item-id',`${item_id}`)
-            newPayeeInput.find('#payee_number').removeAttr('id').attr('id',`payee-number-item${item_id}`)
-            newPayeeInput.find('#payee_amount').removeAttr('id').attr('id',`payee-amount-item${item_id}`)
-            newPayeeInput.find('#payment_type').attr('id',`payee-payType-item${item_id}`)
-            newPayeeInput.find('#addPayeeBtn').removeAttr('id').attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`)
-            newPayeeInput.find('#closeTagPayeeItemFrame').removeAttr('id').attr('bill-id',`${bill_id}`).attr('item-id',`${item_id}`)
-            newPayeeInput.appendTo(`.tagPayeeItemContent-${bill_id}`)
-          }
-      });
+    $(`#tagPayeeItemContent-bill${bill_id}`).empty()
+    $(`#tagPayeeItemFrame-bill${bill_id}`).removeClass('tagPayeeItemFrame-show')
+    // $(`#tagPayeeFrom-${item_id}`).remove()
+  });
 
-  //----Adds and appends new user---
-    //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
-  $(document).on('click','.addPayeeBtn',function(event){
-      event.preventDefault()
-      var point = event.currentTarget;
-      var bill_id = (point).getAttribute('bill-id');
-      var item_id = (point).getAttribute('item-id')
 
-      var payee_name = $(`#payee-name-item${item_id}`).val();
-
-      var contract = {}
-      contract['item_id'] = Number(item_id)
-      contract['payee_name'] = $(`#payee-name-item${item_id}`).val();
-      contract['payee_no'] = $(`#payee-number-item${item_id}`).val();
-      contract['contract_price'] = $(`#payee-amount-item${item_id}`).val();
-      contract['payment_type_id'] = $(`#payee-payType-item${item_id}`).val();
-      // contract = JSON.stringify(contract)
-      console.log(contract)
-
-      $.post("/contracts", {contract: contract}, function(data){
-        console.log('Server Responded')
-        console.log($(`#tagPayee-input-holder-${bill_id}`));
-        $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
-      })
-
-    });
 
   //----Close & resets the tag payee frame
     //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
@@ -111,29 +125,24 @@ $( document ).on('turbolinks:load', ()=>{
       $(`#tagPayeeItemFrame-bill${bill_id}`).removeClass('tagPayeeItemFrame-show')
     });
 
-  $(document).on('keydown','.payee_name',(event)=>{
-    var itemID = event.currentTarget.getAttribute('item-id')
-    var userInput = $(`#payee-name-item${itemID}`).val()
-    console.log(userInput)
-    var n = (userInput.length)-1
-
-    $.get('/users',function(data){
-      console.log('Server responded')
-      console.log(data, typeof data)
-      data.forEach((el)=>{
-        if ( userInput == (el.name).substr(0,n) ){
-          console.log('match!')
-          // $(`#payee-name-item${itemID}`)
-        }
-      })//END data.forEach()
-    })
-
-
-  })
-
+  // $(document).on('keydown','.payee_name',(event)=>{
+  //   var itemID = event.currentTarget.getAttribute('item-id')
+  //   var userInput = $(`#payee-name-item${itemID}`).val()
+  //   console.log(userInput)
+  //   var n = (userInput.length)-1
+  //
+  //   $.get('/users',function(data){
+  //     console.log('Server responded')
+  //     console.log(data, typeof data)
+  //     data.forEach((el)=>{
+  //       if ( userInput == (el.name).substr(0,n) ){
+  //         console.log('match!')
+  //         // $(`#payee-name-item${itemID}`)
+  //       }
+  //     })//END data.forEach()
+  //   })
+  //
+  //
+  // })
 
 }) //END of turbolinks
-
-function retreiveUsers(){
-
-}

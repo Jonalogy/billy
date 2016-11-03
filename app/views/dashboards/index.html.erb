@@ -161,12 +161,34 @@ User_id: <%= @user_id %>
         <!-- <button type="button" id="addPayeeBtn" class="addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-user-plus" aria-hidden="true"></i> Add </button> -->
         <button type="button" class="template-checkPayeeNoBtn checkPayeeNoBtn btn btn-sm btn-outline-success"> Search <i class="fa fa-search" aria-hidden="true"></i> </button>
         <%# Button to close tagPayeeItemFrame %>
-        <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Cancel <i class="fa fa-lg fa-times-circle-o" aria-hidden="true"></i> </button>
+        <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Cancel <i class="fa fa-lg fa-times" aria-hidden="true"></i> </button>
       </div>
+    </template>
+  <%# END Ajax Add Payee Template#%>
 
+  <%##### START nonMemberPayee-form Template######%>
+    <template id="template-nonMemberPayee">
+      <div class="template-nonMemberPayee-form">
+        <input type="hidden" class="template-payeeNumRecord payeeNumRecord form-control" name="payeeNumRecord" >
+        <div class="input-group"> <input class="template-payee_name payee_name form-control" type="text" name="payee_name" placeholder="Payee's Name " > </div>
+        <div class="input-group">
+          <select class="template-payType payType form-control" >
+            <option value='1'>Cash</option>
+            <option value='2'>Favour</option>
+          </select>
+        </div>
+        <div class="input-group"> <span class="input-group-addon">$</span> <input class="template-payee_amount payee_amount form-control" type="text" name="payee_amount" placeholder="xxx.xx"> </div>
+        <%# Button to add Payee%>
+        <button type="button" class="template-addPayeeBtn addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-check" aria-hidden="true"></i> Done </button>
+        <%# Button to close tagPayeeItemFrame %>
+        <button class="template-closeTagPayeeItemFrame closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times" aria-hidden="true"></i> Cancel</button>
+
+      </div>
     </template>
 
-  <%# END Ajax Add Payee Template#%>
+  <%##### END nonMemberPayee-form Template######%>
+
+
 
   <%##### Ajax Add Payee Template######%>
     <template id="template_tagPayee_input">
@@ -177,14 +199,15 @@ User_id: <%= @user_id %>
           <div class="input-group">
             <select class="form-control" id="payment_type" >
               <option value='1'>Cash</option>
-              <option value='2'>Favour</option>
+              <option value='2'>Bank Transfer</option>
+              <option value='3'>Favour</option>
             </select>
           </div>
           <%# Button to add Payee%>
           <button type="button" id="addPayeeBtn" class="addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-user-plus" aria-hidden="true"></i> Add </button>
 
           <%# Button to close tagPayeeItemFrame %>
-          <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times-circle-o" aria-hidden="true"></i> Cancel</button>
+          <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> <i class="fa fa-lg fa-times" aria-hidden="true"></i> Cancel</button>
       </div>
     </template>
   <%# Ajax Payee Input Template%>

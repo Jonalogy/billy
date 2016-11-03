@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 PaymentType.create!(pay_type:'Cash')
-PaymentType.create!(pay_type:'Internet Banking')
+PaymentType.create!(pay_type:'Bank Transfer')
 PaymentType.create!(pay_type:'Favour')
 
 User.create!(name:"Admin", mobile_number:'987654321', email:'admin@email.com', password:'123', password_confirmation:'123')
