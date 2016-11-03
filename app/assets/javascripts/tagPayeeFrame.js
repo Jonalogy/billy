@@ -2,7 +2,7 @@ $( document ).on('turbolinks:load', ()=>{
   console.log('Payee Input Frame Handler loaded')
 
   //Slide open Tag Payee Frame
-  $('.tagPayee').click((event)=>{
+  $(document).on('click','.tagPayee',function(event){
       event.preventDefault();
       var bill_id = (event.currentTarget).getAttribute('billID')
       var item_id = (event.currentTarget).getAttribute('itemID')

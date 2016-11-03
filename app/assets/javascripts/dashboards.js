@@ -1,6 +1,42 @@
 $( document ).on('turbolinks:load', function() {
     console.log("Dashboard.js Loaded");
 
+  //---Reload After Adding a new Bill
+    $('#saveBill-btn').click(()=>{location.reload();})
+
+  //---Delete Bill button---
+    $(document).on('click','.bill-delete-btn',function(event){
+      event.preventDefault();
+      var point = event.currentTarget;
+      console.log(point)
+      var bill_id = point.getAttribute("bill-id");
+      console.log(bill_id)
+      //
+      $.ajax({
+          url: `/bills/${bill_id}`,
+          type: 'DELETE',
+          success: function(data) {
+            console.log('server responded')
+            console.log(data)
+            $(`#card_${data.id}`).remove()
+          }
+      });
+
+    });
+
+  //---Delete Item Button---
+    $(document).on('click','.delItem-btn',function(event){
+      event.preventDefault()
+      var point = event.currentTarget;
+      var item_id = point.getAttribute('itemid');
+      $.ajax({ url: `/items/${item_id}`, type: 'DELETE', success: function(data) {
+            console.log('server responded')
+            console.log(data)
+            $(`#bill_item${item_id}`).remove()
+          } // END  success: function(data)
+        }) //END  $.ajax
+    })
+
   //---Ajax Repo---
     $('#addBill').on('ajax:success', function () {
       loadAllBills()
@@ -12,22 +48,40 @@ $( document ).on('turbolinks:load', function() {
 
   //---Add Item Ajax---
     $('.newItemForm').on('ajax:success', function (event,data) {
-      var body = $('<div>', {class:'bill_item'})
+      console.log("server responded")
+      console.log(data)
+      var body = $('<div>', {id:`bill_item${data.id}`, class:'bill_item'})
       //Item Info
-        var itemBlock = $('<div>', {class:'col-sm-9'})
+        var itemBlock = $('<div>', {class:'col-sm-7'})
         $('<div>').text(data.item_name).appendTo(itemBlock)
         $('<div>').text('$'+data.item_price).appendTo(itemBlock)
         itemBlock.appendTo(body)
-      // //Payee Tags
-        var payeeBlock = $('<div>',{class:'col-sm-3'})
-        var tagLink = $('<a>' , {href:"#", class: "btn btn-outline-info btn-sm", role:"button" })
+      //Delete Item
+        var delBtn = $('<div>',{class:'col-sm-1'})
+        var delLink = $('<a>' , {href:"#", class: "delItem-btn btn btn-outline-danger btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}`})
+        /*icon*/ $('<i>' , { class:"fa fa-trash" }).attr('aria-hidden','true').appendTo(delLink)
+
+        delLink.appendTo(delBtn)
+        delBtn.appendTo(body)
+
+
+      //View Payee
+        var payeeCount = $('<div>',{class:'col-sm-1'})
+        var payeeCountLink = $('<a>' , {href:"#", class: "btn btn-outline-info btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}` })
+        $('<span>',{id:`payee_count-item${data.id}`}).appendTo(payeeCountLink)
+        /*icon*/ $('<i>' , { class:"fa fa-user" }).attr('aria-hidden','true').appendTo(payeeCountLink)
+        payeeCountLink.appendTo(payeeCount)
+        payeeCount.appendTo(body)
+      //Tag Payee
+        var payeeBlock = $('<div>',{class:'col-sm-1'})
+        var tagLink = $('<a>' , {id:`tagPayeeItem-${data.id}`, class: "btn btn-outline-success btn-sm tagPayee", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}`})
         /*icon*/ $('<i>' , { class:"fa fa-user-plus" }).attr('aria-hidden','true').appendTo(tagLink)
         tagLink.appendTo(payeeBlock)
         payeeBlock.appendTo(body)
-
-        body.prependTo($(`#items_card_list_${data.bill_id}`))
+        body.insertBefore(`#tagPayeeItemFrame-bill${data.bill_id}`)
     })//END ajax:success
-    $('.submit_item').click((event)=>{
+
+    $(document).on('click','.submit_item',function(event){
       var event_id  = event.target.id;
       var n = (event_id.length)-1;
       var id = event_id.substr(n,n);

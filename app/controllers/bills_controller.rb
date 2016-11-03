@@ -26,14 +26,14 @@ class BillsController < ApplicationController
   def create
 
     @bill = User.find(session[:user_id]).bills.new(bill_params)
-    save_status = @bill.save!
+
+      save_status = @bill.save!
 
       if save_status
-        format.json { render json: @bills, status: :created }
+        render json: @bills
       else
-        format.json { render json: @bill.errors, status: :unprocessable_entity }
+        render json: @bill.errors, status: :unprocessable_entity
       end
-    end
   end
 
   # PATCH/PUT /bills/1
@@ -54,10 +54,11 @@ class BillsController < ApplicationController
   # DELETE /bills/1.json
   def destroy
     @bill.destroy
-    respond_to do |format|
-      format.html { redirect_to bills_url, notice: 'Bill was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+
+    puts ""
+    puts ">>>Console Log<<<"
+    puts "#{@bill.inspect}"
+      render json: @bill
   end
 
   private

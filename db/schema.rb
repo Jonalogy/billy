@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20161030144044) do
     t.string   "payee_contact"
     t.decimal  "contract_price",  precision: 13, scale: 2
     t.integer  "payment_type_id"
-    t.integer  "favour_id"
     t.boolean  "clear",                                    default: false
     t.datetime "created_at",                                               null: false
     t.datetime "updated_at",                                               null: false

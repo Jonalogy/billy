@@ -1,6 +1,9 @@
 class DashboardsController < ApplicationController
 
   def index
+    puts ""
+    puts ""
+    puts">>>>> console.log <<<<<"
       @user_id =  session[:user_id]
       @newBill = Bill.new
       @newItem = Item.new
@@ -16,7 +19,10 @@ class DashboardsController < ApplicationController
       @bills_all_id.each do |bill|
         @bill_items = User.find(@user_id).bills.find(bill.id).items.all() #Returns an array
         @all_bill_items[bill.id] = @bill_items
+
       end
+
+
 
       @contract = Contract.new
 
