@@ -30,8 +30,6 @@ class ContractsController < ApplicationController
 
     recipient_no = ENV["twilio_recipient_no"]
 
-    puts "Mobile:  #{recipient_no}"
-
       if @contract.save!
         sms(recipient_no,'Someone has agreed to split the bill with you. You\'re to contribute: $' + @payee_amt )
         render json: @contract
