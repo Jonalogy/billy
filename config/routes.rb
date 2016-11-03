@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get "dashboard" => "dashboards#index"
 
+  get "check" => "payee#verify_mobile"
+
   resources :favours
   resources :payment_types
   resources :contracts

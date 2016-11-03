@@ -126,8 +126,8 @@ User_id: <%= @user_id %>
                                         </div>
                                     </div>
                                 <% end %>
-                                <div id="tagPayeeItemFrame-<%=bill.id%>" class="tagPayeeItemFrame">
-                                  <div class='tagPayeeItemContent-<%=bill.id%>'> </div>
+                                <div id="tagPayeeItemFrame-bill<%=bill.id%>" class="tagPayeeItemFrame">
+                                  <div id='tagPayeeItemContent-bill<%=bill.id%>' class='tagPayeeItemContent'> </div>
                                 </div>
                             </div>
 
@@ -152,7 +152,23 @@ User_id: <%= @user_id %>
   </div>
 
 <%#-------------------------------TEMPLATES-----------------------------------%>
-  <%##### Ajax Payee Input Template######%>
+  <%##### Ajax Find Payee Number Template######%>
+    <template id="request_payee_number">
+      <div class="template_payee_number">
+        <h4>Payee's Mobile Number</h4>
+        <div class="input-group"> <span class="input-group-addon">+65</span> <input class="template-inputPayeeNum inputPayeeNum form-control" type="text" name="inputPayeeNum" placeholder="Contact Number" value="98296883" > </div>
+        <%# Button to add Payee%>
+        <!-- <button type="button" id="addPayeeBtn" class="addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-user-plus" aria-hidden="true"></i> Add </button> -->
+        <button type="button" class="template-checkPayeeNoBtn checkPayeeNoBtn btn btn-sm btn-outline-success"> Search <i class="fa fa-search" aria-hidden="true"></i> </button>
+        <%# Button to close tagPayeeItemFrame %>
+        <button id="closeTagPayeeItemFrame" class="closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Cancel <i class="fa fa-lg fa-times-circle-o" aria-hidden="true"></i> </button>
+      </div>
+
+    </template>
+
+  <%# END Ajax Add Payee Template#%>
+
+  <%##### Ajax Add Payee Template######%>
     <template id="template_tagPayee_input">
       <div class='tagPayeeForm'>
           <div class="input-group"> <input id="payee_name" class="form-control payee_name" type="text" name="payee_name" placeholder="Payee's Name " > </div>
@@ -174,7 +190,7 @@ User_id: <%= @user_id %>
   <%# Ajax Payee Input Template%>
 
 
-  <%##### Ajax Card Template #####%>
+  <%###### Ajax Card Template ######%>
       <template id="billTemplate">
         <div class="col-md-4">
           <div class="col-xs-12">
