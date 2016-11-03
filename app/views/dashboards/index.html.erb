@@ -51,7 +51,7 @@ User_id: <%= @user_id %>
     <div class="row" id="billBook">
       <%# START Bill Cards %>
         <% @bills.each do |bill| %>
-          <div class="col-md-4">
+          <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="col-xs-12">
                 <div class="card" id="card_<%=bill.id%>">
                 <%# Start Nav Tabs Block %>
@@ -115,12 +115,14 @@ User_id: <%= @user_id %>
 
                                 <% @all_bill_items[bill.id].each do |item| %>
                                     <div class='bill_item'>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-8">
                                           <div><%=item.item_name%></div>
                                           <div>$<%=item.item_price%></div>
                                         </div>
-
-                                        <div class="tagPayee-input-holder col-sm-3" id='tagPayee-input-holder-<%=bill.id%>'>
+                                        <div class="col-sm-2">
+                                          <a href="#" class="btn btn-outline-info btn-sm"> <span id="payee_count-item<%=item.id%>"></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                        </div>
+                                        <div class="tagPayee-input-holder col-sm-2" id='tagPayee-input-holder-item<%=item.id%>'>
                                           <a id="tagPayeeItem-<%=item.id%>" billID="<%=bill.id%>" itemID="<%=item.id%>" href="" class="btn btn-outline-info btn-sm tagPayee" role="button">
                                             <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
                                         </div>

@@ -96,7 +96,6 @@ $( document ).on('turbolinks:load', ()=>{
       });
 
   //----Adds and appends new user---
-    //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
   $(document).on('click','.addPayeeBtn',function(event){
       event.preventDefault()
       var point = event.currentTarget;   console.log(point)
@@ -115,6 +114,8 @@ $( document ).on('turbolinks:load', ()=>{
 
         $.post("/contracts", {contract_reg: contract}, function(data){
           console.log('Server Responded')
+          console.log('Data>>',data);
+          $(`#payee_count-item${item_id}`).text(data.payee_count)
         })//END $.post("/contracts", {contract_reg: contract}
       }
 
@@ -133,10 +134,11 @@ $( document ).on('turbolinks:load', ()=>{
 
         $.post("/contracts", {contract_noreg: contract}, function(data){
           console.log('Server Responded')
-          console.log($(`#tagPayee-input-holder-${bill_id}`));
-          $(`#tagPayee-input-holder-${bill_id}`).prepend($('<span>').text(`${payee_name}`))
+          console.log("Data>>> ",data)
+          $(`#payee_count-item${item_id}`).text(data.payee_count)
         }) //END $.post("/contracts"
       }
+
       $(`#tagPayeeItemContent-bill${bill_id}`).empty()
     });
 
@@ -153,8 +155,6 @@ $( document ).on('turbolinks:load', ()=>{
     // $(`#tagPayeeFrom-${item_id}`).remove()
   });
 
-
-
   //----Close & resets the tag payee frame
     //Note: .addPayeeBtn has been changed to .checkPayeeNoBtn
   $(document).on('click','.addPayeeBtn',function(event){
@@ -165,25 +165,5 @@ $( document ).on('turbolinks:load', ()=>{
       $(`#tagPayeeFrom-${item_id}`).remove()
       $(`#tagPayeeItemFrame-bill${bill_id}`).removeClass('tagPayeeItemFrame-show')
     });
-
-  // $(document).on('keydown','.payee_name',(event)=>{
-  //   var itemID = event.currentTarget.getAttribute('item-id')
-  //   var userInput = $(`#payee-name-item${itemID}`).val()
-  //   console.log(userInput)
-  //   var n = (userInput.length)-1
-  //
-  //   $.get('/users',function(data){
-  //     console.log('Server responded')
-  //     console.log(data, typeof data)
-  //     data.forEach((el)=>{
-  //       if ( userInput == (el.name).substr(0,n) ){
-  //         console.log('match!')
-  //         // $(`#payee-name-item${itemID}`)
-  //       }
-  //     })//END data.forEach()
-  //   })
-  //
-  //
-  // })
 
 }) //END of turbolinks

@@ -26,32 +26,50 @@ class ContractsController < ApplicationController
   def create
     if params[:contract_reg].present? && params[:contract_reg][:reg_user] == 'true'
 
-      @contract = Contract.new(reg_user_params)
-      puts @contract.inspect
-      save_status = @contract.save
+      @item_id = reg_user_params[:item_id]
 
-      if save_status
-        render json: @contract
+      owner = User.where(id: session[:user_id]).take.name
+      payee_name = User.where(id:reg_user_params[:user_id]).take.name;
+      item = Item.where(id: @item_id).take.item_name;
+      item_price = Item.where(id: @item_id).take.item_price.to_s;
+      contract_price = reg_user_params[:contract_price];
+
+
+      @contract = Contract.new(reg_user_params)
+      if @contract.save
+
+        @contract[:payee_name] = payee_name
+        payee_count = Contract.where(item_id: @item_id).count
+        puts "payee_count>>>>#{payee_count}"
+
+        puts "Twilio: Attempting to send SMS to registered user"
+        recipient_no = ENV["twilio_recipient_no"]
+        sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
+
+        render json: {:contract => @contract, :payee_count => payee_count}
       end
 
-
     elsif noreg_user_verify_params[:reg_user] == 'false'
-      puts " "
-      puts ">>>>>>>>>>Console.log<<<<<<<<<<<"
-        @contract = Contract.new(non_reg_user_params)
+
+        @item_id = non_reg_user_params[:item_id]
 
         payee_name = non_reg_user_params[:payee_name]
         owner = User.where(id: session[:user_id]).take.name
         contract_price = non_reg_user_params[:contract_price].to_s
-        item = Item.where(id: non_reg_user_params[:item_id]).take.item_name
+        item = Item.where(id: @item_id).take.item_name
+        item_price = Item.where(id: @item_id).take.item_price.to_s
 
-        save_status = @contract.save
-        puts save_status
-        if save_status
-          puts "Twilio: Attempting to send SMS"
+        @contract = Contract.new(non_reg_user_params)
+
+        if @contract.save
+          @contract[:payee_name] = payee_name
+          payee_count = Contract.where(item_id: @item_id).count
+          puts "payee_count>>>>#{payee_count}"
+
+          puts "Twilio: Attempting to send SMS non registered user"
           recipient_no = ENV["twilio_recipient_no"]
-          sms(recipient_no, "Hi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: $" + contract_price + ".\n~Sent from Billy App " )
-          render json: @contract
+          sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
+          render json: {:contract => @contract, :payee_count => payee_count}
         else
           render json: @contract.errors
         end
@@ -95,6 +113,7 @@ class ContractsController < ApplicationController
       params.require(:contract).permit(:user_id, :item_id, :contract_price, :payment_type_id, :favour_id, :clear)
     end
 
+    #For creating new contract
     def noreg_user_verify_params
       params.require(:contract_noreg).permit(:reg_user)
     end
