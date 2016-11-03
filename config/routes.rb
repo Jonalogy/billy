@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "dashboard" => "dashboards#index"
 
   get "check" => "payee#verify_mobile"
+  get "payables" => "payee#payables"
 
   resources :favours
   resources :payment_types

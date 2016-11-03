@@ -117,7 +117,7 @@ User_id: <%= @user_id %>
                                 <%= hidden_field(:item, :bill_id, options={ :value => bill.id } ) %>
                                 <%= f.text_field :item_name, placeholder: "New Item" %><br>
                                 <%= f.text_field :item_price, placeholder: "($)"%><br>
-                                <%= f.submit "Save", class: 'btn btn-outline-primary btn-sm submit_item', id: "saveItem-btn-"+bill.id.to_s%>
+                                <%= f.submit "Save", class: 'btn btn-outline-primary btn-sm submit_item', id: "saveItem-btn-"+bill.id.to_s, billID: bill.id.to_s %>
                                 <% end %>
                               </div>
                               <%# end Collapse new item form %>
@@ -136,7 +136,7 @@ User_id: <%= @user_id %>
                                           </a>
                                         </div>
                                         <div class="col-sm-1">
-                                          <a href="#" class="btn btn-outline-info btn-sm">
+                                          <a id="payeeInfo-btn<%=item.id%>" class="payeeInfo-btn btn btn-outline-info btn-sm" billID="<%=bill.id%>" itemID="<%=item.id%>">
                                             <span id="payee_count-item<%=item.id%>"></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
                                         </div>
                                         <div class="tagPayee-input-holder col-sm-1" id='tagPayee-input-holder-item<%=item.id%>'>
@@ -226,8 +226,6 @@ User_id: <%= @user_id %>
     </template>
   <%##### END nonMemberPayee-form Template######%>
 
-
-
   <%##### Ajax Add Payee Template######%>
     <template id="template_tagPayee_input">
       <div class='tagPayeeForm'>
@@ -250,7 +248,38 @@ User_id: <%= @user_id %>
     </template>
   <%# Ajax Payee Input Template%>
 
+  <%###### Ajax Card for payables Template ######%>
 
+
+
+    <template id="template-card-payable">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="col-xs-12">
+            <div class="card">
+              <h4 class="template-billTitle  card-header"></h4>
+                <div class="card-block">
+                  <div class="col-sm-6">
+                    <div class="col-sm-12"><span class="template-itemName"></span></div>
+                    <div class="col-sm-12">$<span class="template-itemPrice"></span></div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      Contribute:
+                    </div>
+                    <div class="col-sm-12">
+                      $<span class="template-contractPrice"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </template>
+  <%###### Ajax Card for payables Template ######%>
+
+
+  <%###### Ajax Card Template ######%>
   <%###### Ajax Card Template ######%>
      <template id="billTemplate">
         <div class="col-md-4">

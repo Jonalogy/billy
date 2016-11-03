@@ -1,6 +1,8 @@
 $( document ).on('turbolinks:load', function() {
     console.log("Dashboard.js Loaded");
 
+  loadAllPayables()
+
   //---Reload After Adding a new Bill
     $('#saveBill-btn').click(()=>{location.reload();})
 
@@ -67,11 +69,12 @@ $( document ).on('turbolinks:load', function() {
 
       //View Payee
         var payeeCount = $('<div>',{class:'col-sm-1'})
-        var payeeCountLink = $('<a>' , {href:"#", class: "btn btn-outline-info btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}` })
+        var payeeCountLink = $('<a>' , {id: `payeeInfo-btn${data.id}`, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}` })
         $('<span>',{id:`payee_count-item${data.id}`}).appendTo(payeeCountLink)
         /*icon*/ $('<i>' , { class:"fa fa-user" }).attr('aria-hidden','true').appendTo(payeeCountLink)
         payeeCountLink.appendTo(payeeCount)
         payeeCount.appendTo(body)
+
       //Tag Payee
         var payeeBlock = $('<div>',{class:'col-sm-1'})
         var tagLink = $('<a>' , {id:`tagPayeeItem-${data.id}`, class: "btn btn-outline-success btn-sm tagPayee", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}`})
@@ -82,16 +85,46 @@ $( document ).on('turbolinks:load', function() {
     })//END ajax:success
 
     $(document).on('click','.submit_item',function(event){
-      var event_id  = event.target.id;
-      var n = (event_id.length)-1;
-      var id = event_id.substr(n,n);
+      var point  = event.currentTarget;
+      var id = point.getAttribute("billid")
       console.log('id>>>',id)
       $(`#addItemCollapse_${id}`).collapse('hide')
+    })
+
+  //---
+    $(document).on('click','.payeeInfo-btn',function(event){
+      event.preventDefault()
+      var point  = event.currentTarget;
+      var bill_id = point.getAttribute("billid")
+      var item_id = point.getAttribute("itemid")
+      console.log(point)
+      console.log('Trigger pane: ', bill_id)
+      $(`#tagPayeeItemFrame-bill${bill_id}`).toggleClass('tagPayeeItemFrame-show')
     })
 
 })
 
 //---Funtions Repo
+  function loadAllPayables(){
+    $.get('/payables',function(data){
+      console.log("Server Responded")
+      console.log(data, data.length);
+
+      data.forEach(function(card){
+        var payablesTemplate = $('#template-card-payable').html().trim()
+        var payableCard = $(payablesTemplate)
+        payableCard.find('.template-billTitle').removeClass('.template-billTitle').text(card['bill_title'])
+        payableCard.find('.template-contractPrice').removeClass('.template-contractPrice').text(card['contract_price'])
+        payableCard.find('.template-itemName').removeClass('.template-itemName').text(card['item_name'])
+        payableCard.find('.template-itemPrice').removeClass('.template-itemPrice').text('$' + card['item_price'])
+
+        payableCard.appendTo('#billBook')
+      })
+
+
+    })
+  }
+
   function loadAllBills(){
     var billTemplate = $("#billTemplate").html().trim()
     $.getJSON('/dashboard', function(bills_data){

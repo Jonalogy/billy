@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :bills, dependent: :destroy
   belongs_to :user
 
+
   has_secure_password
 
   def self.authenticate(params)
