@@ -5,9 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-PaymentType.create!(pay_type:'Cash')
-PaymentType.create!(pay_type:'Bank Transfer')
-PaymentType.create!(pay_type:'Favour')
 
 User.create!(name:"Billy", mobile_number:'987654321', email:'billy@email.com', password:'123', password_confirmation:'123')
 
@@ -30,11 +27,16 @@ bill = user.bills.find(4)
 bill.items.create!(item_name:'Grill deposite', item_price: 26.10)
 bill.items.create!(item_name:'Food', item_price: 400)
 
+User.create!(name:"Jon", mobile_number:'98296883', email:'jon@email.com', password:'123', password_confirmation:'123')
+User.create!(name:"David", mobile_number:'87654321', email:'david@email.com', password:'123', password_confirmation:'123')
+
 User.find(1).bills.find(1).items.find(1).contracts.create(user_id: 2, contract_price: '110.00', payment_type_id: 1)
 User.find(1).bills.find(1).items.find(2).contracts.create(user_id: 2, contract_price: '50.00', payment_type_id: 1)
 
 User.find(1).bills.find(2).items.find(3).contracts.create(user_id: 2, contract_price: '60.00', payment_type_id: 1)
 User.find(1).bills.find(2).items.find(3).contracts.create(user_id: 3, contract_price: '60.00', payment_type_id: 1)
 
-User.create!(name:"Jon", mobile_number:'98296883', email:'jon@email.com', password:'123', password_confirmation:'123')
-User.create!(name:"David", mobile_number:'87654321', email:'david@email.com', password:'123', password_confirmation:'123')
+
+PaymentType.create!(pay_type:'Cash')
+PaymentType.create!(pay_type:'Bank Transfer')
+PaymentType.create!(pay_type:'Favour')
