@@ -69,7 +69,7 @@ $( document ).on('turbolinks:load', function() {
 
       //View Payee
         var payeeCount = $('<div>',{class:'col-sm-1'})
-        var payeeCountLink = $('<a>' , {id: payeeInfo-btn + data.id, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid: data.bill_id, itemid:data.id })
+        var payeeCountLink = $('<a>' , {id: 'payeeInfo-btn' + data.id, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid: data.bill_id, itemid:data.id })
         $('<span>',{id:'payee_count-item' + data.id}).appendTo(payeeCountLink)
         /*icon*/ $('<i>' , { class:"fa fa-user" }).attr('aria-hidden','true').appendTo(payeeCountLink)
         payeeCountLink.appendTo(payeeCount)
