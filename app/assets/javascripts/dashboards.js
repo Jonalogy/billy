@@ -15,12 +15,12 @@ $( document ).on('turbolinks:load', function() {
       console.log(bill_id)
       //
       $.ajax({
-          url: `/bills/${bill_id}`,
+          url: '/bills/' + bill_id,
           type: 'DELETE',
           success: function(data) {
             console.log('server responded')
             console.log(data)
-            $(`#card_${data.id}`).remove()
+            $('#card_' + data.id).remove()
           }
       });
 
@@ -31,10 +31,10 @@ $( document ).on('turbolinks:load', function() {
       event.preventDefault()
       var point = event.currentTarget;
       var item_id = point.getAttribute('itemid');
-      $.ajax({ url: `/items/${item_id}`, type: 'DELETE', success: function(data) {
+      $.ajax({ url:'/items/' + item_id, type: 'DELETE', success: function(data) {
             console.log('server responded')
             console.log(data)
-            $(`#bill_item${item_id}`).remove()
+            $( '#bill_item' + item_id).remove()
           } // END  success: function(data)
         }) //END  $.ajax
     })
@@ -52,7 +52,7 @@ $( document ).on('turbolinks:load', function() {
     $('.newItemForm').on('ajax:success', function (event,data) {
       console.log("server responded")
       console.log(data)
-      var body = $('<div>', {id:`bill_item${data.id}`, class:'bill_item'})
+      var body = $('<div>', {id:'bill_item' + data.id, class:'bill_item'})
       //Item Info
         var itemBlock = $('<div>', {class:'col-sm-7'})
         $('<div>').text(data.item_name).appendTo(itemBlock)
@@ -60,7 +60,7 @@ $( document ).on('turbolinks:load', function() {
         itemBlock.appendTo(body)
       //Delete Item
         var delBtn = $('<div>',{class:'col-sm-1'})
-        var delLink = $('<a>' , {href:"#", class: "delItem-btn btn btn-outline-danger btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}`})
+        var delLink = $('<a>' , {href:"#", class: "delItem-btn btn btn-outline-danger btn-sm", role:"button", billid: data.bill_id, itemid: data.id})
         /*icon*/ $('<i>' , { class:"fa fa-trash" }).attr('aria-hidden','true').appendTo(delLink)
 
         delLink.appendTo(delBtn)
@@ -69,26 +69,26 @@ $( document ).on('turbolinks:load', function() {
 
       //View Payee
         var payeeCount = $('<div>',{class:'col-sm-1'})
-        var payeeCountLink = $('<a>' , {id: `payeeInfo-btn${data.id}`, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}` })
-        $('<span>',{id:`payee_count-item${data.id}`}).appendTo(payeeCountLink)
+        var payeeCountLink = $('<a>' , {id: payeeInfo-btn + data.id, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid: data.bill_id, itemid:data.id })
+        $('<span>',{id:'payee_count-item' + data.id}).appendTo(payeeCountLink)
         /*icon*/ $('<i>' , { class:"fa fa-user" }).attr('aria-hidden','true').appendTo(payeeCountLink)
         payeeCountLink.appendTo(payeeCount)
         payeeCount.appendTo(body)
 
       //Tag Payee
         var payeeBlock = $('<div>',{class:'col-sm-1'})
-        var tagLink = $('<a>' , {id:`tagPayeeItem-${data.id}`, class: "btn btn-outline-success btn-sm tagPayee", role:"button", billid:`${data.bill_id}`, itemid:`${data.id}`})
+        var tagLink = $('<a>' , {id:'tagPayeeItem-' + data.id, class: "btn btn-outline-success btn-sm tagPayee", role:"button", billid: data.bill_id, itemid:data.id})
         /*icon*/ $('<i>' , { class:"fa fa-user-plus" }).attr('aria-hidden','true').appendTo(tagLink)
         tagLink.appendTo(payeeBlock)
         payeeBlock.appendTo(body)
-        body.insertBefore(`#tagPayeeItemFrame-bill${data.bill_id}`)
+        body.insertBefore('#tagPayeeItemFrame-bill' + data.bill_id)
     })//END ajax:success
 
     $(document).on('click','.submit_item',function(event){
       var point  = event.currentTarget;
       var id = point.getAttribute("billid")
       console.log('id>>>',id)
-      $(`#addItemCollapse_${id}`).collapse('hide')
+      $('#addItemCollapse_' + id).collapse('hide')
     })
 
   //---
@@ -99,7 +99,7 @@ $( document ).on('turbolinks:load', function() {
       var item_id = point.getAttribute("itemid")
       console.log(point)
       console.log('Trigger pane: ', bill_id)
-      $(`#tagPayeeItemFrame-bill${bill_id}`).toggleClass('tagPayeeItemFrame-show')
+      $( '#tagPayeeItemFrame-bill' + bill_id).toggleClass('tagPayeeItemFrame-show')
     })
 
 })
@@ -129,36 +129,36 @@ $( document ).on('turbolinks:load', function() {
     var billTemplate = $("#billTemplate").html().trim()
     $.getJSON('/dashboard', function(bills_data){
         /*test*/console.log("loadAllBills(AJAX)>>> ",bills_data)
-        /*test*/console.log(`${bills_data.length} objects detected`)
+        /*test*/console.log(bills_data.length + 'objects detected')
       $('#billBook').empty();
       bills_data.forEach(function(bill){
-        /*test*/console.log(`Handling:`, bill)
+        // /*test*/console.log('Handling:', bill)
         var newBill = $(billTemplate)
 
         //---Card
-        newBill.find('#template_card').attr('id',`card_${bill.id}`)
+        newBill.find('#template_card').attr('id', 'card_' + bill.id)
 
         //---View Tab
-        newBill.find('#template_viewLink').removeAttr('id').attr('href',`#view_card_${bill.id}`)
+        newBill.find('#template_viewLink').removeAttr('id').attr('href', '#view_card_' + bill.id)
 
         //---View Pane
-        newBill.find('#template_viewPane').removeAttr('id').attr('id',`view_card_${bill.id}`)
+        newBill.find('#template_viewPane').removeAttr('id').attr('id', 'view_card_' + bill.id)
         newBill.find('#template_billTitle').removeAttr('id').text(bill.title)
         newBill.find('#template_billTotal').removeAttr('id').text('$' + bill.total_price)
 
         //---Items Tab
-        newBill.find('#template_itemsLink').removeAttr('id').attr('href',`#items_card_${bill.id}`)
+        newBill.find('#template_itemsLink').removeAttr('id').attr('href', '#items_card_' + bill.id)
 
         //---Items Pane
-        newBill.find('#template_itemsPane').removeAttr('id').attr('id',`items_card_${bill.id}`)
+        newBill.find('#template_itemsPane').removeAttr('id').attr('id', 'items_card_' + bill.id)
 
         //---Details Tab
-        newBill.find('#template_detailsLink').removeAttr('id').attr('href',`#details_card_${bill.id}`)
+        newBill.find('#template_detailsLink').removeAttr('id').attr('href', '#details_card_' +  bill.id)
 
         //---Details Pane
-        newBill.find('#template_detailsPane').removeAttr('id').attr('id',`details_card_${bill.id}`)
-        newBill.find('#template_due').removeAttr('id').attr('id',`due_${bill.id}`).text('Due on:' + bill.due)
-        newBill.find('#template_details').removeAttr('id').attr('id',`details_${bill.id}`).text(bill.description)
+        newBill.find('#template_detailsPane').removeAttr('id').attr('id', 'details_card_' + bill.id)
+        newBill.find('#template_due').removeAttr('id').attr('id', "due_" + bill.id).text('Due on:' + bill.due)
+        newBill.find('#template_details').removeAttr('id').attr('id', 'details_' + bill.id).text(bill.description)
 
         //---Append
         $('#billBook').append(newBill)
