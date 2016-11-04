@@ -3,8 +3,6 @@ class User < ApplicationRecord
   validates :password, length: { in: 3..72 }, on: :create
 
   has_many :bills, dependent: :destroy
-  belongs_to :user
-
 
   has_secure_password
 
