@@ -29,7 +29,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'cloudinary'
 gem 'figaro'
 gem 'sprockets-rails', '~> 3.2'
-gem 'rails-assets-tether', '>= 1.1.0'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
+end
 gem 'bootstrap', '~> 4.0.0.alpha5'
 gem 'twilio-ruby'
 
