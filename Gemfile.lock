@@ -48,7 +48,7 @@ GEM
       sass (>= 3.4.19)
     builder (3.2.2)
     byebug (9.0.6)
-    cloudinary (1.2.3)
+    cloudinary (1.2.4)
       aws_cf_signer
       rest-client
     coffee-rails (4.2.1)
