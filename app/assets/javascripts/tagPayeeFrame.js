@@ -1,4 +1,4 @@
-$( document ).on('turbolinks:load', ()=>{
+$( document ).on('turbolinks:load', function(){
   console.log('Payee Input Frame Handler loaded')
 
   //Slide open Tag Payee Frame to tagPayee
@@ -24,7 +24,7 @@ $( document ).on('turbolinks:load', ()=>{
         } //END Function appendCheckMobile()
 
         //---Event Listerner: Search Mobile Number
-        $('.checkPayeeNoBtn').click((event)=>{
+        $('.checkPayeeNoBtn').click(function(event){
           var pointer = event.currentTarget
           var bill_id = (event.currentTarget).getAttribute('bill-id')
           var item_id = (event.currentTarget).getAttribute('item-id')
@@ -34,7 +34,7 @@ $( document ).on('turbolinks:load', ()=>{
           var number = {payee_contact:num}
           $(`#tagPayeeItemContent-bill${bill_id}`).empty()
 
-          $.get('/check', {number:number} ,(data)=>{
+          $.get('/check', {number:number} ,function(data){
             console.log('Server Responded! ', data)
             if (data['check'] === true) { memberPayee(data['check'], data['owner'], data['owner_id'] ,num) }
             if (data['check'] === false) { /* Load manual entry */ nonMemberPayee(data['check'],num) }
