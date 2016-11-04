@@ -1,5 +1,10 @@
-<h1>Dashboard</h1>
-User_id: <%= @user_id %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1 id="dashboard-title"> <%= @username %>'s Dashboard</h1>
+    </div>
+  </div>
+</div>
 <br>
 <%= link_to 'Add Bill', new_bill_path, remote: true, class: "btn btn-primary active", 'data-toggle':"collapse", 'href': "#newBillWindow",  'aria-expanded': "false", 'aria-controls'=>"newBillWindow" %>
 <%= link_to 'Logout', logout_path, method: :delete, class: "btn btn-warning active" %><br>

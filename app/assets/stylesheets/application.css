@@ -14,3 +14,40 @@
  *= require_self
  */
  @import "bootstrap";
+
+body{
+  background-image: url("http://giottojs.org/examples/trianglify.svg");
+  background-size: cover;
+}
+
+div{
+  /*border: 2px black dashed*/
+}
+
+ #bill-container{
+   text-align: center;
+ }
+
+#billy-holder{
+  text-align: center;
+  border: 1px white double;
+  height: 600px;
+  width : 400px;
+}
+
+#height_spacer1{
+    height:100px;
+}
+#height_spacer2{
+    height:25%;
+}
+#height_spacer3{
+    height:10%;
+}
+
+#billy{
+ font-size: 200px;
+ text-shadow: 4px 4px #161d31;
+ color: white;
+ font-family: 'Indie Flower', cursive;
+}

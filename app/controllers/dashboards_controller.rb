@@ -5,6 +5,7 @@ class DashboardsController < ApplicationController
     puts ""
     puts">>>>> console.log <<<<<"
       @user_id =  session[:user_id]
+      @username = User.where(`id = #{@user_id}`).take.name
       @newBill = Bill.new
       @newItem = Item.new
       @bills = User.find(@user_id).bills.all
