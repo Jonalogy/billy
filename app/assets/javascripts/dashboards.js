@@ -1,7 +1,7 @@
 $( document ).on('turbolinks:load', function() {
     console.log("Dashboard.js Loaded");
 
-  loadAllPayables()
+  loadAllPayables() // As of now, this function only loads all bills.
 
   //---Reload After Adding a new Bill
     $('#saveBill-btn').click(function(){location.reload();})
@@ -39,7 +39,7 @@ $( document ).on('turbolinks:load', function() {
         }) //END  $.ajax
     })
 
-  //---Ajax Repo---
+  //---Ajax: After user added a new bill---
     $('#addBill').on('ajax:success', function () {
       loadAllBills()
     })
@@ -91,7 +91,7 @@ $( document ).on('turbolinks:load', function() {
       $('#addItemCollapse_' + id).collapse('hide')
     })
 
-  //---
+  //--- !!!!!!!!Unfinished!!!!!!!
     $(document).on('click','.payeeInfo-btn',function(event){
       event.preventDefault()
       var point  = event.currentTarget;
@@ -113,16 +113,29 @@ $( document ).on('turbolinks:load', function() {
       data.forEach(function(card){
         var payablesTemplate = $('#template-card-payable').html().trim()
         var payableCard = $(payablesTemplate)
-        payableCard.find('.template-billTitle').removeClass('.template-billTitle').text(card['bill_title'])
-        payableCard.find('.template-contractPrice').removeClass('.template-contractPrice').text(card['contract_price'])
-        payableCard.find('.template-itemName').removeClass('.template-itemName').text(card['item_name'])
-        payableCard.find('.template-itemPrice').removeClass('.template-itemPrice').text('$' + card['item_price'])
-
+        payableCard.find('.template-billTitle').removeClass('.template-billTitle').text(card['bill']['title'])
+        payableCard.find('.card-block').removeClass('.card-block').attr('id', "card-block_bill" + card['bill']['id'] )
         payableCard.appendTo('#billBook')
-      })
 
+        card['items'].forEach(function(item){
+          var itemsTemplate = $('#template-payabale-item-row').html().trim()
+          var itemsRow = $(itemsTemplate)
+          itemsRow.find('.item_name').text(item["item_name"])
+          itemsRow.find('.pay-btn').attr('bill-id',card['bill']['id']).attr('item-id',item['id'])
 
-    })
+          var payment_type = item["contract_payType"];
+          if( payment_type === "Favour"){
+            itemsRow.find('.fa').addClass("fa-handshake-o")
+            itemsRow.find('.settlement').text( item["contract_payType"] + ": " + item["favour_description"] )
+
+          } else {
+            itemsRow.find('.settlement').text( item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
+            itemsRow.find('.fa').addClass("fa-usd")
+          }
+          itemsRow.appendTo('#card-block_bill' + card['bill']['id'])
+        }) //END card['items'].forEach
+      }) //END data.forEach(function(card)
+    }) //END $.get('/payables',function(data)
   }
 
   function loadAllBills(){

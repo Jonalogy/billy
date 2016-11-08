@@ -36,7 +36,7 @@
           <div class="col-sm-6">
             <div class="col-sm-12">
               <div class="col-sm-10">
-              <%= f.label :due, 'Due on:' %>
+              <%= f.label :due, 'Since:' %>
               <%= f.date_select(:due, use_short_month: true, order:[:day, :month, :year]) %>
               </div>
               <div class="col-sm-2">
@@ -160,7 +160,7 @@
 
                     <%##### START Details Pane  #####%>
                         <div id="details_card_<%=bill.id%>" class="tab-pane text-xs-left" role="tabpanel">
-                            <p> Due on: <%=bill.due%> </p>
+                            <p> Since: <%=bill.due%> </p>
                             <p> <%=bill.description%> </p>
                         </div>
                     <%##### START Details Pane  #####%>
@@ -254,27 +254,14 @@
   <%# Ajax Payee Input Template%>
 
   <%###### Ajax Card for payables Template ######%>
-
-
-
     <template id="template-card-payable">
       <div class="col-lg-4 col-md-6 col-sm-12">
         <div class="col-xs-12">
             <div class="card">
-              <h4 class="template-billTitle  card-header"></h4>
-                <div class="card-block">
-                  <div class="col-sm-6">
-                    <div class="col-sm-12"><span class="template-itemName"></span></div>
-                    <div class="col-sm-12">$<span class="template-itemPrice"></span></div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      Contribute:
-                    </div>
-                    <div class="col-sm-12">
-                      $<span class="template-contractPrice"></span>
-                    </div>
-                  </div>
+              <h4 class="template-billTitle card-header"></h4>
+                <div class="card-block" id="card-block" >
+
+
                 </div>
               </div>
             </div>
@@ -283,8 +270,26 @@
     </template>
   <%###### Ajax Card for payables Template ######%>
 
+  <%###### Ajax Card for payables-item row Template ######%>
+  <template id="template-payabale-item-row" class="col-sm-12">
+    <div class="col-sm-10">
+      <div>
+        <h5 class="item_name"></h5>
+        <p class="settlement"> </p>
+      </div>
 
-  <%###### Ajax Card Template ######%>
+    </div>
+    <div class="col-sm-2">
+      <a href="#" class="btn btn-outline-success btn-sm pay-btn" role="button">
+        <i class="fa" aria-hidden="true"></i>
+      </a>
+    </div>
+  </template>
+
+  <%###### Ajax Card for payables-item row Template ######%>
+
+
+
   <%###### Ajax Card Template ######%>
      <template id="billTemplate">
         <div class="col-md-4">
@@ -324,7 +329,7 @@
                       </div>
 
                       <div id="template_detailsPane"  class="tab-pane" role="tabpanel">
-                        <p id="template_due"> Due on: **Under Construction** </p>
+                        <p id="template_due"> Since: **Under Construction** </p>
                         <p id="template_details" >
                           **Bill Description...** </p>
                       </div>
