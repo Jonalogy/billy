@@ -102,6 +102,17 @@ $( document ).on('turbolinks:load', function() {
       $( '#tagPayeeItemFrame-bill' + bill_id).toggleClass('tagPayeeItemFrame-show')
     })
 
+
+  //---Pay Button---
+    $(document).on('click','.pay-btn',function(event){
+      event.preventDefault()
+      var point  = event.currentTarget;
+      var bill_id = point.getAttribute("billid")
+      var item_id = point.getAttribute("itemid")
+      console.log(point, bill_id, item_id)
+
+    })
+
 })
 
 //---Funtions Repo
@@ -121,15 +132,15 @@ $( document ).on('turbolinks:load', function() {
           var itemsTemplate = $('#template-payabale-item-row').html().trim()
           var itemsRow = $(itemsTemplate)
           itemsRow.find('.item_name').text(item["item_name"])
-          itemsRow.find('.pay-btn').attr('bill-id',card['bill']['id']).attr('item-id',item['id'])
+          itemsRow.find('.template-pay-btn').attr('billid',card['bill']['id']).attr('itemid',item['id']).removeClass("template-pay-btn").addClass("pay-btn")
 
           var payment_type = item["contract_payType"];
           if( payment_type === "Favour"){
             itemsRow.find('.fa').addClass("fa-handshake-o")
-            itemsRow.find('.settlement').text( item["contract_payType"] + ": " + item["favour_description"] )
+            itemsRow.find('.settlement').text( "Return a " + item["contract_payType"] + ": " + item["favour_description"] )
 
           } else {
-            itemsRow.find('.settlement').text( item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
+            itemsRow.find('.settlement').text("Pay by " + item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
             itemsRow.find('.fa').addClass("fa-usd")
           }
           itemsRow.appendTo('#card-block_bill' + card['bill']['id'])
