@@ -1,3 +1,5 @@
+<%= javascript_include_tag("jquery.ui.widget", "jquery.iframe-transport",
+                           "jquery.fileupload", "jquery.cloudinary") %>
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
@@ -36,8 +38,8 @@
           <div class="col-sm-6">
             <div class="col-sm-12">
               <div class="col-sm-10">
-              <%= f.label :due, 'Since:' %>
-              <%= f.date_select(:due, use_short_month: true, order:[:day, :month, :year]) %>
+              <%= f.label :since, 'Since:' %>
+              <%= f.date_select(:since, use_short_month: true, order:[:day, :month, :year]) %>
               </div>
               <div class="col-sm-2">
                 <%= f.submit "Save Bill", class: 'btn btn-success', id: "saveBill-btn"%>
@@ -160,7 +162,7 @@
 
                     <%##### START Details Pane  #####%>
                         <div id="details_card_<%=bill.id%>" class="tab-pane text-xs-left" role="tabpanel">
-                            <p> Since: <%=bill.due%> </p>
+                            <p> Since: <%=bill.since%> </p>
                             <p> <%=bill.description%> </p>
                         </div>
                     <%##### START Details Pane  #####%>
@@ -176,7 +178,7 @@
   </div>
 
 <%#-------------------------------TEMPLATES-----------------------------------%>
-  <%##### Ajax Find Payee Number Template######%>
+  <%##### Ajax Search Payee Number Template######%>
     <template id="request_payee_number">
       <div class="template_payee_number">
         <h4>Payee's Mobile Number</h4>
@@ -325,7 +327,7 @@
                       </div>
 
                       <div id="template_detailsPane"  class="tab-pane" role="tabpanel">
-                        <p id="template_due"> Since: **Under Construction** </p>
+                        <p id="template_since"> Since: **Under Construction** </p>
                         <p id="template_details" >
                           **Bill Description...** </p>
                       </div>

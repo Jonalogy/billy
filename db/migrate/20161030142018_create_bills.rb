@@ -5,8 +5,9 @@ class CreateBills < ActiveRecord::Migration[5.0]
       t.string :title
       t.text :description
       t.decimal :total_price, precision: 13, scale: 2
-      t.date :due
+      t.date :since
       t.boolean :clear, default: false
+      t.string :picture
 
       t.timestamps
     end

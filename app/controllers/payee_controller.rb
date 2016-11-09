@@ -1,41 +1,5 @@
 class PayeeController < ApplicationController
 
-  # def payables
-  #   puts""
-  #   puts">>>>Console Log<<<<"
-  #
-  #   @payee_id = session[:user_id] #every user is both an owner and a payee
-  #   payables = Contract.where("user_id=#{@payee_id}").map(&:attributes)
-  #
-  #   @payables = []
-  #
-  #   payables.each do |contract|
-  #     item_id = contract['item_id']
-  #     contract_price = contract['contract_price']
-  #
-  #     item = Item.find(item_id).attributes
-  #     item_name = item['item_name']
-  #     item_price = item['item_price']
-  #     bill_id = item['bill_id']
-  #     puts "item_id => #{item_id}"
-  #     puts "contract_price => #{contract_price}"
-  #     puts "item => #{item}"
-  #     puts "item_name => #{item_name}"
-  #     puts "item_price => #{item_price}"
-  #     puts "bill_id => #{bill_id}"
-  #
-  #     bill = Bill.find(bill_id).attributes
-  #     bill_title = bill['title']
-  #
-  #     @payables.push({ :bill_title => bill_title, :item_name => item_name, :item_price => item_price, :contract_price => contract_price })
-  #     puts "@payables => #{@payables}"
-  #     puts ""
-  #     puts ""
-  #   end
-  #
-  #   render json: @payables
-  # end
-
   def payables
     @payables_data = []
 

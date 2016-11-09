@@ -9,10 +9,10 @@
 User.create!(name:"Billy", mobile_number:'987654321', email:'billy@email.com', password:'123', password_confirmation:'123')
 
 user = User.find(1)
-user.bills.create!(title:'Mom\'s birthday', description:'Dinner at Tung Lok and present', total_price: 320.70, due:'2016-12-12')
-user.bills.create!(title:'Beer night', description:'Drinks at Raffles Club', total_price: 220.00, due:'2016-12-12')
-user.bills.create!(title:'Mashmallow night', description:'Mashmallow Fight', total_price: 50.00, due:'2016-12-12')
-user.bills.create!(title:'Division Barbeque', description:'Quaterly Division Celebration', total_price: 426.10, due:'2016-12-12')
+user.bills.create!(title:'Mom\'s birthday', description:'Dinner at Tung Lok and present', total_price: 320.70, since:'2016-12-12')
+user.bills.create!(title:'Beer night', description:'Drinks at Raffles Club', total_price: 220.00, since:'2016-12-12')
+user.bills.create!(title:'Mashmallow night', description:'Mashmallow Fight', total_price: 50.00, since:'2016-12-12')
+user.bills.create!(title:'Division Barbeque', description:'Quaterly Division Celebration', total_price: 426.10, since:'2016-12-12')
 
 bill = user.bills.find(1)
 bill.items.create!(item_name:'Total dinner bill', item_price: 220.70)
