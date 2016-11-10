@@ -19,12 +19,12 @@ ActiveRecord::Schema.define(version: 20161030144044) do
     t.integer  "user_id"
     t.string   "title"
     t.text     "description"
-    t.decimal  "total_price",  precision: 13, scale: 2
+    t.decimal  "total_price", precision: 13, scale: 2
     t.date     "since"
-    t.boolean  "clear",                                 default: false
-    t.string   "bill_img_url"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.boolean  "clear",                                default: false
+    t.string   "picture"
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
   end
 
   create_table "contracts", force: :cascade do |t|

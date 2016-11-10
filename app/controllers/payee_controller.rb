@@ -7,8 +7,8 @@ class PayeeController < ApplicationController
     all_payables = @payee.payables
 
     all_payables.each do |bill|
-      puts""
-      puts">>>>Console Log<<<<"
+      # puts""
+      # puts">>>>Console Log<<<<"
       @payCard = {}
       @payCard[:bill] = bill.attributes
 

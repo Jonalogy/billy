@@ -5,8 +5,12 @@ class DashboardsController < ApplicationController
     puts ""
     puts">>>>> console.log <<<<<"
       @user_id =  session[:user_id]
-      @username = User.where(`id = #{@user_id}`).take.name
-      @newBill = Bill.new
+      @username = User.where(:id => @user_id).take.name
+      #puts "@username => #{@username}"
+      @newBill = User.find(@user_id).bills.new
+
+      #puts "@newBill => #{@newBill.inspect}"
+
       @newItem = Item.new
       @bills = User.find(@user_id).bills.all
 
@@ -20,10 +24,7 @@ class DashboardsController < ApplicationController
       @bills_all_id.each do |bill|
         @bill_items = User.find(@user_id).bills.find(bill.id).items.all() #Returns an array
         @all_bill_items[bill.id] = @bill_items
-
       end
-
-
 
       @contract = Contract.new
 

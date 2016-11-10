@@ -25,14 +25,36 @@ class BillsController < ApplicationController
   # POST /bills.json
   def create
 
+
+
     @bill = User.find(session[:user_id]).bills.new(bill_params)
+    puts ">>>>Console.log<<<<"
+    puts ""
+    puts ""
+
+    if params[:bill][:picture] == nil
+      picture_upload = Cloudinary::Uploader.upload('https://mave.me/img/projects/full_placeholder.png')
+      puts "No user image detected. picture_upload => #{picture_upload}"
+
+      @bill[:picture] = picture_upload["url"]
+    else
+      picture_upload = Cloudinary::Uploader.upload(params[:bill][:picture].path,)
+      puts "User picture uploaded to Cloudinary => #{picture_upload}"
+      @bill[:picture] = picture_upload["url"]
+    end
+
+    puts "@bill => #{@bill.inspect}"
+
 
       save_status = @bill.save!
 
       if save_status
-        render json: @bills
+
+        flash[:success] = "Bill Saved!!"
+        redirect_to dashboard_path
       else
-        render json: @bill.errors, status: :unprocessable_entity
+        flash[:danger] = "Error encountered: Bill was not save... Please try again"
+        redirect_to dashboard_path
       end
   end
 
@@ -69,6 +91,6 @@ class BillsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_params
-      params.require(:bill).permit(:user_id, :title, :description, :total_price, :since, :clear)
+      params.require(:bill).permit(:user_id, :title, :description, :picture, :total_price, :since, :clear )
     end
 end

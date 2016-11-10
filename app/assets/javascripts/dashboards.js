@@ -4,7 +4,7 @@ $( document ).on('turbolinks:load', function() {
   loadAllPayables() // As of now, this function only loads all bills.
 
   //---Reload After Adding a new Bill
-    $('#saveBill-btn').click(function(){location.reload();})
+    // $('#saveBill-btn').click(function(){location.reload();})
 
   //---Delete Bill button---
     $(document).on('click','.bill-delete-btn',function(event){

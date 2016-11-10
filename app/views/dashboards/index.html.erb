@@ -1,5 +1,3 @@
-<%= javascript_include_tag("jquery.ui.widget", "jquery.iframe-transport",
-                           "jquery.fileupload", "jquery.cloudinary") %>
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
@@ -17,7 +15,7 @@
         <div class="col-sm-12">
           <div class="col-sm-6">
             <%########Form for submitting new Bill########%>
-            <%= form_for @newBill, remote:true, url: bills_path, :html => { id:"addBill"} do |f| %>
+            <%= form_for @newBill, url: bills_path, :html => { id:"addBill", multipart: true} do |f| %>
               <div class="col-sm-6">
                 <%= f.label :title, 'Bill Title :' %> <br>
                 <%= f.text_field :title, placeholder: "Drinks at Tony's" %><br>
@@ -40,6 +38,12 @@
               <div class="col-sm-10">
               <%= f.label :since, 'Since:' %>
               <%= f.date_select(:since, use_short_month: true, order:[:day, :month, :year]) %>
+              </div>
+              <div class="col-sm-6">
+                <div class="col-sm-12">
+                  <%= f.label :picture, 'Upload a photo of the occasion:' %>
+                  <%=f.file_field :picture%>
+                </div>
               </div>
               <div class="col-sm-2">
                 <%= f.submit "Save Bill", class: 'btn btn-success', id: "saveBill-btn"%>
@@ -79,9 +83,6 @@
                       </li>
                       <li class="nav-item  float-xs-right">
                         <button class="bill-delete-btn btn btn-outline-danger btn-sm" type="button" bill-id="<%=bill.id%>">X</button>
-                        <%#<a class="btn btn-outline-danger btn-sm active" data-method="delete" href="/bills/" role="button" rel="nofollow" data-confirm="Are you sure?">
-                          <i class="fa fa-lg fa-times" aria-hidden="true"></i>
-                        </a>%>
                       </li>
 
                     </ul>
@@ -93,7 +94,8 @@
                     <%##### START Views Pane  #####%>
                         <div id="view_card_<%=bill.id%>" class="tab-pane active text-xs-left " role="tabpanel">
                           <div class="imgHolder">
-                            <img class="card-img-top cardImg" src="https://mave.me/img/projects/full_placeholder.png" alt="Card image cap">
+                            <img class="card-img-top cardImg" src="<%=bill.picture%>" alt="Card image cap">
+                            <div class="image_shade"></div>
                             <p class="card-title billTitle"> <%=bill.title%> </p>
                           </div>
                           <div class="col-md-12">

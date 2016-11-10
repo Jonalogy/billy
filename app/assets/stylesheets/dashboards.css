@@ -1,14 +1,14 @@
+/* Bill Card's Items Pane */
+.card-header { height:56px; }
+.card-block { height: 330px; overflow: scroll; padding-bottom: 20px; }
+.items_list { overflow: scroll; height: 270px; }
 
 #newBillDesc {width: 100%;}
 #dashboard-title {font-size: 100px;font-family: 'Indie Flower', cursive; color: white; text-align: left; text-shadow: 4px 4px #161d31;}
-.billTitle { font-weight: bold; }
-.cardImg { width: 100%; height: auto;}
-.imgHolder { padding: 0; margin: 0; position: relative; }
-.card-title { display: block; position: absolute; left: 0em; bottom: 0em; }
+.imgHolder { padding: 0; margin: 0; width:100%; height:200px; position: relative; }
+.cardImg { width: 100%; height: 100%; object-fit: fill;}
+.card-title { display: block; position: absolute; left: 0em; bottom: 0em; margin:0 !important;  padding: 5px 10px 5px 10px ; background-color: rgba(0, 0, 0, 0.7); font-size: 20px; font-weight: bold; color: white;}
 
-/* Bill Card's Items Pane */
-.tab-content { height: 330px; overflow: scroll; padding-bottom: 20px; }
-.items_list { overflow: scroll; height: 270px; }
 
 /*Tag Payee Frame*/
 
