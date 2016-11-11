@@ -50,22 +50,23 @@ class ContractsController < ApplicationController
       end
 
     elsif noreg_user_verify_params[:reg_user] == 'false'
-
-        @item_id = non_reg_user_params[:item_id]
-
-        payee_name = non_reg_user_params[:payee_name]
-        owner = User.where(id: session[:user_id]).take.name
-        contract_price = non_reg_user_params[:contract_price].to_s
-        item = Item.where(id: @item_id).take.item_name
-        item_price = Item.where(id: @item_id).take.item_price.to_s
+        # puts ">>>>> Console.Log ( contracts#create ) <<<<< "
+        # puts "Processing: Tagging non registered payee..."
 
         @contract = Contract.new(non_reg_user_params)
+        # puts "inspecting @contract.new => #{@contract.inspect}"
 
-        if @contract.save
-          @contract[:payee_name] = payee_name
+        if @contract.save!
+          #Preparing variables for SMS message
+          @item_id = non_reg_user_params[:item_id]
+          payee_name = non_reg_user_params[:payee_name]
+          owner = User.where(id: session[:user_id]).take.name
+          contract_price = non_reg_user_params[:contract_price].to_s
+          item = Item.where(id: @item_id).take.item_name
+          item_price = Item.where(id: @item_id).take.item_price.to_s
           payee_count = Contract.where(item_id: @item_id).count
-          puts "payee_count>>>>#{payee_count}"
 
+          #Initiating SMS service
           puts "Twilio: Attempting to send SMS non registered user"
           recipient_no = ENV["twilio_recipient_no"]
           sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )

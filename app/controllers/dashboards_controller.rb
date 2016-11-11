@@ -1,15 +1,13 @@
 class DashboardsController < ApplicationController
 
   def index
-    puts ""
-    puts ""
-    puts">>>>> console.log <<<<<"
+    #puts">>>>> console.log <<<<<"
       @user_id =  session[:user_id]
       @username = User.where(:id => @user_id).take.name
-      #puts "@username => #{@username}"
+      ##puts "@username => #{@username}"
       @newBill = User.find(@user_id).bills.new
 
-      #puts "@newBill => #{@newBill.inspect}"
+      ##puts "@newBill => #{@newBill.inspect}"
 
       @newItem = Item.new
       @bills = User.find(@user_id).bills.all

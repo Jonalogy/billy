@@ -1,5 +1,6 @@
 class Contract < ApplicationRecord
-  belongs_to :user #payee
+  has_one :user #payee
+  # belongs_to :user #payee
 
   belongs_to :item
 

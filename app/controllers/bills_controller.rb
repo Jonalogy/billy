@@ -24,32 +24,23 @@ class BillsController < ApplicationController
   # POST /bills
   # POST /bills.json
   def create
-
-
-
     @bill = User.find(session[:user_id]).bills.new(bill_params)
-    puts ">>>>Console.log<<<<"
-    puts ""
-    puts ""
+    #puts ">>>>Console.log<<<<"
 
     if params[:bill][:picture] == nil
       picture_upload = Cloudinary::Uploader.upload('https://mave.me/img/projects/full_placeholder.png')
-      puts "No user image detected. picture_upload => #{picture_upload}"
+      #puts "No user image detected. picture_upload => #{picture_upload}"
 
       @bill[:picture] = picture_upload["url"]
     else
-      picture_upload = Cloudinary::Uploader.upload(params[:bill][:picture].path,)
-      puts "User picture uploaded to Cloudinary => #{picture_upload}"
+      picture_upload = Cloudinary::Uploader.upload(params[:bill][:picture].path)
+      #puts "User picture uploaded to Cloudinary => #{picture_upload}"
       @bill[:picture] = picture_upload["url"]
     end
-
-    puts "@bill => #{@bill.inspect}"
-
-
+    #puts "@bill => #{@bill.inspect}"
       save_status = @bill.save!
 
       if save_status
-
         flash[:success] = "Bill Saved!!"
         redirect_to dashboard_path
       else
@@ -76,10 +67,6 @@ class BillsController < ApplicationController
   # DELETE /bills/1.json
   def destroy
     @bill.destroy
-
-    puts ""
-    puts ">>>Console Log<<<"
-    puts "#{@bill.inspect}"
       render json: @bill
   end
 

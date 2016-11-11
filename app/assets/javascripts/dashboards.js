@@ -3,41 +3,8 @@ $( document ).on('turbolinks:load', function() {
 
   loadAllPayables() // As of now, this function only loads all bills.
 
-  //---Reload After Adding a new Bill
-    // $('#saveBill-btn').click(function(){location.reload();})
 
-  //---Delete Bill button---
-    $(document).on('click','.bill-delete-btn',function(event){
-      event.preventDefault();
-      var point = event.currentTarget;
-      console.log(point)
-      var bill_id = point.getAttribute("bill-id");
-      console.log(bill_id)
-      //
-      $.ajax({
-          url: '/bills/' + bill_id,
-          type: 'DELETE',
-          success: function(data) {
-            console.log('server responded')
-            console.log(data)
-            $('#card_' + data.id).remove()
-          }
-      });
 
-    });
-
-  //---Delete Item Button---
-    $(document).on('click','.delItem-btn',function(event){
-      event.preventDefault()
-      var point = event.currentTarget;
-      var item_id = point.getAttribute('itemid');
-      $.ajax({ url:'/items/' + item_id, type: 'DELETE', success: function(data) {
-            console.log('server responded')
-            console.log(data)
-            $( '#bill_item' + item_id).remove()
-          } // END  success: function(data)
-        }) //END  $.ajax
-    })
 
   //---Ajax: After user added a new bill---
     $('#addBill').on('ajax:success', function () {
@@ -84,12 +51,7 @@ $( document ).on('turbolinks:load', function() {
         body.insertBefore('#tagPayeeItemFrame-bill' + data.bill_id)
     })//END ajax:success
 
-    $(document).on('click','.submit_item',function(event){
-      var point  = event.currentTarget;
-      var id = point.getAttribute("billid")
-      console.log('id>>>',id)
-      $('#addItemCollapse_' + id).collapse('hide')
-    })
+
 
   //--- !!!!!!!!Unfinished!!!!!!!
     $(document).on('click','.payeeInfo-btn',function(event){
@@ -102,8 +64,46 @@ $( document ).on('turbolinks:load', function() {
       $( '#tagPayeeItemFrame-bill' + bill_id).toggleClass('tagPayeeItemFrame-show')
     })
 
+//----Event Listeners
+    //---Clicking submit closes the tagPayee plane
+    $(document).on('click','.submit_item',function(event){
+      var point  = event.currentTarget;
+      var id = point.getAttribute("billid")
+      console.log('id>>>',id)
+      $('#addItemCollapse_' + id).collapse('hide')
+    })
+    //---Delete Bill button---
+    $(document).on('click','.bill-delete-btn',function(event){
+      event.preventDefault();
+      var point = event.currentTarget;
+      console.log(point)
+      var bill_id = point.getAttribute("bill-id");
+      console.log(bill_id)
+      //
+      $.ajax({
+          url: '/bills/' + bill_id,
+          type: 'DELETE',
+          success: function(data) {
+            console.log('server responded')
+            console.log(data)
+            $('#card_' + data.id).remove()
+          }
+      });
 
-  //---Pay Button---
+    });
+    //---Delete Item Button---
+    $(document).on('click','.delItem-btn',function(event){
+      event.preventDefault()
+      var point = event.currentTarget;
+      var item_id = point.getAttribute('itemid');
+      $.ajax({ url:'/items/' + item_id, type: 'DELETE', success: function(data) {
+            console.log('server responded')
+            console.log(data)
+            $( '#bill_item' + item_id).remove()
+          } // END  success: function(data)
+        }) //END  $.ajax
+    })
+    //---Pay Button---
     $(document).on('click','.pay-btn',function(event){
       event.preventDefault()
       var point  = event.currentTarget;
@@ -113,7 +113,7 @@ $( document ).on('turbolinks:load', function() {
 
     })
 
-})
+}) //END of Turbolinks
 
 //---Funtions Repo
   function loadAllPayables(){
