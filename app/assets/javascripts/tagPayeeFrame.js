@@ -42,7 +42,6 @@ $( document ).on('turbolinks:load', function(){
     });
 
     function memberPayee(reg_user, owner, id, recordedPayeeNum){
-      console.log("Templating template-MemberPayee")
       $( '#tagPayeeItemContent-bill' + bill_id).empty()
 
       /* Append MemberPayee-form */
@@ -50,10 +49,14 @@ $( document ).on('turbolinks:load', function(){
       var memberPayee = $(memberPayeeInputTemplate)
       memberPayee.find('.template-ownerName').attr('id', 'ownerName-item' + item_id).removeClass('template-ownerName').text(owner+' ')
       memberPayee.find('.template-payee_id').attr('id', 'payee_id-item' + item_id).removeClass('template-payee_id').val(id)
-      memberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).removeClass('template-payType')
+      memberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-payType')
+
+      memberPayee.find('.template-payee_amount_holder').attr('id', 'payee_amount_holder-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
+
       memberPayee.find('.template-payee_amount').attr('id', 'payee_amount-item' + item_id).removeClass('template-payee_amount')
       memberPayee.find('.template-addPayeeBtn').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).attr('reg_user',reg_user).removeClass('template-addPayeeBtn')
       memberPayee.find('.template-closeTagPayeeItemFrame').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-closeTagPayeeItemFrame')
+
 
       memberPayee.appendTo( '#tagPayeeItemContent-bill' + bill_id)
 
@@ -69,7 +72,10 @@ $( document ).on('turbolinks:load', function(){
       nonMemberPayee.attr('id', 'nonMemberPayee-form-item' + item_id).removeClass('template-nonMemberPayee-form')
       nonMemberPayee.find('.template-payeeNumRecord').attr('id', 'payeeNumRecord-item' + item_id).val(recordedPayeeNum).removeClass('template-payeeNumRecord')
       nonMemberPayee.find('.template-payee_name').attr('id', 'payee_name-item' + item_id).removeClass('template-payee_name')
-      nonMemberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).removeClass('template-payType')
+      nonMemberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-payType')
+
+      nonMemberPayee.find('.template-payee_amount_holder').attr('id', 'payee_amount_holder-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
+
       nonMemberPayee.find('.template-payee_amount').attr('id', 'payee_amount-item' + item_id).removeClass('template-payee_amount')
       nonMemberPayee.find('.template-addPayeeBtn').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).attr('reg_user','false').removeClass('template-addPayeeBtn')
       nonMemberPayee.find('.template-closeTagPayeeItemFrame').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-closeTagPayeeItemFrame')
@@ -87,7 +93,7 @@ $( document ).on('turbolinks:load', function(){
       var item_id = (point).getAttribute('item-id');
       var reg_user = (point).getAttribute('reg_user');
 
-      console.log("Obtaining payee's registration status: ", reg_user)
+      // console.log("Obtaining payee's registration status: ", reg_user)
 
       if (reg_user === "true" ){
         var contract = {}

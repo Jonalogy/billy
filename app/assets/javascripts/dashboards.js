@@ -65,6 +65,21 @@ $( document ).on('turbolinks:load', function() {
     })
 
 //----Event Listeners
+    //---Detect payee's payType
+    $(document).on('change','.payType',function(event){
+      console.log(this)
+      var point = this;
+      var select_ele_id = point.getAttribute('id');
+      var item_id = point.getAttribute('item-id');
+      var payType = $('#'+select_ele_id).val()
+
+      if(payType == '3') {
+        $('#payee_amount_holder-item' + item_id).remove()
+      }
+
+    })
+
+
     //---Clicking submit closes the tagPayee plane
     $(document).on('click','.submit_item',function(event){
       var point  = event.currentTarget;

@@ -114,7 +114,7 @@ class ContractsController < ApplicationController
       params.require(:contract).permit(:user_id, :item_id, :contract_price, :payment_type_id, :favour_id, :clear)
     end
 
-    #For creating new contract
+    #### START: For creating new contract ####
     def noreg_user_verify_params
       params.require(:contract_noreg).permit(:reg_user)
     end
@@ -127,4 +127,5 @@ class ContractsController < ApplicationController
     def reg_user_params
       params.require(:contract_reg).permit(:item_id, :user_id, :contract_price, :payment_type_id)
     end
+    #### END: For creating new contract ####
 end
