@@ -34,18 +34,16 @@ ActiveRecord::Schema.define(version: 20161030144044) do
     t.string   "payee_contact"
     t.decimal  "contract_price",  precision: 13, scale: 2
     t.integer  "payment_type_id"
+    t.integer  "favour_id",                                default: 1
     t.boolean  "clear",                                    default: false
     t.datetime "created_at",                                               null: false
     t.datetime "updated_at",                                               null: false
   end
 
   create_table "favours", force: :cascade do |t|
-    t.integer  "contract_id"
-    t.text     "description"
-    t.boolean  "owner_agree", default: true
-    t.boolean  "payee_agree", default: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.text     "favour_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "items", force: :cascade do |t|

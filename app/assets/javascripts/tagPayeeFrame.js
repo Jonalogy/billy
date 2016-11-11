@@ -50,9 +50,7 @@ $( document ).on('turbolinks:load', function(){
       memberPayee.find('.template-ownerName').attr('id', 'ownerName-item' + item_id).removeClass('template-ownerName').text(owner+' ')
       memberPayee.find('.template-payee_id').attr('id', 'payee_id-item' + item_id).removeClass('template-payee_id').val(id)
       memberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-payType')
-
       memberPayee.find('.template-payee_amount_holder').attr('id', 'payee_amount_holder-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
-
       memberPayee.find('.template-payee_amount').attr('id', 'payee_amount-item' + item_id).removeClass('template-payee_amount')
       memberPayee.find('.template-addPayeeBtn').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).attr('reg_user',reg_user).removeClass('template-addPayeeBtn')
       memberPayee.find('.template-closeTagPayeeItemFrame').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-closeTagPayeeItemFrame')
@@ -73,9 +71,7 @@ $( document ).on('turbolinks:load', function(){
       nonMemberPayee.find('.template-payeeNumRecord').attr('id', 'payeeNumRecord-item' + item_id).val(recordedPayeeNum).removeClass('template-payeeNumRecord')
       nonMemberPayee.find('.template-payee_name').attr('id', 'payee_name-item' + item_id).removeClass('template-payee_name')
       nonMemberPayee.find('.template-payType').attr('id', 'payType-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-payType')
-
       nonMemberPayee.find('.template-payee_amount_holder').attr('id', 'payee_amount_holder-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
-
       nonMemberPayee.find('.template-payee_amount').attr('id', 'payee_amount-item' + item_id).removeClass('template-payee_amount')
       nonMemberPayee.find('.template-addPayeeBtn').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).attr('reg_user','false').removeClass('template-addPayeeBtn')
       nonMemberPayee.find('.template-closeTagPayeeItemFrame').attr('id', 'addPayeeBtn-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id).removeClass('template-closeTagPayeeItemFrame')
@@ -96,13 +92,20 @@ $( document ).on('turbolinks:load', function(){
       // console.log("Obtaining payee's registration status: ", reg_user)
 
       if (reg_user === "true" ){
+        console.log( 'reg_user === "true" ' )
         var contract = {}
         contract['reg_user'] = reg_user
         contract['user_id'] = $( '#payee_id-item' + item_id).val()
         contract['item_id'] = Number(item_id)
         contract['payment_type_id'] = $( '#payType-item' + item_id).val()
-        contract['contract_price'] = $( '#payee_amount-item' + item_id).val();
-        console.log(contract)
+
+        if( $('#payee_amount-item' + item_id).length !== 0 ){
+          contract['contract_price'] = $('#payee_amount-item' + item_id).val();
+          console.log(contract)
+        } else if(  $('#favourTypes-item' + item_id).length !== 0  ){
+          contract['favour_id'] = $('#favourTypes-item' + item_id).val()
+          console.log(contract)
+        }
 
         $.post("/contracts", {contract_reg: contract}, function(data){
           console.log('Server Responded')
@@ -120,10 +123,15 @@ $( document ).on('turbolinks:load', function(){
         contract['item_id'] = Number(item_id)
         contract['payee_name'] = $( '#payee_name-item' + item_id).val();
         contract['payee_contact'] = $( '#payeeNumRecord-item' + item_id).val();
-        contract['contract_price'] = $('#payee_amount-item' + item_id).val();
         contract['payment_type_id'] = $( '#payType-item' + item_id).val();
-        // contract = JSON.stringify(contract)
-        console.log(contract)
+
+        if( $('#payee_amount-item' + item_id).length !== 0  && contract['payment_type_id'] !== '3' ){
+          contract['contract_price'] = $('#payee_amount-item' + item_id).val();
+          console.log(contract)
+        } else if(  $('#favourTypes-item' + item_id).length !== 0 && contract['payment_type_id'] === '3'  ){
+          contract['favour_id'] = $('#favourTypes-item' + item_id).val()
+          console.log(contract)
+        }
 
         $.post("/contracts", {contract_noreg: contract}, function(data){
           console.log('Server Responded')

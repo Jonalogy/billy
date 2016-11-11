@@ -24,8 +24,8 @@ class PayeeController < ApplicationController
         item["contract_price"] = contract.contract_price
         item["contract_payType"] = PaymentType.find(contract.payment_type_id).pay_type
 
-        if Favour.where(:contract_id => contract.id).exists?
-          item["favour_description"] = Favour.where(:contract_id => contract.id)[0].description
+        if item["contract_payType"] == 3
+          item["favour_description"] = Favour.where(:id => contract.favour_id).take.favour_type
         end
 
         items.push(item)

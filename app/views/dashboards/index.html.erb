@@ -206,7 +206,8 @@
           </select>
         </div>
         <div class="input-group template-payee_amount_holder">
-          <span class="input-group-addon">$</span> <input class="template-payee_amount payee_amount form-control" type="text" name="payee_amount" placeholder="xxx.xx">
+          <span class="input-group-addon">$</span>
+          <input class="template-payee_amount payee_amount form-control" type="text" name="payee_amount" placeholder="xxx.xx">
         </div>
         <%# Button to add Payee%>
         <button type="button" class="template-addPayeeBtn addPayeeBtn btn btn-sm btn-outline-success"> <i class="fa fa-check" aria-hidden="true"></i> Done </button>
@@ -241,6 +242,26 @@
     </template>
   <%##### END nonMemberPayee-form Template######%>
 
+  <%##### START Favour Types #####%>
+    <template id="template-favourTypes">
+      <div class="input-group">
+        <select class="template-favourTypes form-control" >
+          <option value='2'> A meal treat </option>
+          <option value='3'> A drink </option>
+          <option value='4'> Just handle the next one :) </option>
+        </select>
+      </div>
+    </template>
+  <%##### END Favour Types ##### %>
+
+  <%##### START: Revert from Favour Types to Amount Input #####%>
+    <template id="template-payeeAmtInput">
+      <div class="input-group template-payee_amount_holder">
+        <span class="input-group-addon">$</span> <input class="template-payee_amount payee_amount form-control" type="text" name="payee_amount" placeholder="xxx.xx">
+      </div>
+    </template>
+    <%##### END: Revert from Favour Types to Amount Input #####%>
+
   <%###### Ajax Card for payables Template ######%>
     <template id="template-card-payable">
       <div class="col-lg-4 col-md-6 col-sm-12">
@@ -258,20 +279,20 @@
   <%###### Ajax Card for payables Template ######%>
 
   <%###### Ajax Card for payables-item row Template ######%>
-  <template id="template-payabale-item-row" class="col-sm-12">
-    <div class="col-sm-10">
-      <div>
-        <h5 class="item_name"></h5>
-        <p class="settlement"> </p>
-      </div>
+    <template id="template-payabale-item-row" class="col-sm-12">
+      <div class="col-sm-10">
+        <div>
+          <h5 class="item_name"></h5>
+          <p class="settlement"> </p>
+        </div>
 
-    </div>
-    <div class="col-sm-2">
-      <a href="#" class="btn btn-outline-success btn-sm template-pay-btn" role="button">
-        <i class="fa" aria-hidden="true"></i>
-      </a>
-    </div>
-  </template>
+      </div>
+      <div class="col-sm-2">
+        <a href="#" class="btn btn-outline-success btn-sm template-pay-btn" role="button">
+          <i class="fa" aria-hidden="true"></i>
+        </a>
+      </div>
+    </template>
   <%###### Ajax Card for payables-item row Template ######%>
 
   <%###### Ajax Card Template ######%>

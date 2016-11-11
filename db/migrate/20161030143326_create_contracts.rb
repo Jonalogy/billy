@@ -7,6 +7,7 @@ class CreateContracts < ActiveRecord::Migration[5.0]
       t.string  :payee_contact #used when payee is not a registered user
       t.decimal :contract_price, precision: 13, scale: 2
       t.integer :payment_type_id
+      t.integer :favour_id, default: 1 # favour_id:1 means user wants payee to perform cash return
       t.boolean :clear, default: false
 
       t.timestamps

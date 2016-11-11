@@ -40,3 +40,8 @@ User.find(1).bills.find(2).items.find(3).contracts.create(user_id: 3, contract_p
 PaymentType.create!(pay_type:'Cash')
 PaymentType.create!(pay_type:'Bank Transfer')
 PaymentType.create!(pay_type:'Favour')
+
+Favour.create!(favour_type:'Moneytary Returns')
+Favour.create!(favour_type:'A meal treat')
+Favour.create!(favour_type:'A drink')
+Favour.create!(favour_type:'Just handle the next one :)')

@@ -1,10 +1,7 @@
 $( document ).on('turbolinks:load', function() {
-    console.log("Dashboard.js Loaded");
+  console.log("Dashboard.js Loaded");
 
   loadAllPayables() // As of now, this function only loads all bills.
-
-
-
 
   //---Ajax: After user added a new bill---
     $('#addBill').on('ajax:success', function () {
@@ -51,8 +48,6 @@ $( document ).on('turbolinks:load', function() {
         body.insertBefore('#tagPayeeItemFrame-bill' + data.bill_id)
     })//END ajax:success
 
-
-
   //--- !!!!!!!!Unfinished!!!!!!!
     $(document).on('click','.payeeInfo-btn',function(event){
       event.preventDefault()
@@ -71,14 +66,32 @@ $( document ).on('turbolinks:load', function() {
       var point = this;
       var select_ele_id = point.getAttribute('id');
       var item_id = point.getAttribute('item-id');
+      var bill_id = point.getAttribute('bill-id');
       var payType = $('#'+select_ele_id).val()
 
       if(payType == '3') {
         $('#payee_amount_holder-item' + item_id).remove()
-      }
 
+        var copyTemplate = $('#template-favourTypes').html().trim()
+        var favourTemplate = $(copyTemplate)
+
+        favourTemplate.find('.template-favourTypes').removeClass('.template-favourTypes').addClass('favourTypes').attr('id' , 'favourTypes-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
+        $('#payType-item' + item_id).after(favourTemplate)
+
+      } else
+      if( $('#favourTypes-item' + item_id).length !== 0 ) {
+        $('#favourTypes-item' + item_id).remove()
+
+        var copyTemplate = $('#template-payeeAmtInput').html().trim()
+        var inputAmtTemplate = $(copyTemplate)
+
+        inputAmtTemplate.removeClass('.template-payee_amount_holder').addClass('payee_amount_holder').attr('id', 'payee_amount_holder-item' + item_id).attr('bill-id',bill_id).attr('item-id',item_id)
+        inputAmtTemplate.find('.template-payee_amount').attr('id', 'payee_amount-item' + item_id).removeClass('template-payee_amount')
+
+        $('#payType-item' + item_id).after(inputAmtTemplate)
+
+      } // END if-else
     })
-
 
     //---Clicking submit closes the tagPayee plane
     $(document).on('click','.submit_item',function(event){

@@ -26,32 +26,38 @@ class ContractsController < ApplicationController
   def create
     if params[:contract_reg].present? && params[:contract_reg][:reg_user] == 'true'
 
-      @item_id = reg_user_params[:item_id]
-
-      owner = User.where(id: session[:user_id]).take.name
-      payee_name = User.where(id:reg_user_params[:user_id]).take.name;
-      item = Item.where(id: @item_id).take.item_name;
-      item_price = Item.where(id: @item_id).take.item_price.to_s;
-      contract_price = reg_user_params[:contract_price];
-
-
       @contract = Contract.new(reg_user_params)
+
       if @contract.save
 
-        @contract[:payee_name] = payee_name
+        @item_id = reg_user_params[:item_id]
+        owner = User.where(id: session[:user_id]).take.name
+        payee_name = User.where(id:reg_user_params[:user_id]).take.name;
+        item = Item.where(id: @item_id).take.item_name;
         payee_count = Contract.where(item_id: @item_id).count
-        puts "payee_count>>>>#{payee_count}"
 
-        puts "Twilio: Attempting to send SMS to registered user"
-        recipient_no = ENV["twilio_recipient_no"]
-        sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
+        if reg_user_params[:favour_id] == 1
+          item_price = Item.where(id: @item_id).take.item_price.to_s;
+          contract_price = reg_user_params[:contract_price];
+
+          puts "Twilio: Attempting to send SMS to registered user"
+          recipient_no = ENV["twilio_recipient_no"]
+          sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
+        else
+          favour = Favour.where(:id => @contract[:favour_id]).take.favour_type
+
+          puts "Twilio: Attempting to send SMS to registered user"
+          recipient_no = ENV["twilio_recipient_no"]
+          sms(recipient_no, "- \nHi " + payee_name + "! \nAbout the item: " + item + ", don't worry about it. " + favour + ".\n~" + owner + ", sent from Billy App " )
+        end
+
 
         render json: {:contract => @contract, :payee_count => payee_count}
       end
 
     elsif noreg_user_verify_params[:reg_user] == 'false'
-        # puts ">>>>> Console.Log ( contracts#create ) <<<<< "
-        # puts "Processing: Tagging non registered payee..."
+        puts ">>>>> Console.Log ( contracts#create ) <<<<< "
+        puts "Processing: Tagging non registered payee..."
 
         @contract = Contract.new(non_reg_user_params)
         # puts "inspecting @contract.new => #{@contract.inspect}"
@@ -61,15 +67,24 @@ class ContractsController < ApplicationController
           @item_id = non_reg_user_params[:item_id]
           payee_name = non_reg_user_params[:payee_name]
           owner = User.where(id: session[:user_id]).take.name
-          contract_price = non_reg_user_params[:contract_price].to_s
           item = Item.where(id: @item_id).take.item_name
-          item_price = Item.where(id: @item_id).take.item_price.to_s
           payee_count = Contract.where(item_id: @item_id).count
 
           #Initiating SMS service
-          puts "Twilio: Attempting to send SMS non registered user"
-          recipient_no = ENV["twilio_recipient_no"]
-          sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
+          if non_reg_user_params[:favour_id] == '1'
+            item_price = Item.where(id: @item_id).take.item_price.to_s;
+            contract_price = non_reg_user_params[:contract_price];
+
+            puts "Twilio: Attempting to send SMS to registered user"
+            recipient_no = ENV["twilio_recipient_no"]
+            sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App. You should try it too. " )
+          else
+            favour = Favour.where(:id => @contract[:favour_id]).take.favour_type
+
+            puts "Twilio: Attempting to send SMS to registered user"
+            recipient_no = ENV["twilio_recipient_no"]
+            sms(recipient_no, "- \nHi " + payee_name + "! \nAbout the item: " + item + ", don't worry about it. " + favour + ".\n~" + owner + ", sent from Billy App. You should try it too. " )
+          end
           render json: {:contract => @contract, :payee_count => payee_count}
         else
           render json: @contract.errors
@@ -119,13 +134,13 @@ class ContractsController < ApplicationController
       params.require(:contract_noreg).permit(:reg_user)
     end
     def non_reg_user_params
-      params.require(:contract_noreg).permit(:item_id,:payee_name, :payee_contact, :contract_price, :payment_type_id)
+      params.require(:contract_noreg).permit(:item_id,:payee_name, :payee_contact, :contract_price, :payment_type_id, :favour_id)
     end
     def reg_user_verify_params
       params.require(:contract_reg).permit(:reg_user)
     end
     def reg_user_params
-      params.require(:contract_reg).permit(:item_id, :user_id, :contract_price, :payment_type_id)
+      params.require(:contract_reg).permit(:item_id, :user_id, :contract_price, :payment_type_id, :favour_id)
     end
     #### END: For creating new contract ####
 end
