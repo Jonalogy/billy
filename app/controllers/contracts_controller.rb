@@ -28,6 +28,10 @@ class ContractsController < ApplicationController
 
       @contract = Contract.new(reg_user_params)
 
+      puts ""
+      puts "Console Log"
+      puts ""
+
       if @contract.save
 
         @item_id = reg_user_params[:item_id]
@@ -36,17 +40,17 @@ class ContractsController < ApplicationController
         item = Item.where(id: @item_id).take.item_name;
         payee_count = Contract.where(item_id: @item_id).count
 
-        if reg_user_params[:favour_id] == 1
+        if reg_user_params[:payment_type_id] != '3'
           item_price = Item.where(id: @item_id).take.item_price.to_s;
           contract_price = reg_user_params[:contract_price];
 
-          puts "Twilio: Attempting to send SMS to registered user"
+          puts "Twilio: Attempting to send SMS to inform registered user of monetary contribution"
           recipient_no = ENV["twilio_recipient_no"]
           sms(recipient_no, "- \nHi " + payee_name + "!\n" + owner + " has agreed to share the cost of " + item + " with you. You\'re to contribute: \n$" + contract_price + " / $" +  item_price + ".\n~Sent from Billy App " )
         else
           favour = Favour.where(:id => @contract[:favour_id]).take.favour_type
 
-          puts "Twilio: Attempting to send SMS to registered user"
+          puts "Twilio: Attempting to send SMS to registered user of favour contribution"
           recipient_no = ENV["twilio_recipient_no"]
           sms(recipient_no, "- \nHi " + payee_name + "! \nAbout the item: " + item + ", don't worry about it. " + favour + ".\n~" + owner + ", sent from Billy App " )
         end
@@ -56,8 +60,6 @@ class ContractsController < ApplicationController
       end
 
     elsif noreg_user_verify_params[:reg_user] == 'false'
-        puts ">>>>> Console.Log ( contracts#create ) <<<<< "
-        puts "Processing: Tagging non registered payee..."
 
         @contract = Contract.new(non_reg_user_params)
         # puts "inspecting @contract.new => #{@contract.inspect}"
@@ -71,7 +73,7 @@ class ContractsController < ApplicationController
           payee_count = Contract.where(item_id: @item_id).count
 
           #Initiating SMS service
-          if non_reg_user_params[:favour_id] == '1'
+          if non_reg_user_params[:payment_type_id] != '3'
             item_price = Item.where(id: @item_id).take.item_price.to_s;
             contract_price = non_reg_user_params[:contract_price];
 
