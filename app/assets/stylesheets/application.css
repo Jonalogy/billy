@@ -15,10 +15,13 @@
  */
  @import "bootstrap";
 
-body{
+/*body{
   background-image: url("http://giottojs.org/examples/trianglify.svg");
-  background-size: cover;
-}
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}*/
+
+#background { position: fixed; z-index: -1}
 
 div{
   /*border: 2px black dashed*/

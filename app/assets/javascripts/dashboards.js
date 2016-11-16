@@ -165,10 +165,10 @@ $( document ).on('turbolinks:load', function() {
           var payment_type = item["contract_payType"];
           if( payment_type === "Favour"){
             itemsRow.find('.fa').addClass("fa-handshake-o")
-            itemsRow.find('.settlement').text( "Return a " + item["contract_payType"] + ": " + item["favour_description"] )
+            itemsRow.find('.settlement').text( "Return a Favour: " + item["favour_description"] )
 
           } else {
-            itemsRow.find('.settlement').text("Pay by " + item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
+            itemsRow.find('.settlement').text("Return with " + item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
             itemsRow.find('.fa').addClass("fa-usd")
           }
           itemsRow.appendTo('#card-block_bill' + card['bill']['id'])
