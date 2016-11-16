@@ -44,10 +44,13 @@
     height:100px;
 }
 #height_spacer2{
-    height:25%;
+    height:10%;
 }
 #height_spacer3{
     height:10%;
+}
+#height_spacer4{
+    height:15%;
 }
 
 #billy{
@@ -55,4 +58,10 @@
  text-shadow: 4px 4px #161d31;
  color: white;
  font-family: 'Indie Flower', cursive;
+}
+
+#slogan {
+  text-shadow: 2px 2px #161d31;
+  color: white;
+  font-family: 'Indie Flower', cursive;
 }
