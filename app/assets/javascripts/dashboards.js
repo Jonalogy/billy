@@ -48,7 +48,7 @@ $( document ).on('turbolinks:load', function() {
         body.insertBefore('#tagPayeeItemFrame-bill' + data.bill_id)
     })//END ajax:success
 
-  //--- !!!!!!!!Unfinished!!!!!!!
+  //--- View Payees
     $(document).on('click','.payeeInfo-btn',function(event){
       event.preventDefault()
       var point  = event.currentTarget;
@@ -57,6 +57,53 @@ $( document ).on('turbolinks:load', function() {
       console.log(point)
       console.log('Trigger pane: ', bill_id)
       $( '#tagPayeeItemFrame-bill' + bill_id).toggleClass('tagPayeeItemFrame-show')
+      var data = { bill_id: bill_id, item_id: item_id };
+
+      // $.get()
+      $.get('/view_payees', { data },function(data){
+        console.log('Server Responded from Dashboard#view_payees' , data);
+        if (data.length === undefined) {
+          console.log('no payees found');
+        } else {
+
+          data.forEach(function(payee){
+            console.log("payee", payee)
+            var copyTemplate = $('#template-payeeInfo').html().trim()
+            var payeeInfoTemplate = $(copyTemplate)
+
+            if (payee['pay_type'] == "Favour") {
+              console.log('Favour')
+              payeeInfoTemplate.removeClass('template-payeeInfo').addClass('payeeInfo').attr('billid',bill_id).attr('itemid',payee['item_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-name').removeClass('template-payeeInfo-name').addClass('payeeInfo-name').text(payee['payee']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-favour').removeClass('template-payeeInfo-favour').addClass('payeeInfo-payType').text(payee['favour']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-closeTagPayeeItemFrame').removeClass('template-closeTagPayeeItemFrame').addClass('closeTagPayeeItemFrame').attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-payType').remove()
+              payeeInfoTemplate.find('.template-payeeInfo-amt').remove()
+
+
+              $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
+
+            } else {
+              console.log('Cash')
+              payeeInfoTemplate.removeClass('template-payeeInfo').addClass('payeeInfo').attr('billid',bill_id).attr('itemid',payee['item_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-name').removeClass('template-payeeInfo-name').addClass('payeeInfo-name').text(payee['payee']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-payType').removeClass('template-payeeInfo-payType').addClass('payeeInfo-payType').text("By" + payee['pay_type']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-amt').removeClass('template-payeeInfo-amt').addClass('payeeInfo-amt').text('$' + payee['contract_amt']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-favour').remove()
+              console.log(payeeInfoTemplate);
+              console.log(payeeInfoTemplate.find('.template-closeTagPayeeItemFrame'));
+
+              payeeInfoTemplate.find('.template-closeTagPayeeItemFrame').removeClass('template-closeTagPayeeItemFrame').addClass('closeTagPayeeItemFrame').attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
+            }
+            // <button  class="template-closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Close <i class="fa fa-lg fa-times" aria-hidden="true"></i> </button>
+          })
+        }//END if-else
+        var close_button = $('<button>',{class:"closeTagPayeeItemFrame btn btn-sm btn-outline-danger"}).attr('bill-id', bill_id).attr('item-id', item_id).text('Close ');
+        $('<i>', {class:"fa fa-caret-square-o-right fa-lg"}).attr('aria-hidden','true').appendTo(close_button);
+        close_button.appendTo($('#tagPayeeItemContent-bill' + bill_id))
+      })//end $.get()
+
     })
 
 //----Event Listeners

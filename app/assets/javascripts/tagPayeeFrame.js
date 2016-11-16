@@ -146,6 +146,7 @@ $( document ).on('turbolinks:load', function(){
   //---Cancel & Close the tag payee frame
   $(document).on('click','.closeTagPayeeItemFrame',function(event){
     event.preventDefault()
+    console.log(event)
     var bill_id = (event.currentTarget).getAttribute('bill-id')
     var item_id = (event.currentTarget).getAttribute('item-id')
     console.log("here>>", event.currentTarget)

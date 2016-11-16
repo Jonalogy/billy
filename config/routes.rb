@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   delete "logout" => "sessions#destroy"
 
   get "dashboard" => "dashboards#index"
+  get "view_payees" => "dashboards#view_payees"
 
   get "check" => "payee#verify_mobile"
   get "payables" => "payee#payables"

@@ -65,7 +65,7 @@
     <div class="row" id="billBook">
 <%######## START Bill Cards ##########%>
         <% @bills.each do |bill| %>
-          <div class="col-lg-4 col-md-6 col-sm-12" id="card_<%=bill.id%>">
+          <div class="col-xl-4 col-lg-6 col-md-12" id="card_<%=bill.id%>">
             <div class="col-xs-12">
                 <div class="card">
 
@@ -135,23 +135,25 @@
 
                                 <% @all_bill_items[bill.id].each do |item| %>
                                     <div id="bill_item<%=item[:id]%>" class='bill_item'>
-                                        <div class="col-sm-7">
+                                        <div class="col-md-7">
                                           <div><%=item[:item_name]%></div>
                                           <div>$<%=item[:item_price]%></div>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-md-5">
                                           <a id="delBtn-item<%=item[:id]%>" href="#" class="delItem-btn btn btn-outline-danger btn-sm" billID="<%=bill.id%>" itemID="<%=item[:id]%>">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                           </a>
-                                        </div>
-                                        <div class="col-sm-1">
                                           <a id="payeeInfo-btn<%=item[:id]%>" class="payeeInfo-btn btn btn-outline-info btn-sm" billID="<%=bill.id%>" itemID="<%=item[:id]%>">
                                             <span id="payee_count-item<%=item[:id]%>"><%=item[:payee_count]%></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                            <a id="tagPayeeItem-<%=item[:id]%>" billID="<%=bill.id%>" itemID="<%=item[:id]%>" href="" class="btn btn-outline-success btn-sm tagPayee" role="button">
+                                              <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
+                                        </div>
+                                        <!-- <div class="col-sm-1">
+
                                         </div>
                                         <div class="tagPayee-input-holder col-sm-1" id='tagPayee-input-holder-item<%=item[:id]%>'>
-                                          <a id="tagPayeeItem-<%=item[:id]%>" billID="<%=bill.id%>" itemID="<%=item[:id]%>" href="" class="btn btn-outline-success btn-sm tagPayee" role="button">
-                                            <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
-                                        </div>
+
+                                        </div> -->
                                     </div>
                                 <% end %>
                                 <div id="tagPayeeItemFrame-bill<%=bill.id%>" class="tagPayeeItemFrame">
@@ -180,6 +182,28 @@
   </div>
 
 <%#-------------------------------TEMPLATES-----------------------------------%>
+
+  <%##### START: Ajax Payee Info #####%>
+    <template id="template-payeeInfo">
+      <div class="template-payeeInfo col-sm-12">
+        <div class="template-payeeInfo-name col-sm-12">
+        </div>
+        <div class=" template-payeeInfo-amt col-sm-5">
+        </div>
+        <div class="template-payeeInfo-payType col-sm-5">
+
+        </div>
+        <div class="template-payeeInfo-favour col-sm-10">
+        </div>
+        <div class="template-payeeInfo-clear-btn col-sm-2">
+          <a class="template-owner-payee-clear-btn  btn btn-outline-success btn-sm owner-payee-clear" data-toggle="collapse" aria-expanded="false" aria-controls="addItem">
+            <i id="test" class="fa fa-thumbs-o-up" aria-hidden="true"></i> </a>
+        </div>
+      </div>
+      <!-- <button  class="template-closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Close <i class="fa fa-lg fa-times" aria-hidden="true"></i> </button> -->
+    </template>
+  <%##### END: Ajax Payee Info #####%>
+
   <%##### Ajax Search Payee Number Template######%>
     <template id="request_payee_number">
       <div class="template_payee_number">
@@ -264,7 +288,7 @@
 
   <%###### Ajax Card for payables Template ######%>
     <template id="template-card-payable">
-      <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="col-xl-4 col-lg-6 col-md-12">
         <div class="col-xs-12">
             <div class="card">
               <h4 class="template-billTitle card-header"></h4>
