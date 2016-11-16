@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get "check" => "payee#verify_mobile"
   get "payables" => "payee#payables"
+  patch "pay" => "payee#pay"
 
   resources :favours
   resources :payment_types

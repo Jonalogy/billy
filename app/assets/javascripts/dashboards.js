@@ -137,7 +137,22 @@ $( document ).on('turbolinks:load', function() {
       var point  = event.currentTarget;
       var bill_id = point.getAttribute("billid")
       var item_id = point.getAttribute("itemid")
-      console.log(point, bill_id, item_id)
+      var contract_id = point.getAttribute("contractid")
+
+      var dataFile = new Object()
+      dataFile['bill_id'] = bill_id
+      dataFile['item_id'] = item_id
+      dataFile['contract_id'] = contract_id
+
+      console.log(dataFile)
+
+      $.ajax({
+        method: "PATCH",
+        url: '/pay',
+        data: {dataFile}
+      }).done(function(data){
+        console.log('server responded: payee#pay' ,  data);
+      })
 
     })
 
@@ -160,7 +175,7 @@ $( document ).on('turbolinks:load', function() {
           var itemsTemplate = $('#template-payabale-item-row').html().trim()
           var itemsRow = $(itemsTemplate)
           itemsRow.find('.item_name').text(item["item_name"])
-          itemsRow.find('.template-pay-btn').attr('billid',card['bill']['id']).attr('itemid',item['id']).removeClass("template-pay-btn").addClass("pay-btn")
+          itemsRow.find('.template-pay-btn').attr('billid',card['bill']['id']).attr('itemid',item['id']).attr('contractid',item['contract_id']).removeClass("template-pay-btn").addClass("pay-btn")
 
           var payment_type = item["contract_payType"];
           if( payment_type === "Favour"){

@@ -46,6 +46,38 @@ class PayeeController < ApplicationController
     render json: @payables_data
   end
 
+  def pay
+      puts ""
+      puts ">>>Console.log (Payee#pay)"
+      puts ""
+      puts pay_params.inspect
+
+      contract = Contract.find(pay_params[:contract_id])
+      if contract.clear == false
+          contract.clear = true
+          save_status = contract.save!
+          puts save_status
+          if save_status
+            puts "Contract Cleared"
+            payStatus = { status: 'success' }
+            render json: payStatus
+            return
+          else
+            puts save_status
+            payStatus = { status: 'error' }
+            render json: payStatus
+            return
+          end
+      else
+        puts "Contract was cleared on #{contract[:updated_at]} "
+        payStatus = { status: 'paid' }
+
+        render json: payStatus
+        return
+      end
+
+  end
+
   def verify_mobile
     number = params[:number][:payee_contact]
 
@@ -72,6 +104,10 @@ class PayeeController < ApplicationController
 
   def payee_number
     params.require(:number).permit(:payee_contact)
+  end
+
+  def pay_params
+    params.require(:dataFile).permit(:bill_id, :item_id, :contract_id)
   end
 
 end
