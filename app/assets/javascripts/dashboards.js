@@ -60,7 +60,7 @@ $( document ).on('turbolinks:load', function() {
       var data = { bill_id: bill_id, item_id: item_id };
 
       // $.get()
-      $.get('/view_payees', { data },function(data){
+      $.get('/view_payees', { data : data }, function(data){
         console.log('Server Responded from Dashboard#view_payees' , data);
         var copyTemplate = $('#template-payeeInfo').html().trim()
         var payeeInfoTemplate = $(copyTemplate)
