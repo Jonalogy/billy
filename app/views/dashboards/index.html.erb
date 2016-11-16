@@ -134,22 +134,22 @@
                             <div class="items_list" id="items_card_list_<%=bill.id%>">
 
                                 <% @all_bill_items[bill.id].each do |item| %>
-                                    <div id="bill_item<%=item.id%>" class='bill_item'>
+                                    <div id="bill_item<%=item[:id]%>" class='bill_item'>
                                         <div class="col-sm-7">
-                                          <div><%=item.item_name%></div>
-                                          <div>$<%=item.item_price%></div>
+                                          <div><%=item[:item_name]%></div>
+                                          <div>$<%=item[:item_price]%></div>
                                         </div>
                                         <div class="col-sm-1">
-                                          <a id="delBtn-item<%=item.id%>" href="#" class="delItem-btn btn btn-outline-danger btn-sm" billID="<%=bill.id%>" itemID="<%=item.id%>">
+                                          <a id="delBtn-item<%=item[:id]%>" href="#" class="delItem-btn btn btn-outline-danger btn-sm" billID="<%=bill.id%>" itemID="<%=item[:id]%>">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                           </a>
                                         </div>
                                         <div class="col-sm-1">
-                                          <a id="payeeInfo-btn<%=item.id%>" class="payeeInfo-btn btn btn-outline-info btn-sm" billID="<%=bill.id%>" itemID="<%=item.id%>">
-                                            <span id="payee_count-item<%=item.id%>"></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                          <a id="payeeInfo-btn<%=item[:id]%>" class="payeeInfo-btn btn btn-outline-info btn-sm" billID="<%=bill.id%>" itemID="<%=item[:id]%>">
+                                            <span id="payee_count-item<%=item[:id]%>"><%=item[:payee_count]%></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
                                         </div>
-                                        <div class="tagPayee-input-holder col-sm-1" id='tagPayee-input-holder-item<%=item.id%>'>
-                                          <a id="tagPayeeItem-<%=item.id%>" billID="<%=bill.id%>" itemID="<%=item.id%>" href="" class="btn btn-outline-success btn-sm tagPayee" role="button">
+                                        <div class="tagPayee-input-holder col-sm-1" id='tagPayee-input-holder-item<%=item[:id]%>'>
+                                          <a id="tagPayeeItem-<%=item[:id]%>" billID="<%=bill.id%>" itemID="<%=item[:id]%>" href="" class="btn btn-outline-success btn-sm tagPayee" role="button">
                                             <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
                                         </div>
                                     </div>
