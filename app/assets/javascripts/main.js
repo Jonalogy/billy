@@ -12,10 +12,10 @@ $( document ).on('turbolinks:load', function() {
 
 function backgroundMedia(){
 
-  let screenWidth = $(window).width()
-  let screenHeight = $(window).height()
+  var screenWidth = $(window).width()
+  var screenHeight = $(window).height()
 
-  let size = getRandomInt(50, 100)
+  var size = getRandomInt(50, 100)
 
   // console.log(screenWidth, screenHeight, size)
   var pattern = Trianglify({
