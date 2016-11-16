@@ -191,7 +191,7 @@ $( document ).on('turbolinks:load', function() {
       $.ajax({
         method: "PATCH",
         url: '/pay',
-        data: {dataFile}
+        data: {dataFile:dataFile}
       }).done(function(data){
         console.log('server responded: payee#pay' ,  data);
         var paid_icon = $('<div>').addClass('paid_icon')
