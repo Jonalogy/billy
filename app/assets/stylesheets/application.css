@@ -23,20 +23,24 @@
 
 #background { position: fixed; z-index: -1}
 
-div{
-  /*border: 2px black dashed*/
+#bill-container{
+ text-align: center;
 }
-
- #bill-container{
-   text-align: center;
- }
 
 #billy-holder{
   text-align: center;
-  border: 1px white double;
+  border: 5px white solid;
+  border-radius: 5%;
   height: 600px;
-  width : 400px;
 }
+
+#login-btn{ background: none; background-color: rgba(255,255,255,0.3); border: 3px white solid; box-shadow:2px 2px #AAAAAA; color: white; font-size: 2em; text-shadow: 2px 2px #AAAAAA;}
+
+#login-btn:hover{ background: none; background-color: rgba(255,255,255,0.3); border: 3px white solid; box-shadow:2px 2px #AAAAAA; color: white; font-size: 2em; text-shadow: 2px 2px #AAAAAA; letter-spacing: 2px;}
+
+#login-btn:active:focus{ background: none; background-color: rgba(255,255,255,0.3); border: 3px white solid; color: white; font-size: 2em; text-shadow: 2px 2px #AAAAAA; letter-spacing: 2px;}
+
+
 
 #height_spacer1{
     height:100px;

@@ -15,15 +15,14 @@ function backgroundMedia(){
   let screenWidth = $(window).width()
   let screenHeight = $(window).height()
 
-
   let size = getRandomInt(50, 100)
 
   // console.log(screenWidth, screenHeight, size)
   var pattern = Trianglify({
   height: screenHeight,
   width: screenWidth,
-  x_colors: 'YlOrRd',
-  y_colors : 'YlOrRd',
+  x_colors: 'Spectral',
+  y_colors : 'Spectral',
   cell_size: size});
   $('#background').remove()
   document.body.prepend(pattern.canvas());
