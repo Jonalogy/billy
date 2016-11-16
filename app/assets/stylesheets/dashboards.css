@@ -11,7 +11,6 @@
 
 
 /*Tag Payee Frame*/
-
 .items_list { position: relative; overflow-y: hidden}
 .tagPayeeItemFrame { height: 100%; width: 100%; position: absolute; background-color: white; top: 0; overflow: scroll; padding: 5px;
                  transition-duration: 0.8s;
@@ -22,3 +21,6 @@
 .tagPayeeItemFrame-show { transform: translateX(0);
                       transition-duration: 1s;
                       transition-timing-function: ease; }
+
+/*Payment*/
+.paid_icon { text-align: center; color: #3ED912}

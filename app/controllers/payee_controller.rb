@@ -27,6 +27,7 @@ class PayeeController < ApplicationController
         item["contract_price"] = contract.contract_price
         item["contract_payType"] = PaymentType.find(contract.payment_type_id).pay_type
         item["contract_payType_id"] = contract.payment_type_id
+        item["contract_clear"] = contract.clear
         puts "item['contract_payType_id'] => #{item['contract_payType_id']}"
 
         if item["contract_payType_id"] == 3

@@ -152,6 +152,11 @@ $( document ).on('turbolinks:load', function() {
         data: {dataFile}
       }).done(function(data){
         console.log('server responded: payee#pay' ,  data);
+        var paid_icon = $('<div>').addClass('paid_icon')
+        $('<i>').addClass('fa fa-check-square-o fa-2x').attr('aria-hidden', 'true').appendTo(paid_icon)
+        $('#pay-btn-contract' + contract_id).replaceWith(paid_icon)
+
+        // <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
       })
 
     })
@@ -175,22 +180,32 @@ $( document ).on('turbolinks:load', function() {
           var itemsTemplate = $('#template-payabale-item-row').html().trim()
           var itemsRow = $(itemsTemplate)
           itemsRow.find('.item_name').text(item["item_name"])
-          itemsRow.find('.template-pay-btn').attr('billid',card['bill']['id']).attr('itemid',item['id']).attr('contractid',item['contract_id']).removeClass("template-pay-btn").addClass("pay-btn")
+          itemsRow.find('.template-pay-btn').attr('id','pay-btn-contract'+item['contract_id']).attr('billid',card['bill']['id']).attr('itemid',item['id']).attr('contractid',item['contract_id']).removeClass("template-pay-btn").addClass("pay-btn")
 
           var payment_type = item["contract_payType"];
           if( payment_type === "Favour"){
             itemsRow.find('.fa').addClass("fa-handshake-o")
             itemsRow.find('.settlement').text( "Return a Favour: " + item["favour_description"] )
 
-          } else {
+          }
+          else {
             itemsRow.find('.settlement').text("Return with " + item["contract_payType"] + ": " + "$" + item["contract_price"] + "/ $" + item["item_price"]  )
             itemsRow.find('.fa').addClass("fa-usd")
           }
           itemsRow.appendTo('#card-block_bill' + card['bill']['id'])
+
+          if (item["contract_clear"] == true){
+            console.log("Contract clear")
+
+            var paid_icon = $('<div>').addClass('paid_icon')
+            $('<i>').addClass('fa fa-check-square-o fa-2x').attr('aria-hidden', 'true').appendTo(paid_icon)
+            $('#pay-btn-contract' + item["contract_id"]).replaceWith(paid_icon)
+          }
+
         }) //END card['items'].forEach
       }) //END data.forEach(function(card)
     }) //END $.get('/payables',function(data)
-  }
+  }//END loadAllPayables()
 
   function loadAllBills(){
     var billTemplate = $("#billTemplate").html().trim()
