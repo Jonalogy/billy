@@ -82,7 +82,7 @@
                         <a class="nav-link" data-toggle="tab" href="#details_card_<%=bill.id%>" role="tab">Details</a>
                       </li>
                       <li class="nav-item  float-xs-right">
-                        <button class="bill-delete-btn btn btn-outline-danger btn-sm" type="button" bill-id="<%=bill.id%>">X</button>
+                        <button class="bill-delete-btn btn btn-outline-danger btn-sm" type="button" bill-id="<%=bill.id%>">Clear Bill</button>
                       </li>
 
                     </ul>
@@ -99,10 +99,11 @@
                             <p class="card-title billTitle"> <%=bill.title%> </p>
                           </div>
                           <div class="col-md-12">
-                            <span>$0</span> / <span class="billTotal">$<%=bill.total_price%></span>
+                            <!-- <span>$0</span> /  -->
+                            <span class="billTotal">Total: $<%=bill.total_price%></span>
                           </div>
                           <div class="col-md-12">
-                            <%=@all_bill_items[bill.id].length%> items
+                            <span id="item-count-bill<%=bill.id%>"><%=@all_bill_items[bill.id].length%></span> items
                           </div>
                           <div class="col-md-12">
                             <% if bill.clear == false
@@ -144,7 +145,7 @@
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                           </a>
                                           <a id="payeeInfo-btn<%=item[:id]%>" class="payeeInfo-btn btn btn-outline-info btn-sm" billID="<%=bill.id%>" itemID="<%=item[:id]%>">
-                                            <span id="payee_count-item<%=item[:id]%>"><%=item[:payee_count]%></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
+                                            <span id="payee_clear_count-item<%=item[:id]%>"><%=item[:payee_clear_count]%></span>/<span id="payee_count-item<%=item[:id]%>"><%=item[:payee_count]%></span> <i class="fa fa-user" aria-hidden="true"></i> </a>
                                             <a id="tagPayeeItem-<%=item[:id]%>" billID="<%=bill.id%>" itemID="<%=item[:id]%>" href="" class="btn btn-outline-success btn-sm tagPayee" role="button">
                                               <i class="fa fa-user-plus" aria-hidden="true"></i> </a>
                                         </div>
@@ -188,17 +189,21 @@
       <div class="template-payeeInfo col-sm-12">
         <div class="template-payeeInfo-name col-sm-12">
         </div>
-        <div class=" template-payeeInfo-amt col-sm-5">
+        <div class=" template-payeeInfo-amt col-sm-3">
         </div>
         <div class="template-payeeInfo-payType col-sm-5">
 
         </div>
-        <div class="template-payeeInfo-favour col-sm-10">
+        <div class="template-payeeInfo-favour col-sm-8">
         </div>
-        <div class="template-payeeInfo-clear-btn col-sm-2">
-          <a class="template-owner-payee-clear-btn  btn btn-outline-success btn-sm owner-payee-clear" data-toggle="collapse" aria-expanded="false" aria-controls="addItem">
-            <i id="test" class="fa fa-thumbs-o-up" aria-hidden="true"></i> </a>
+        <div class="template-payeeInfo-clear col-sm-2">
+          <a class="template-owner-payee-clear-btn  btn btn-outline-primary btn-sm" data-toggle="collapse" aria-expanded="false" aria-controls="addItem">
+            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Clear </a>
         </div>
+        <div class="template-payeeInfo-cleared-icon col-sm-2">
+          <i class="fa fa-check-square-o fa-2x" aria-hidden="true"></i>
+        </div>
+
       </div>
       <!-- <button  class="template-closeTagPayeeItemFrame btn btn-sm btn-outline-danger"> Close <i class="fa fa-lg fa-times" aria-hidden="true"></i> </button> -->
     </template>

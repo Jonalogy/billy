@@ -79,6 +79,22 @@ class PayeeController < ApplicationController
 
   end
 
+  def clear_payee
+    # puts ">>>>> Console Log (payee#clear_payee) <<<<<"
+    id = clear_payee_params[:contract_id]
+    contract = Contract.find(id)
+    contract.clear = true
+
+    if contract.save!
+      status = "patch success"
+      render json: { :server_response => status }
+    else
+      status = "patch failed"
+      render json: { :server_response => status }
+    end
+
+  end
+
   def verify_mobile
     number = params[:number][:payee_contact]
 
@@ -108,6 +124,10 @@ class PayeeController < ApplicationController
   end
 
   def pay_params
+    params.require(:dataFile).permit(:bill_id, :item_id, :contract_id)
+  end
+
+  def clear_payee_params
     params.require(:dataFile).permit(:bill_id, :item_id, :contract_id)
   end
 

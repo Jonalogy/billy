@@ -18,34 +18,40 @@ $( document ).on('turbolinks:load', function() {
       console.log(data)
       var body = $('<div>', {id:'bill_item' + data.id, class:'bill_item'})
       //Item Info
-        var itemBlock = $('<div>', {class:'col-sm-7'})
+        var itemBlock = $('<div>', {class:'col-md-7'})
         $('<div>').text(data.item_name).appendTo(itemBlock)
         $('<div>').text('$'+data.item_price).appendTo(itemBlock)
         itemBlock.appendTo(body)
+
+        var btnGroup = $('<div>',{class:'col-md-5'})
       //Delete Item
-        var delBtn = $('<div>',{class:'col-sm-1'})
         var delLink = $('<a>' , {href:"#", class: "delItem-btn btn btn-outline-danger btn-sm", role:"button", billid: data.bill_id, itemid: data.id})
         /*icon*/ $('<i>' , { class:"fa fa-trash" }).attr('aria-hidden','true').appendTo(delLink)
 
-        delLink.appendTo(delBtn)
-        delBtn.appendTo(body)
+        delLink.appendTo(btnGroup)
+        // delBtn.appendTo(body)
 
 
       //View Payee
-        var payeeCount = $('<div>',{class:'col-sm-1'})
+        // var payeeCount = $('<div>',{class:'col-sm-1'})
         var payeeCountLink = $('<a>' , {id: 'payeeInfo-btn' + data.id, class: "payeeInfo-btn btn btn-outline-info btn-sm", role:"button", billid: data.bill_id, itemid:data.id })
-        $('<span>',{id:'payee_count-item' + data.id}).appendTo(payeeCountLink)
+        $('<span>',{id:'payee_count-item' + data.id}).text('0').appendTo(payeeCountLink)
         /*icon*/ $('<i>' , { class:"fa fa-user" }).attr('aria-hidden','true').appendTo(payeeCountLink)
-        payeeCountLink.appendTo(payeeCount)
-        payeeCount.appendTo(body)
+        payeeCountLink.appendTo(btnGroup)
+        // payeeCount.appendTo(body)
 
       //Tag Payee
-        var payeeBlock = $('<div>',{class:'col-sm-1'})
+        // var payeeBlock = $('<div>',{class:'col-sm-1'})
         var tagLink = $('<a>' , {id:'tagPayeeItem-' + data.id, class: "btn btn-outline-success btn-sm tagPayee", role:"button", billid: data.bill_id, itemid:data.id})
         /*icon*/ $('<i>' , { class:"fa fa-user-plus" }).attr('aria-hidden','true').appendTo(tagLink)
-        tagLink.appendTo(payeeBlock)
-        payeeBlock.appendTo(body)
+        tagLink.appendTo(btnGroup)
+
+        btnGroup.appendTo(body)
         body.insertBefore('#tagPayeeItemFrame-bill' + data.bill_id)
+
+        var item_count = $('#item-count-bill' + data.bill_id).text()
+        item_count = parseInt(item_count) + 1
+        $('#item-count-bill' + data.bill_id).text(item_count)
     })//END ajax:success
 
   //--- View Payees
@@ -54,45 +60,72 @@ $( document ).on('turbolinks:load', function() {
       var point  = event.currentTarget;
       var bill_id = point.getAttribute("billid")
       var item_id = point.getAttribute("itemid")
-      console.log(point)
-      console.log('Trigger pane: ', bill_id)
+      // console.log(point)
+      // console.log('Trigger pane: ', bill_id)
       $( '#tagPayeeItemFrame-bill' + bill_id).toggleClass('tagPayeeItemFrame-show')
       var data = { bill_id: bill_id, item_id: item_id };
 
       // $.get()
       $.get('/view_payees', { data : data }, function(data){
         console.log('Server Responded from Dashboard#view_payees' , data);
-        var copyTemplate = $('#template-payeeInfo').html().trim()
-        var payeeInfoTemplate = $(copyTemplate)
 
         if (data.length === undefined) {
           // alert('No payees found')
+          var copyTemplate = $('#template-payeeInfo').html().trim()
+          var payeeInfoTemplate = $(copyTemplate)
           payeeInfoTemplate.find('.template-payeeInfo-favour').removeClass('template-payeeInfo-favour').addClass('payeeInfo-payType').text('No payees found')
           payeeInfoTemplate.find('.template-payeeInfo-name').remove()
           payeeInfoTemplate.find('.template-payeeInfo-payType').remove()
           payeeInfoTemplate.find('.template-payeeInfo-amt').remove()
+          payeeInfoTemplate.find('.template-payeeInfo-clear').remove()
           payeeInfoTemplate.find('.template-payeeInfo-clear-btn').remove()
+          payeeInfoTemplate.find('.template-payeeInfo-cleared-icon ').remove()
           $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
         } else {
 
           data.forEach(function(payee){
-
+            var copyTemplate = $('#template-payeeInfo').html().trim()
+            var payeeInfoTemplate = $(copyTemplate)
             if (payee['pay_type'] == "Favour") {
               payeeInfoTemplate.removeClass('template-payeeInfo').addClass('payeeInfo').attr('billid',bill_id).attr('itemid',payee['item_id'])
               payeeInfoTemplate.find('.template-payeeInfo-name').removeClass('template-payeeInfo-name').addClass('payeeInfo-name').text(payee['payee']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
               payeeInfoTemplate.find('.template-payeeInfo-favour').removeClass('template-payeeInfo-favour').addClass('payeeInfo-payType').text(payee['favour']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+
+              if( payee['contract_clear'] == true ){
+                payeeInfoTemplate.find('.template-payeeInfo-clear').remove()
+                payeeInfoTemplate.find('.template-owner-payee-clear-btn').remove()
+                payeeInfoTemplate.find('.template-payeeInfo-cleared-icon').removeClass('template-payeeInfo-cleared-icon').addClass('payeeInfo-cleared-icon')
+
+              } else {
+                payeeInfoTemplate.find('.template-payeeInfo-cleared-icon').remove()
+                payeeInfoTemplate.find('.template-payeeInfo-clear').removeClass('template-payeeInfo-clear').addClass("payeeInfo-clear").attr('id', 'payeeInfo-clear' +  payee['contract_id'])
+                payeeInfoTemplate.find('.template-owner-payee-clear-btn').removeClass('template-owner-payee-clear-btn').addClass('owner-payee-clear-btn').attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id']).attr('id','owner-payee-clear-btn-contract-'+ payee['contract_id'])
+              }
               payeeInfoTemplate.find('.template-payeeInfo-payType').remove()
               payeeInfoTemplate.find('.template-payeeInfo-amt').remove()
               $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
-
-            } else {
+            }
+            else {
               payeeInfoTemplate.removeClass('template-payeeInfo').addClass('payeeInfo').attr('billid',bill_id).attr('itemid',payee['item_id'])
               payeeInfoTemplate.find('.template-payeeInfo-name').removeClass('template-payeeInfo-name').addClass('payeeInfo-name').text(payee['payee']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
-              payeeInfoTemplate.find('.template-payeeInfo-payType').removeClass('template-payeeInfo-payType').addClass('payeeInfo-payType').text("By" + payee['pay_type']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+              payeeInfoTemplate.find('.template-payeeInfo-payType').removeClass('template-payeeInfo-payType').addClass('payeeInfo-payType').text("By " + payee['pay_type']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
               payeeInfoTemplate.find('.template-payeeInfo-amt').removeClass('template-payeeInfo-amt').addClass('payeeInfo-amt').text('$' + payee['contract_amt']).attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id'])
+
+              if( payee['contract_clear'] == true ){
+                payeeInfoTemplate.find('.template-payeeInfo-clear').remove()
+                payeeInfoTemplate.find('.template-owner-payee-clear-btn').remove()
+                payeeInfoTemplate.find('.template-payeeInfo-cleared-icon').removeClass('template-payeeInfo-cleared-icon').addClass('payeeInfo-cleared-icon')
+              } else {
+                payeeInfoTemplate.find('.template-payeeInfo-cleared-icon').remove()
+                payeeInfoTemplate.find('.template-owner-payee-clear').removeClass('template-owner-payee-clear').addClass("owner-payee-clear")
+                payeeInfoTemplate.find('.template-owner-payee-clear-btn').removeClass('template-owner-payee-clear-btn').addClass('owner-payee-clear-btn').attr('bill-id',bill_id).attr('item-id',payee['item_id']).attr('contract-id',payee['contract_id']).attr('id','owner-payee-clear-btn-contract-'+ payee['contract_id'])
+              }
+
               payeeInfoTemplate.find('.template-payeeInfo-favour').remove()
-              $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
+              payeeInfoTemplate.appendTo(  $('#tagPayeeItemContent-bill' + bill_id) )
+              // $('#tagPayeeItemContent-bill' + bill_id).append(payeeInfoTemplate)
             }
+
           })//END data.forEach(function(payee){})
         }//END if-else
         var close_button = $('<button>',{class:"closeTagPayeeItemFrame btn btn-sm btn-outline-danger"}).attr('bill-id', bill_id).attr('item-id', item_id).text('Close ');
@@ -102,6 +135,37 @@ $( document ).on('turbolinks:load', function() {
     }) //END $(document).on('click','.payeeInfo-btn',function(event){}
 
 //----Event Listeners
+    $(document).on('click','.owner-payee-clear-btn',function(event){
+      var point = this;
+      var element_id = point.getAttribute('id')
+      var item_id = point.getAttribute('item-id');
+      var bill_id = point.getAttribute('bill-id');
+      var contract_id = point.getAttribute('contract-id');
+      console.log( point )
+
+      var dataFile = { contract_id: contract_id,
+                       bill_id: bill_id,
+                       item_id: item_id }
+
+      $.ajax({
+        method: 'PATCH',
+        url: '/clear_payee',
+        data: { dataFile : dataFile }
+      }).done(function(data){
+        console.log('Server responded from payee#clear_payee' , data);
+        var icon = $('<div>', { class:"col-sm-2" })
+        icon.append( $('<i>', { class:"fa fa-check-square-o fa-2x" }).attr('aria-hidden', 'true') )
+
+        $('#' + element_id).replaceWith(icon)
+        var paidPayee =  $('#payee_clear_count-item'+item_id).text()
+        console.log("paidPayee => " , paidPayee)
+        paidPayee = parseInt(paidPayee) + 1
+        $('#payee_clear_count-item'+item_id).text(paidPayee)
+
+      })
+
+    })
+
     //---Detect payee's payType
     $(document).on('change','.payType',function(event){
       console.log(this)
@@ -170,6 +234,10 @@ $( document ).on('turbolinks:load', function() {
             console.log('server responded')
             console.log(data)
             $( '#bill_item' + item_id).remove()
+
+            var item_count = $('#item-count-bill' + data.bill_id).text()
+            item_count = parseInt(item_count) - 1
+            $('#item-count-bill' + data.bill_id).text(item_count)
           } // END  success: function(data)
         }) //END  $.ajax
     })

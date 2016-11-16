@@ -31,7 +31,8 @@ class DashboardsController < ApplicationController
             item[:bill_id] = bill_item[:bill_id]
             item[:item_name] = bill_item[:item_name]
             item[:item_price] = bill_item[:item_price]
-            item[:payee_count] = Contract.where(item_id:bill_item['id'], clear:false).length
+            item[:payee_count] = Contract.where(item_id:bill_item['id']).length
+            item[:payee_clear_count] = Contract.where(item_id:bill_item['id'], clear:true).length
             @bill_items_reformat.push(item)
             # puts "item => #{item}"
             # puts "@bill_items_reformat => #{@bill_items_reformat}"
@@ -51,21 +52,33 @@ class DashboardsController < ApplicationController
   end
 
   def view_payees
-    # puts ">>>> Console.Log (Dashboard#view_payees) <<<<"
+    puts ">>>> Console.Log (Dashboard#view_payees) <<<<"
     item_id = view_payee_params[:item_id].to_i
-    contracts = Contract.where(item_id: item_id, clear: false)
+    contracts = Contract.where(item_id: item_id)
+
+    puts "  contract => #{contracts}.length"
 
     @payees_all = []
 
     if contracts.length > 0
 
       contracts.each do |contract|
+
+        puts ""
+        puts ""
+        puts ""
+        puts " contract.inspect => #{contract.inspect} "
+        puts " User_id => #{contract.user_id} "
         if contract.user_id != nil
+          puts "Finding non-registered payee"
           payee_id = contract.user_id
-          payee = User.where(id: payee_id)
+          payee = User.find(payee_id)
+          puts payee.inspect
           @payee = {}
           @payee[:contract_id] = contract.id
+          @payee[:contract_clear] = contract.clear
           @payee[:item_id] = contract.item_id
+          puts payee.name
           @payee[:payee] = payee.name
           if contract.payment_type_id != 3
             @payee[:pay_type] = PaymentType.where(id: contract.payment_type_id).take.pay_type
@@ -75,11 +88,13 @@ class DashboardsController < ApplicationController
             @payee[:favour] = Favour.where(id: contract.favour_id).take.favour_type
           end
 
+          puts "@payee => #{@payee}"
           @payees_all.push(@payee)
         else
-          # puts "Finding non-registered payee"
+          puts "Finding non-registered payee"
           @payee = {}
           @payee[:contract_id] = contract.id
+          @payee[:contract_clear] = contract.clear
           @payee[:item_id] = contract.item_id
           @payee[:payee] = contract.payee_name
           if contract.payment_type_id != 3
@@ -89,6 +104,10 @@ class DashboardsController < ApplicationController
             @payee[:pay_type] = PaymentType.where(id: contract.payment_type_id).take.pay_type
             @payee[:favour] = Favour.where(id: contract.favour_id).take.favour_type
           end
+          puts ""
+          puts ""
+          puts ""
+          puts "@payee => #{@payee}"
           @payees_all.push(@payee)
         end
       end #contracts.each do
@@ -96,7 +115,9 @@ class DashboardsController < ApplicationController
     else
       @payees_all = {}
     end
-    puts "render json: @payees_all"
+
+
+    puts "render json: @payees_all  => #{@payees_all}"
     render json: @payees_all
 
   end
