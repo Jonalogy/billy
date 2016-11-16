@@ -1,7 +1,7 @@
 /* Bill Card's Items Pane */
 .card-header { height:56px; }
-.card-block { height: 330px; overflow: scroll; padding-bottom: 20px; }
-.items_list { overflow: scroll; height: 270px; }
+.card-block { height: 330px; overflow:scroll; ;padding-bottom: 20px; }
+.items_list { overflow-y: scroll; overflow-x: hidden; height: 270px; }
 
 #newBillDesc {width: 100%;}
 #dashboard-title {font-size: 100px;font-family: 'Indie Flower', cursive; color: white; text-align: left; text-shadow: 4px 4px #161d31;}
