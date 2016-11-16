@@ -51,29 +51,18 @@ class DashboardsController < ApplicationController
   end
 
   def view_payees
-    puts ">>>> Console.Log (Dashboard#view_payees) <<<<"
-    puts view_payee_params.inspect
-    puts ""
-    puts ""
-    puts ""
+    # puts ">>>> Console.Log (Dashboard#view_payees) <<<<"
     item_id = view_payee_params[:item_id].to_i
-    puts "item_id => #{item_id} #{item_id.class}"
     contracts = Contract.where(item_id: item_id, clear: false)
-    puts "Contracts count == #{contracts.length}"
 
     @payees_all = []
 
     if contracts.length > 0
 
       contracts.each do |contract|
-        puts "Inspect contract ==> #{contract.inspect} , #{contract.class}"
         if contract.user_id != nil
-          puts ""
-          puts ""
-          puts "Finding registered payee"
           payee_id = contract.user_id
           payee = User.where(id: payee_id)
-          puts "payee ==> #{payee.inspect} ,  #{payee.class}"
           @payee = {}
           @payee[:contract_id] = contract.id
           @payee[:item_id] = contract.item_id
@@ -86,12 +75,9 @@ class DashboardsController < ApplicationController
             @payee[:favour] = Favour.where(id: contract.favour_id).take.favour_type
           end
 
-          puts "@payee ==> #{@payee}"
           @payees_all.push(@payee)
         else
-          puts ""
-          puts ""
-          puts "Finding non-registered payee"
+          # puts "Finding non-registered payee"
           @payee = {}
           @payee[:contract_id] = contract.id
           @payee[:item_id] = contract.item_id
@@ -103,7 +89,6 @@ class DashboardsController < ApplicationController
             @payee[:pay_type] = PaymentType.where(id: contract.payment_type_id).take.pay_type
             @payee[:favour] = Favour.where(id: contract.favour_id).take.favour_type
           end
-          puts "@payee ==> #{@payee}"
           @payees_all.push(@payee)
         end
       end #contracts.each do
@@ -115,7 +100,6 @@ class DashboardsController < ApplicationController
     render json: @payees_all
 
   end
-
   private
 
   def view_payee_params
